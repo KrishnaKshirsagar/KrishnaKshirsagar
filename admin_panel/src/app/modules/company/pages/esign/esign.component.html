@@ -1,0 +1,101 @@
+<app-layout>
+  <div id="esign-page">
+    <div class="main-wrapper">
+      <div class="transheader">
+        <h2>E-Sign</h2>
+      </div>
+      <form [formGroup]="esign_form" class="example-form" (ngSubmit)="onSubmit()">
+        <div class="gridLayout">
+          <div class="Left">
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Buyer Name </mat-label>
+                <input matInput type="text" formControlName="buyer_name" placeholder="Enter Buyer Name" required
+                  readonly />
+                <mat-error style="color: rgb(241, 14, 14);">Please enter buyer name
+                </mat-error>
+              </mat-form-field>
+
+              <!-- NBFC -->
+              <mat-form-field appearance="outline">
+                <mat-label>NBFC Name</mat-label>
+                <input type="text" placeholder="Please Select NBFC" aria-label="Number" matInput
+                  [formControl]="nbfc_select" [matAutocomplete]="nbfc_auto" (input)="NBFCSuggetion($event)" required />
+                <mat-error style="color: rgb(241, 14, 14);">Please enter NBFC name
+                </mat-error>
+                <mat-autocomplete [displayWith]="displayNBFCFn" (optionSelected)="getNBFCId($event.option.value)"
+                  #nbfc_auto="matAutocomplete">
+                  <mat-option *ngFor="let option of NBFC_Name" [value]="option">
+                    {{ option.nbfc_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="nbfcNameClear()" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="Right">
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Seller Name</mat-label>
+                <input type="text" placeholder="Please Select Seller" aria-label="Number" matInput
+                  [formControl]="seller_select" [matAutocomplete]="buyer_auto" (input)="companySuggetion($event)"
+                  required />
+                <mat-error style="color: rgb(241, 14, 14);">Please enter seller name
+                </mat-error>
+                <mat-autocomplete [displayWith]="displaySellerFn" (optionSelected)="getSellerId($event.option.value)"
+                  #buyer_auto="matAutocomplete">
+                  <mat-option *ngFor="let option of company_Name" [value]="option">
+                    {{ option.company_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="clearSellerName()" matSuffix mat-icon-button
+                  aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width" appearance="outline">
+                <mat-label>Document Type</mat-label>
+                <mat-select formControlName="document" required>
+                  <mat-option value=""> Select Document Type </mat-option>
+                  <mat-option value="sl"> Sanction Letter </mat-option>
+                  <mat-option value="cfa"> Credit Facility Agreement </mat-option>
+                </mat-select>
+                <mat-error style="color: rgb(241, 14, 14);">Please select the document type</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="input-wrapper text-center mat-form-field-1">
+            <button type="submit" mat-flat-button class="btn-dark">
+              SUBMIT
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <div class="e-sign-link" *ngIf="esign_link_flag">
+        <mat-form-field class="example-full-width" appearance="fill">
+          <input matInput [(ngModel)]="esign_link" #txtConfigFile readonly/>
+          <button mat-raised-button (click)="copyEsignLink()"  style="
+              background: #236f21;
+              color: aliceblue;
+              margin-left: 92%;
+              margin-bottom: 5px;
+            ">
+            Copy Link
+          </button>
+        </mat-form-field>
+
+        <div class="example-label">
+          <button mat-raised-button (click)="download_pdf()" style="background: #000000; color: aliceblue; margin: 5px">
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>

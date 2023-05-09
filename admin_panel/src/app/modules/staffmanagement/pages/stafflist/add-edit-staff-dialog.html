@@ -1,0 +1,257 @@
+<div id="add-edit-staff-dialog">
+  <mat-dialog-content class="mat-typography">
+    <div *ngIf="!editUserflag">
+      <h1 class="text-center">Add Staff</h1>
+    </div>
+    <div *ngIf="editUserflag">
+      <h1 class="text-center">Edit Staff</h1>
+    </div>
+    <div *ngIf="!editUserflag">
+      <form
+        class="example-form"
+        [formGroup]="addUser_form"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="flex">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="First Name"
+              formControlName="first_name"
+              pattern="[a-zA-Z]+"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)">
+              Please enter first name
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input
+              matInput
+              placeholder="Last Name"
+              formControlName="last_name"
+              pattern="[a-zA-Z]+"
+            />
+            <mat-error style="color: rgb(241, 14, 14)">
+              Please enter last name
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <!-- pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" -->
+            <!-- ^[a-z0-9](\.?[a-z0-9]){5,}@xuriti\.com$ -->
+            <input
+              matInput
+              type="text"
+              placeholder="Email Address"
+              oninput="this.value = this.value.toLowerCase()"
+              formControlName="email"
+              pattern="[a-z0-9.-_]+(@xuriti.com || @XURITI.COM)"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please provide a valid email address
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Mobile Number</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Mobile Number"
+              formControlName="mobile_number"
+              minlength="10"
+              maxlength="10"
+              pattern="^[1-9][0-9]*$"
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please enter valid mobile number
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex">
+          <mat-form-field class="example-half-width" appearance="outline">
+            <mat-label>Select Staff Type</mat-label>
+            <mat-select formControlName="user_role" required>
+              <mat-option value="xuritiAdmin">Xuriti Admin</mat-option>
+              <mat-option value="xuritiStaff">Xuriti Staff</mat-option>
+              <mat-option value="xuritiCreditMgr">Xuriti Credit Manager</mat-option>
+              <mat-option value="xuritiCollectionMgr">Xuriti Collection Manager</mat-option>
+              <mat-option value="xuritiCollectionStaff">Xuriti Collection Staff </mat-option>
+              <mat-option value="xuritiCollectionAgent"> Xuriti Collection Agent </mat-option>
+              <mat-option value="xuritiSalesAgent">Xuriti Sales Staff</mat-option>
+              <mat-option value="xuritiKycAgent">Xuriti KYC Agent</mat-option>
+            </mat-select>
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please select staff role
+            </mat-error>
+          </mat-form-field>
+
+          <!-- <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select User Status</mat-label>
+            <mat-select formControlName="status">
+              <mat-option value="Active">Active</mat-option>
+              <mat-option value="Inactive">Inactive</mat-option>
+            </mat-select>
+            <mat-error style=" color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please select user status
+            </mat-error>
+          </mat-form-field> -->
+        </div>
+
+        <div class="button">
+          <div>
+            <button mat-button color="primary" cdkFocusInitial type="submit">
+              SUBMIT
+            </button>
+          </div>
+          <div>
+            <button mat-button color="warn" type="button" (click)="cancel()">
+              CANCEL
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="editUserflag">
+      <form
+        class="example-form"
+        [formGroup]="editUser_form"
+        (ngSubmit)="editUser()"
+      >
+        <div class="flex">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="First Name"
+              formControlName="firstName"
+              pattern="[a-zA-Z]+"
+              (input)="onchange()"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please enter first name
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Last Name"
+              formControlName="lastName"
+              pattern="[a-zA-Z]+"
+              (input)="onchange()"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please enter last name
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <!-- pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" -->
+            <input
+              matInput
+              type="text"
+              placeholder="Email Address"
+              formControlName="email"
+              pattern="[a-z0-9.-_]+(@xuriti.com || @XURITI.COM)"
+              (input)="onchange()"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please provide a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Mobile Number</mat-label>
+            <input
+              matInput
+              placeholder="Mobile Number"
+              formControlName="mobileNumber"
+              pattern="^[1-9][0-9]*$"
+              (input)="onchange()"
+              maxlength="10"
+              minlength="10"
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please enter valid mobile number
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Select Staff Type</mat-label>
+            <mat-select
+              formControlName="userRole"
+              (selectionChange)="onchange()"
+              required
+            >
+            <mat-option value="xuritiAdmin">Xuriti Admin</mat-option>
+            <mat-option value="xuritiStaff">Xuriti Staff</mat-option>
+            <mat-option value="xuritiCreditMgr">Xuriti Credit Manager</mat-option>
+            <mat-option value="xuritiCollectionMgr">Xuriti Collection Manager</mat-option>
+            <mat-option value="xuritiCollectionStaff">Xuriti Collection Staff </mat-option>
+            <mat-option value="xuritiCollectionAgent"> Xuriti Collection Agent </mat-option>
+            <mat-option value="xuritiSalesAgent">Xuriti Sales Staff</mat-option>
+            <mat-option value="xuritiKycAgent">Xuriti KYC Agent</mat-option>
+            
+            </mat-select>
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please select staff role
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field
+            class="example-full-width"
+            appearance="outline"
+          >
+            <mat-label>Select Staff Status</mat-label>
+            <mat-select
+              formControlName="status"
+              (selectionChange)="onchange()"
+              required
+            >
+              <mat-option value="Active">Active</mat-option>
+              <mat-option value="Inactive">Inactive</mat-option>
+            </mat-select>
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please select staff status
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="button">
+          <div>
+            <button mat-button color="primary" cdkFocusInitial type="submit">
+              SUBMIT
+            </button>
+          </div>
+          <div>
+            <button mat-button color="warn" type="button" (click)="cancel()">
+              CANCEL
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

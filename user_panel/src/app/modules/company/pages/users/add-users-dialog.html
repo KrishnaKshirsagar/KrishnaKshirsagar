@@ -1,0 +1,234 @@
+<div id="add-users-dialog">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div>
+        <div *ngIf="!editUserflag" class="add-dailog">
+          <h2>Add New User</h2>
+          <button
+            mat-icon-button
+            class="close-button"
+            [mat-dialog-close]="true"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <div *ngIf="editUserflag" class="edit-dailog">
+          <h2>Edit User</h2>
+          <button
+            mat-icon-button
+            class="close-button"
+            [mat-dialog-close]="true"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+
+        <div *ngIf="!editUserflag">
+          <form [formGroup]="newUser_form" (ngSubmit)="onSubmit()">
+            <div class="margin-top">
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">First Name</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="firstName"
+                    pattern="[a-zA-Z]+"
+                    required
+                  />
+
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please enter first name
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">Last Name</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="lastName"
+                    pattern="[a-zA-Z]+"
+                    required
+                  />
+
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please enter last name
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">Email</mat-label>
+                  <input
+                    matInput
+                    formControlName="email"
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    required
+                  />
+
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please provide a valid email address
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">Mobile</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="mobileNumber"
+                    minlength="10"
+                    maxlength="10"
+                    pattern="^[1-9][0-9]*$"
+                  />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please enter valid mobile number
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label>Select Role</mat-label>
+                  <mat-select formControlName="userRole" required>
+                    <mat-option>Select Role</mat-option>
+                    <mat-option
+                      *ngFor="let user_role of user_role_obj"
+                      [value]="user_role.value"
+                      >{{ user_role.name }}</mat-option
+                    >
+                  </mat-select>
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please select user role
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div>
+              <button
+                mat-button
+                type="submit"
+                color="primary"
+                class="btn-primary"
+              >
+                SAVE
+              </button>
+            </div>
+          </form>
+        </div>
+        <!-- For edit user  -->
+
+        <div *ngIf="editUserflag">
+          <form [formGroup]="editUser_form" (ngSubmit)="editUser()">
+            <div class="margin-top">
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">First Name</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="firstName"
+                    pattern="[a-zA-Z]+"
+                    (input)="onchange()"
+                    required
+                  />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please enter first name
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">Last Name</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="lastName"
+                    pattern="[a-zA-Z]+"
+                    (input)="onchange()"
+                    required
+                  />
+
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please enter last name
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">Email</mat-label>
+                  <input
+                    matInput
+                    formControlName="email"
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    (input)="onchange()"
+                    required
+                  />
+
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please provide a valid email address
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">Mobile</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    formControlName="mobileNumber"
+                    (input)="onchange()"
+                    maxlength="10"
+                    minlength="10"
+                    pattern="^[1-9][0-9]*$"
+                  />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please enter valid mobile number
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label>Select Role</mat-label>
+                  <mat-select
+                    formControlName="userRole"
+                    (selectionChange)="onchange()"
+                    required
+                  >
+                    <mat-option>Select Role</mat-option>
+                    <mat-option
+                      *ngFor="let user_role of user_role_obj"
+                      [value]="user_role.value"
+                      >{{ user_role.name }}</mat-option
+                    >
+
+                    <!-- <mat-option value="HO_user" *ngIf="seller_flag == 'true'"
+                      >Head Office User</mat-option
+                    >
+                    <mat-option value="Admin">Admin</mat-option>
+                    <mat-option value="Standard">Standard</mat-option> -->
+                  </mat-select>
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please select user role
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div>
+              <button
+                mat-button
+                type="submit"
+                color="primary"
+                class="btn-primary"
+              >
+                SAVE
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

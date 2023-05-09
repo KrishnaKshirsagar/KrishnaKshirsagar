@@ -1,0 +1,196 @@
+#nbfc-list-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+
+  .transheader {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+    margin-bottom: 15px;
+    h2 {
+      margin: 0px;
+    }
+    .spacer {
+      flex: 1 1 auto;
+    }
+    .btn-cust {
+      background: #f79e1b;
+      color: white;
+    }
+  }
+  .exel-icon {
+    border: 1px solid green;
+    color: green;
+    line-height: 22px;
+    vertical-align: middle;
+    margin-right: 15px;
+    margin-bottom: 5px;
+  }
+
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+    background: black;
+    color: white;
+  }
+  .mat-form-field {
+    margin-right: 15px;
+    font-size: 13px;
+    max-width: 185px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+
+  .mat-column-action {
+    text-align: center;
+    max-width: 120px;
+  }
+
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-upload {
+    background: #f79e1b;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+    padding: 5px 31px;
+    vertical-align: 2px;
+    font-size: 18px;
+    border-radius: 7px;
+  }
+  .text-right {
+    text-align: right;
+  }
+
+  .merged {
+    display: inline-block;
+  }
+  .left {
+    margin-right: 0px;
+  }
+
+  ::ng-deep {
+    .merged {
+      .left .mat-form-field-outline-end {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-right: none;
+      }
+
+      .right .mat-form-field-outline-start {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-left: none;
+      }
+    }
+  }
+  @media only screen and (max-width: 767px) {
+    .mat-form-field {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+}
+
+#nbfc-list-dialog {
+  mat-dialog-content {
+    width: 500px;
+  }
+
+  h1 {
+    margin: 0 0 15px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: #f79e1b;
+    color: white;
+    margin: 5px;
+  }
+
+  @media only screen and (max-width: 767px) {
+    mat-dialog-content {
+      width: auto;
+    }
+  }
+}
+
+#add-edit-staff-dialog {
+  .flex {
+    display: flex;
+  }
+
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .example-full-width {
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .flex {
+      display: block;
+    }
+  }
+}

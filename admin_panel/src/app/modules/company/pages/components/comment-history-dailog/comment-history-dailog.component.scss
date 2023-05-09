@@ -1,0 +1,61 @@
+#comments-history-dialog {
+
+    width: 600px;     
+    height: 400px;
+    table {
+      width: 100%;
+    }
+    .mat-header-cell {
+      font-size: 14px;
+  
+      background: black;
+      color: white;
+    }
+  
+    .add-dailog{
+      display: flex;
+      justify-content: space-between;
+  
+      .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 25px;
+        height: 25px;
+        flex-shrink: 0;
+        line-height: 25px;
+        border-radius: 50%;
+      }
+  
+      .mat-icon {
+        font-size: 15px;
+      }
+    }
+
+    .comments {
+      form {
+        display: flex;
+        align-items: center;
+        margin-top: 30px;
+      }
+
+      .mat-mini-fab.mat-accent {
+        background-color: black;
+        color: white;
+        margin-top: -20px;
+      }
+    }
+  
+    @media only screen and (max-width: 767px) {
+    }
+  }
+
+  ::ng-deep .mat-dialog-container {
+    position:relative;
+    // top:-100px;
+    // left:335px;
+    mat-form-field {
+      justify-content: start;
+      width: 90%;
+      margin-right: 20px; 
+    }
+  }

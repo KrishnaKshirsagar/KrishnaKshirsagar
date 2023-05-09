@@ -1,0 +1,209 @@
+<div id="disbursement-page" class="w-100">
+  <div class="w-100 text-left flex-div">
+    <h2>Reconciliation</h2>
+
+    <div class="upload-btn-wrapper">
+      <button type="file" mat-flat-button matTooltip="Excel Upload" class="btn-export">
+        UPLOAD
+      </button>
+      <input id="excel_file" type="file"
+        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+        (change)="onFileChange($event)" placeholder="Upload Excel">
+    </div>
+  </div>
+</div>
+
+
+<form [formGroup]="reconcilation_form" (ngSubmit)="add_reconcilation(reconcilation_form.value)"
+  *ngIf="disRedio == 'reconcilation_form'">
+  <div class="disbursment-section">
+
+    <mat-form-field appearance="outline">
+      <mat-label>LAN Id </mat-label>
+      <input matInput type="text" formControlName="lan_id" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter LAN Id
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Invoice Number </mat-label>
+      <input matInput placeholder="Search Invoice" type="text" formControlName="invoice_number" [matAutocomplete]="auto"
+        (input)="invoiceSuggetion($event)" />
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getPosts($event.option.value)">
+        <mat-option *ngFor="let invoice of disbursedInvoiceList" [value]="invoice">
+          {{invoice}}
+        </mat-option>
+      </mat-autocomplete>
+      <button type="button" mat-button (click)="clearInvoice(invoice_number)" matSuffix mat-icon-button
+        aria-label="Clear">
+        <mat-icon>close</mat-icon>
+      </button>
+      <!-- <mat-error style="color: rgb(241, 14, 14)">Please enter invoice number
+    </mat-error> -->
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Transaction Id </mat-label>
+      <input matInput type="text" formControlName="transaction_id" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter transaction Id.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label> Batch Id </mat-label>
+      <input matInput type="text" formControlName="batch_id" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter batch id.
+      </mat-error>
+    </mat-form-field>
+
+
+    <mat-form-field appearance="outline">
+      <mat-label>Buyer GST</mat-label>
+      <input matInput type="text" formControlName="buyer_gst" readonly
+        pattern="^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter buyer GST
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Seller Gst</mat-label>
+      <input matInput type="text" formControlName="seller_gst" readonly
+        pattern="^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter seller GST
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Invoice Amount</mat-label>
+      <input matInput type="text" readonly formControlName="invoice_amount" pattern="[0-9]+\.?[0-9]*$" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter invoice amount.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>GST Amount</mat-label>
+      <input matInput type="text" readonly formControlName="gst_amount" pattern="[0-9]+\.?[0-9]*$" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter GST amount
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label> UTR ID </mat-label>
+      <input matInput type="text" formControlName="utr_id" />
+      <mat-error style="color: rgb(241, 14, 14)">Please enter UTR Id
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Invoice Date</mat-label>
+      <input matInput [matDatepicker]="datepicker" formControlName="invoice_date" readonly [max]="maxDate" />
+      <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply>
+            Apply
+          </button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+      <mat-error style="color: rgb(241, 14, 14)">Please select invoice date
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Transaction Date</mat-label>
+      <input matInput [matDatepicker]="datepicker1" formControlName="transaction_date" [max]="maxDate" readonly />
+      <mat-datepicker-toggle matSuffix [for]="datepicker1"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker1>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply>
+            Apply
+          </button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+      <mat-error style="color: rgb(241, 14, 14)">Please select transaction date
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label> Payable Amount</mat-label>
+      <input matInput type="text" readonly formControlName="payable_amount" pattern="[0-9]+\.?[0-9]*$" />
+      <mat-error style="color: rgb(241, 14, 14)"> Please enter payable amount
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Payment Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option>Select Payment Status</mat-option>
+        <mat-option value="Paid">Paid</mat-option>
+        <mat-option value="Unpaid">Unpaid</mat-option>
+        <mat-option value="Rejected">Rejected</mat-option>
+      </mat-select>
+      <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+        Please select payment status
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label> Amount Paid</mat-label>
+      <input matInput type="text" formControlName="amount_paid" pattern="[0-9]+\.?[0-9]*$" />
+      <mat-error style="color: rgb(241, 14, 14)"> Please enter amount paid
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Remarks</mat-label>
+      <textarea matInput pattern="^[a-zA-Z\s]+$" type="text" formControlName="remarks" required></textarea>
+      <mat-error style="color: rgb(241, 14, 14)">Please write a remark</mat-error>
+    </mat-form-field>
+
+  </div>
+
+  <div class="labeldiv">
+    <!-- <mat-label> Upload Receipt </mat-label>
+  <input
+    id="pay_slip"
+    type="file"
+    formControlName="batch_id"
+    accept=".pdf, image/png, image/jpeg"
+    placeholder="Upload Receipt"
+  /> -->
+  </div>
+
+  <div class="button-disbursment">
+    <div class="example-label" style="margin:20px ; margin-left: 45%;">
+      <button mat-raised-button color="primary">Reconciliation</button>
+    </div>
+  </div>
+</form>
+
+<div id="invoiceupload-page" *ngIf="disRedio == 'reconcilation_excel'">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <div class="loginform">
+          <div class="tableheader w-100">
+            <div class="w-20 text-left">
+              <h2 i18n="@@BA1">Attachments</h2>
+            </div>
+          </div>
+
+          <!-- To upload excel file -->
+          <div class="w-100 multifile">
+            <input id="excel_file" type="file"
+              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              (change)="onFileChange($event)" placeholder="Upload Excel">
+          </div>
+
+          <div class="w-100 row">
+            <button mat-button color="primary" class="btn-primary" i18n="@@ABA12" (click)="backpage()">
+              Go Back
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

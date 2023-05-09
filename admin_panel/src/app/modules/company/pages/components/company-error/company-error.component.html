@@ -1,0 +1,43 @@
+<div id="companydetailsapprove-dialog">
+  <h2 class="text-center" *ngIf="data.flag">
+    Credit Limit Approval Confirmation
+  </h2>
+  <h2 class="text-center" *ngIf="!data.flag">
+    Credit Limit Decline Confirmation
+  </h2>
+
+  <!-- <h2 class="text-center">ABC Pvt. Ltd</h2> -->
+
+  <form
+    class="example-form"
+    [formGroup]="creditApproval_form"
+    (ngSubmit)="onSubmit()"
+  >
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Leave a comment</mat-label>
+      <textarea
+        matInput
+        formControlName="comment"
+        placeholder="Leave a comment"
+      ></textarea>
+      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+        >Please enter comment for Confirmation
+      </mat-error>
+    </mat-form-field>
+
+    <div class="input-wrapper text-center">
+      <!-- <button mat-flat-button [disabled]="!creditApproval_form.valid"  color="warn" cdkFocusInitial>CONFIRM</button> -->
+      <button
+        mat-button
+        color="primary"
+        cdkFocusInitial
+        [disabled]="!creditApproval_form.valid"
+      >
+        CONFIRM
+      </button>
+      <button mat-button color="warn" type="button" (click)="cancel()">
+        CANCEL
+      </button>
+    </div>
+  </form>
+</div>

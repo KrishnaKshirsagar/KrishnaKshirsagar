@@ -1,0 +1,1145 @@
+/** @format */
+
+#dashpage-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+
+  .prof {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 15px;
+    grid-row-gap: 10px;
+
+    .tabr {
+      background-color: #effafa;
+      border: 1px solid #81dad5;
+      border-radius: 7px;
+      padding: 10px;
+      ul {
+        padding-inline-start: 0px;
+        list-style: none;
+        li {
+          margin-bottom: 10px;
+        }
+      }
+
+      h3 {
+        font-weight: bold;
+      }
+
+      .mat-icon-button {
+        background: black;
+        width: fit-content;
+        border-radius: 7px;
+        color: white;
+        padding-left: 10px;
+        padding-right: 5px;
+      }
+    }
+  }
+  ::ng-deep .mat-expansion-panel-header-description {
+    flex-grow: 0;
+  }
+  .dashhead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    h2 {
+      margin-bottom: 0px;
+    }
+
+    .profile {
+      max-width: 100%;
+      border: 1px solid #f79e1b;
+      height: auto;
+      max-height: 30px;
+      border-radius: 100%;
+    }
+
+    .logged-in {
+      color: green;
+      font-size: 22px;
+    }
+
+    .logged-out {
+      color: red;
+      font-size: 22px;
+    }
+  }
+
+  .custom-tabs ::ng-deep .mat-tab-header {
+    border-bottom: none;
+  }
+
+  .custom-tabs {
+    .boxrow1 {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      margin: 10px;
+
+      .content1 {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        display: flex;
+        padding: 10px;
+        gap: 10px;
+        -webkit-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        -moz-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+      }
+
+      .content2 {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        padding: 10px;
+        gap: 10px;
+        -webkit-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        -moz-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        flex-grow: 3;
+      }
+
+      .content3 {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        padding: 10px;
+        gap: 10px;
+        -webkit-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        -moz-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        flex-grow: 3;
+      }
+
+      .content1 .Box1 .bills {
+        h2 {
+          margin-bottom: 0px;
+          font-size: 32px;
+          color: #29b473;
+          font-weight: 600;
+        }
+
+        h3 {
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+          font-size: 11px;
+        }
+
+        display: flex;
+        align-items: center;
+        border: 1px solid lightgray;
+        margin-bottom: 10px;
+        padding: 15px 10px;
+        -webkit-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        -moz-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        border-radius: 10px;
+        gap: 10px;
+
+        .icons mat-icon {
+          transform: scale(1.5);
+          border: 1px solid #6866d1;
+          border-radius: 100%;
+          padding: 5px;
+          margin-right: 10px;
+          color: #6866d1;
+        }
+
+        .details {
+          flex-grow: 1;
+        }
+      }
+
+      .content1 .Box1 .payment {
+        h2 {
+          margin-bottom: 0px;
+          font-size: 32px;
+          color: #29b473;
+          font-weight: 600;
+        }
+
+        h3 {
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+          font-size: 11px;
+        }
+
+        display: flex;
+        align-items: center;
+        border: 1px solid lightgray;
+        margin-bottom: 10px;
+        padding: 15px 10px;
+        -webkit-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        -moz-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        border-radius: 10px;
+        gap: 10px;
+
+        .icons mat-icon {
+          transform: scale(1.5);
+          border: 1px solid #6866d1;
+          border-radius: 100%;
+          padding: 5px;
+          margin-right: 10px;
+          color: #6866d1;
+        }
+
+        .details {
+          flex-grow: 1;
+          display: flex;
+          gap: 10px;
+
+          .made {
+            border-right: 1px solid lightgrey;
+            padding-right: 10px;
+          }
+
+          .due {
+            padding-right: 10px;
+
+            h2 {
+              color: #6866d1;
+            }
+          }
+        }
+      }
+
+      .content1 .Box1 .avg {
+        h2 {
+          margin-bottom: 0px;
+          font-size: 32px;
+          color: #29b473;
+          font-weight: 600;
+        }
+
+        h3 {
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+          font-size: 11px;
+        }
+
+        display: flex;
+        align-items: center;
+        border: 1px solid lightgray;
+        margin-bottom: 10px;
+        padding: 15px 10px;
+        -webkit-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        -moz-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        border-radius: 10px;
+        gap: 10px;
+
+        .icons mat-icon {
+          transform: scale(1.5);
+          border: 1px solid #6866d1;
+          border-radius: 100%;
+          padding: 5px;
+          margin-right: 10px;
+          color: #6866d1;
+        }
+
+        .details {
+          flex-grow: 1;
+        }
+      }
+
+      .content1 .Box2 .cred {
+        display: flex;
+        align-items: center;
+        border: 1px solid lightgray;
+        margin-bottom: 10px;
+        padding: 10px;
+        box-shadow: 0px 0px 10px 1px lightgrey;
+        border-radius: 10px;
+        gap: 10px;
+
+        h2 {
+          margin-top: 15px;
+          font-size: 32px;
+          color: #29b473;
+          font-weight: 600;
+        }
+
+        h3 {
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+          font-size: 11px;
+        }
+
+        h4 {
+          background: -moz-linear-gradient(
+            90deg,
+            rgba(104, 102, 209, 1) 61%,
+            rgba(195, 194, 235, 1) 61%
+          );
+          background: -webkit-linear-gradient(
+            90deg,
+            rgba(104, 102, 209, 1) 61%,
+            rgba(195, 194, 235, 1) 61%
+          );
+          background: linear-gradient(
+            90deg,
+            rgba(104, 102, 209, 1) 61%,
+            rgba(195, 194, 235, 1) 61%
+          );
+          filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6866d1", endColorstr="#c3c2eb", GradientType=1);
+          color: white;
+          padding: 5px 15px;
+          margin-bottom: 0;
+        }
+
+        .details .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 32px;
+          min-width: auto;
+        }
+
+        .details .example-button-row .white {
+          background: white;
+          color: black;
+          border: 1px solid black;
+        }
+
+        .details .example-button-row .black {
+          background: black;
+          color: white;
+          border: 1px solid black;
+        }
+      }
+
+      .content1 .Box2 .over {
+        h2 {
+          margin-bottom: 0px;
+          font-size: 32px;
+          color: #29b473;
+          font-weight: 600;
+        }
+
+        h3 {
+          text-transform: uppercase;
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+          font-size: 11px;
+        }
+
+        display: flex;
+        align-items: center;
+        border: 1px solid lightgray;
+        margin-bottom: 10px;
+        padding: 15px 10px;
+        -webkit-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        -moz-box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        box-shadow: 0px 0px 10px 1px rgba(211, 211, 211, 1);
+        border-radius: 10px;
+        gap: 10px;
+
+        .icons mat-icon {
+          transform: scale(1.5);
+          border: 1px solid #6866d1;
+          border-radius: 100%;
+          padding: 5px;
+          margin-right: 10px;
+          color: #6866d1;
+        }
+
+        .details {
+          flex-grow: 1;
+        }
+      }
+
+      .content2 .Box1 .score {
+        h2 {
+          margin-bottom: 0px;
+          font-size: 32px;
+          color: #29b473;
+          font-weight: 600;
+        }
+
+        .details .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 32px;
+          min-width: auto;
+        }
+
+        .details .example-button-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .details .example-button-row .black {
+          background: black;
+          color: white;
+          border: 1px solid black;
+        }
+
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+
+          .mat-icon {
+            vertical-align: middle;
+            line-height: 21px;
+          }
+        }
+
+        .icons mat-icon {
+          transform: scale(1.5);
+          border: 1px solid #6866d1;
+          border-radius: 100%;
+          padding: 5px;
+          margin-right: 10px;
+          color: #6866d1;
+        }
+
+        .details {
+          flex-grow: 1;
+        }
+
+        .over {
+          background: #c3c2eb;
+          padding: 10px;
+          border-radius: 5px;
+        }
+
+        .over h4 {
+          text-align: center;
+          font-weight: bold;
+          font-size: 19px;
+        }
+
+        .over h5 {
+          background: #6866d1;
+          color: white;
+          padding: 15px 15px;
+          margin-bottom: 30px;
+          font-size: 17px;
+        }
+
+        .over h6 {
+          font-size: 17px;
+          text-align: center;
+          margin-top: 10px;
+
+          .in {
+            color: green;
+            font-size: 22px;
+          }
+        }
+      }
+
+      .ddc {
+        display: flex;
+        gap: 10px;
+        margin-top: 10px;
+
+        .d {
+          padding: 10px;
+          border: 1px solid lightgreen;
+
+          box-shadow: 0px 0px 0px 1px lightgreen;
+
+          border-radius: 10px;
+
+          h4 {
+            margin-bottom: 10px;
+          }
+
+          h5 {
+            font-weight: bold;
+            font-size: 19px;
+            margin-bottom: 0px;
+          }
+        }
+
+        .c {
+          padding: 10px;
+          border: 1px solid lightgreen;
+          box-shadow: 0px 0px 0px 1px lightgreen;
+          border-radius: 10px;
+
+          h4 {
+            margin-bottom: 10px;
+          }
+
+          h5 {
+            font-weight: bold;
+            font-size: 19px;
+            margin-bottom: 0px;
+          }
+        }
+
+        .dd {
+          padding: 10px;
+          border: 1px solid #ffff00;
+          box-shadow: 0px 0px 0px 1px #ffff00;
+          border-radius: 10px;
+
+          h4 {
+            margin-bottom: 10px;
+          }
+
+          h5 {
+            font-weight: bold;
+            font-size: 19px;
+            margin-bottom: 0px;
+          }
+        }
+      }
+
+      .content3 .Box1 .pattern {
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+
+          .mat-icon {
+            vertical-align: middle;
+            line-height: 21px;
+          }
+        }
+
+        .details .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 32px;
+          min-width: auto;
+        }
+
+        .details .example-button-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .details .example-button-row .black {
+          background: black;
+          color: white;
+          border: 1px solid black;
+        }
+
+        .details .row {
+          display: flex;
+          gap: 15px;
+          align-items: center;
+          margin-top: 10px;
+          margin-bottom: 10px;
+
+          .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h4 {
+              margin-bottom: 5px;
+              font-size: 14px;
+              font-weight: bold;
+              color: gray;
+            }
+          }
+
+          .pat {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          .mat-icon {
+            transform: scale(1.3);
+            border: 1px solid #6866d1;
+            border-radius: 100%;
+            padding: 5px;
+            margin-left: 2px;
+            color: #6866d1;
+            margin-right: 1px;
+          }
+
+          .progress {
+            height: 10px;
+            border-radius: 5px;
+            background: rgb(104, 102, 209);
+            background: -moz-linear-gradient(
+              90deg,
+              rgba(104, 102, 209, 1) 32%,
+              rgba(132, 130, 217, 1) 32%,
+              rgba(133, 133, 164, 1) 55%,
+              rgba(33, 191, 182, 1) 55%,
+              rgba(33, 191, 182, 1) 80%,
+              rgba(15, 166, 156, 1) 80%
+            );
+            background: -webkit-linear-gradient(
+              90deg,
+              rgba(104, 102, 209, 1) 32%,
+              rgba(132, 130, 217, 1) 32%,
+              rgba(133, 133, 164, 1) 55%,
+              rgba(33, 191, 182, 1) 55%,
+              rgba(33, 191, 182, 1) 80%,
+              rgba(15, 166, 156, 1) 80%
+            );
+            background: linear-gradient(
+              90deg,
+              rgba(104, 102, 209, 1) 32%,
+              rgba(132, 130, 217, 1) 32%,
+              rgba(133, 133, 164, 1) 55%,
+              rgba(33, 191, 182, 1) 55%,
+              rgba(33, 191, 182, 1) 80%,
+              rgba(15, 166, 156, 1) 80%
+            );
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#6866d1", endColorstr="#0fa69c", GradientType=1);
+          }
+
+          .pat h5 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+
+          .pat {
+            .approved {
+              color: #6866d1;
+              font-size: 16px;
+              font-weight: 700;
+            }
+
+            .pending {
+              color: #8482d9;
+              font-size: 16px;
+              font-weight: 700;
+            }
+
+            .part {
+              color: #21bfb6;
+              font-size: 16px;
+              font-weight: 700;
+            }
+
+            .paid {
+              color: #0fa69c;
+              font-size: 16px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+
+    .boxrow2 {
+      display: flex;
+      flex-direction: row;
+      gap: 15px;
+      margin: 10px;
+      background: #e8e8f3;
+      padding: 10px;
+
+      .content1,
+      .content2,
+      .content3 {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        padding: 10px;
+        gap: 10px;
+        background: white;
+        box-shadow: 0px 0px 10px 1px lightgrey;
+      }
+
+      .content1 .Box1 .pattern {
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+
+          .mat-icon {
+            vertical-align: middle;
+            line-height: 21px;
+          }
+        }
+
+        .details .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 15px;
+          min-width: auto;
+        }
+
+        .details .example-button-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .details .example-button-row .black {
+          background: black;
+          color: white;
+          border: 1px solid black;
+        }
+
+        .details .row {
+          display: flex;
+          gap: 15px;
+
+          align-items: baseline;
+          justify-content: space-between;
+
+          .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h4 {
+              margin-bottom: 5px;
+              font-size: 14px;
+              font-weight: bold;
+              color: gray;
+            }
+          }
+
+          .mat-form-field {
+            font-size: 10px;
+          }
+
+          .pat h5 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+        }
+      }
+
+      .content2 .Box1 .pattern {
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+
+          .mat-icon {
+            vertical-align: middle;
+            line-height: 21px;
+          }
+        }
+
+        .details .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 15px;
+          min-width: auto;
+        }
+
+        .details .example-button-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .details .example-button-row .black {
+          background: black;
+          color: white;
+          border: 1px solid black;
+        }
+
+        .details .row {
+          display: flex;
+          gap: 15px;
+
+          align-items: baseline;
+          justify-content: space-between;
+
+          .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h4 {
+              margin-bottom: 5px;
+              font-size: 14px;
+              font-weight: bold;
+              color: gray;
+            }
+          }
+
+          .mat-form-field {
+            font-size: 10px;
+          }
+
+          .pat h5 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+        }
+      }
+
+      .content3 .Box1 {
+        .cust-tab ::ng-deep .mat-tab-label {
+          padding: 0 9px;
+          min-width: auto;
+        }
+
+        .cust-tab .yrow {
+          display: flex;
+          gap: 10px;
+          justify-content: space-evenly;
+
+          h4 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+
+          h4:after {
+            content: "|";
+            padding-left: 10px;
+            vertical-align: inherit;
+            line-height: 33px;
+            color: dimgrey;
+          }
+        }
+      }
+    }
+
+    .boxrow3 {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      grid-template-rows: 1fr;
+      gap: 0px 15px;
+      margin: 10px;
+      grid-template-areas: ". .";
+
+      .bx1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+        gap: 0px 15px;
+        grid-template-areas: ". .";
+        grid-area: bx1;
+      }
+      .content1,
+      .content2,
+      .content3 {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        padding: 10px;
+        gap: 10px;
+        background: white;
+        box-shadow: 0px 0px 10px 1px lightgrey;
+      }
+
+      .content1 .Box1 .pattern {
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+
+          .mat-icon {
+            vertical-align: middle;
+            line-height: 21px;
+          }
+        }
+
+        .details .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 15px;
+          min-width: auto;
+        }
+
+        .details .example-button-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .details .example-button-row .black {
+          background: black;
+          color: white;
+          border: 1px solid black;
+        }
+
+        .details .row {
+          display: flex;
+          gap: 15px;
+          align-items: baseline;
+          .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h4 {
+              margin-bottom: 5px;
+              font-size: 14px;
+              font-weight: bold;
+              color: gray;
+            }
+          }
+
+          .mat-form-field {
+            font-size: 10px;
+          }
+
+          .pat h5 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+        }
+      }
+
+      .content2 .Box1 .pattern {
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+
+          .mat-icon {
+            vertical-align: middle;
+            line-height: 21px;
+          }
+        }
+
+        .details .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 15px;
+          min-width: auto;
+        }
+
+        .details .example-button-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        .details .example-button-row .black {
+          background: black;
+          color: white;
+          border: 1px solid black;
+        }
+
+        .details .row {
+          display: flex;
+          gap: 15px;
+
+          align-items: baseline;
+          justify-content: space-between;
+
+          .title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h4 {
+              margin-bottom: 5px;
+              font-size: 14px;
+              font-weight: bold;
+              color: gray;
+            }
+          }
+
+          .mat-form-field {
+            font-size: 10px;
+          }
+
+          .pat h5 {
+            margin-top: 5px;
+            margin-bottom: 5px;
+          }
+        }
+      }
+
+      .content3 .Box1 {
+        h3 {
+          margin-bottom: 5px;
+          font-weight: 600;
+          color: dimgray;
+
+          .mat-icon {
+            vertical-align: middle;
+            line-height: 21px;
+          }
+        }
+
+        .mat-form-field {
+          font-size: 10px;
+        }
+        .example-button-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .example-button-row button {
+          font-size: 16px;
+          margin: 9px;
+          padding: 0px 15px;
+          line-height: 15px;
+          min-width: auto;
+        }
+      }
+    }
+    .boxrow4 {
+      display: grid;
+      grid-auto-columns: 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: 1fr;
+      gap: 0px 15px;
+      margin: 10px;
+      grid-template-areas: ". . content3";
+
+      .example-button-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .example-button-row button {
+        font-size: 16px;
+        margin: 9px;
+        padding: 0px 15px;
+        line-height: 15px;
+        min-width: auto;
+      }
+
+      h3 {
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: dimgray;
+
+        .mat-icon {
+          vertical-align: middle;
+          line-height: 21px;
+        }
+      }
+      .content1,
+      .content2 {
+        border: 1px solid lightgray;
+        border-radius: 10px;
+        padding: 10px;
+        gap: 10px;
+        background: white;
+        box-shadow: 0px 0px 10px 1px lightgrey;
+        height: fit-content;
+      }
+      .content3 {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 0px 0px;
+        grid-template-areas:
+          "."
+          ".";
+      }
+
+      .cust-tab .row,
+      .content2 .row {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        margin-top: 10px;
+        align-items: center;
+        border: 1px solid lightgray;
+        border-radius: 10px;
+      }
+      .action {
+        display: flex;
+        align-items: center;
+      }
+      .para span {
+        display: block;
+        margin-top: 5px;
+        color: gray;
+        font-size: 13px;
+        font-style: italic;
+        mat-icon {
+          vertical-align: bottom;
+        }
+      }
+      .content2 .row .para {
+        min-width: 333px;
+      }
+      .para input {
+        height: 24px;
+        width: 381px;
+        border: 1px solid lightgray;
+      }
+    }
+
+    .content3 .bcx1,
+    .content3 .bcx2 {
+      border: 1px solid lightgray;
+      height: fit-content;
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      background: white;
+      box-shadow: 0px 0px 10px 1px lightgrey;
+    }
+  }
+
+  .content3 .bcx1 .example-button-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .mat-form-field {
+      font-size: 10px;
+    }
+  }
+
+  .content3 .last {
+    display: flex;
+    place-content: space-evenly;
+    h4 {
+      margin-bottom: 10px;
+      font-weight: bold;
+      font-size: 20px;
+      margin-top: 10px;
+      text-align: center;
+    }
+    h5 {
+      text-align: center;
+      font-size: 18px;
+    }
+  }
+
+  .content3 .tit {
+    text-align: center;
+    h2 {
+      margin-bottom: 5px;
+      span {
+        font-weight: bold;
+      }
+    }
+    h3 {
+      margin-bottom: 5px;
+    }
+  }
+
+  .content3 .bcx2 .row {
+    display: flex;
+    gap: 30px;
+    .last {
+      display: block;
+      width: 50%;
+      h4 {
+        text-align: left;
+      }
+      .mat-progress-bar {
+        height: 30px;
+        color: #21bfb6;
+      }
+    }
+  }
+}

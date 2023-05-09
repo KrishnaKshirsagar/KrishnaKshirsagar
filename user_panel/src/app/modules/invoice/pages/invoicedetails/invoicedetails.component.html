@@ -1,0 +1,74 @@
+<div id="invoicedetails-page">
+  <div class="invoicedetails">
+    <div class="w-100">
+      <h2 i18n="@@BA1">Invoice Details</h2>
+    </div>
+
+    <div class="flex-container">
+      <div class="w-50">
+        <h3>
+          Invoice No: <span>{{ invoiceDetail.invoice_number }}</span>
+        </h3>
+        <h3>
+          Invoice Amount:
+          <span
+            >{{ invoiceDetail.invoice_amount | currency: currency_format }}
+          </span>
+        </h3>
+        <h3>
+          Due Date: <span> {{ invoiceDetail.invoice_due_date }} </span>
+        </h3>
+        <h3>
+          Updated At: <span> {{ invoiceDetail.createdAt }} </span>
+        </h3>
+      </div>
+
+      <div class="w-50">
+        <!-- <h3>Buyer / Seller Name: <span>Abhijeet Agawane</span></h3>  -->
+        <h3>
+          Outstanding Amount:
+          <span>{{
+            invoiceDetail.outstanding_amount | currency: currency_format
+          }}</span>
+        </h3>
+        <h3>
+          Status: <span>{{ invoiceDetail.invoice_status }}</span>
+        </h3>
+        <h3>Uploaded by: <span> </span></h3>
+      </div>
+    </div>
+
+    <div class="flex-container">
+      <div class="w-50">
+        <h3>
+          Seller Name: <span>{{ invoiceDetail.seller.companyName }}</span>
+        </h3>
+        <h3>
+          District: <span> {{ invoiceDetail.seller.district }} </span>
+        </h3>
+        <h3>
+          Pincode: <span> {{ invoiceDetail.seller.pinCode }} </span>
+        </h3>
+      </div>
+
+      <div class="w-50">
+        <h3>
+          GST No: <span>{{ invoiceDetail.seller.gstin }}</span>
+        </h3>
+        <h3>
+          State: <span> {{ invoiceDetail.seller.state }}</span>
+        </h3>
+      </div>
+    </div>
+    <div>
+      <div class="flex-container">
+        <div class="w-100">
+          <h2 i18n="@@BA1">Invoice Item Details</h2>
+        </div>
+      </div>
+      <div class="flex-container">
+        <h3 i18n="@@BA1">{{ invoiceDetail.itemized_data }}</h3>
+      </div>
+    </div>
+  </div>
+</div>

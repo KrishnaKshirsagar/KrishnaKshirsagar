@@ -1,0 +1,39 @@
+<mat-sidenav-container autosize class="mat-drawer-class">
+  <mat-sidenav
+    #sidenav
+    mode="side"
+    position="start"
+    class="tranwidth"
+    [ngStyle]="{ 'width.em': sidenavWidth }"
+    opened="true"
+    [ngClass]="{ 'logo1': !logochange, 'logo2': logochange, 'nologo': true }"
+    (mouseenter)="increase()"
+    (mouseleave)="decrease()"
+  >
+    <app-sidebar [routes]="routes"></app-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar>
+      <ng-container>
+        <button mat-icon-button (click)="sidenav.toggle()" class="example-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <div style="margin-left: 10px">
+          <h2></h2>
+        </div>
+      </ng-container>
+      <span class="spacer"></span>
+
+      <ng-container position="end">        
+        <button mat-button color="primary">
+          <mat-icon>logout</mat-icon>
+          <span class="profile-name" (click)="logout()">LOGOUT</span>
+        </button>
+      </ng-container>
+    </mat-toolbar>
+
+    <div id="main">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

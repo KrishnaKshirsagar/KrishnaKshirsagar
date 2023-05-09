@@ -1,0 +1,1340 @@
+<!-- @format -->
+
+<app-layout>
+  <div id="dashpage-page">
+    <div class="main-wrapper">
+      <div *ngIf="!selected_company_flag">
+        <mat-form-field appearance="outline">
+          <mat-label>Company Name</mat-label>
+          <input
+            type="text"
+            placeholder="Please Select Company"
+            aria-label="Number"
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="company_auto"
+            (input)="companySuggetion($event)"
+            required
+          />
+          <mat-autocomplete
+            [displayWith]="displayFn"
+            (optionSelected)="getSelectedCompany($event.option.value)"
+            #company_auto="matAutocomplete"
+          >
+            <mat-option *ngFor="let option of company_list" [value]="option">
+              {{ option.company_name }}
+            </mat-option>
+          </mat-autocomplete>
+          <button
+            type="button"
+            mat-button
+            (click)="companyNameClear()"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <mat-accordion
+        class="example-headers-align"
+        multi
+        *ngIf="selected_company_flag"
+      >
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title class="dashhead">
+              <img
+                src="../../../../../assets/images/usericons/usericon.jpg"
+                class="profile"
+              />
+              <h2>{{ company_details?.company_name ?? "" }}</h2>
+              <mat-icon
+                matTooltip="Switch Company"
+                matTooltipPosition="above"
+                (click)="companyNameClear()"
+                >repeat</mat-icon
+              >
+            </mat-panel-title>
+
+            <mat-panel-description class="desc">
+              See full personal details
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <div class="prof">
+            <div class="tabr">
+              <h3>Business & Credit</h3>
+              <ul>
+                <li><b>Top 3 Brand: </b> Berger, Finolex, Kundan</li>
+
+                <li>
+                  <b>Credit Limit: </b> ₹{{
+                    shortCurrencyNumberformat(company_details?.creditLimit ?? 0)
+                  }}
+                </li>
+
+                <li>
+                  <b>Onboarded on: </b>
+                  {{ company_details?.createdAt ?? "" | date : Date_Format }}
+                </li>
+              </ul>
+            </div>
+            <div class="tabr">
+              <h3>About Merchant</h3>
+
+              <ul>
+                <li>
+                  <b>Merchant Name: </b> {{ company_details?.admin_name ?? "" }}
+                </li>
+
+                <li><b>PAN Number: </b> {{ company_details?.pan ?? "" }}</li>
+
+                <li><b>GST Number: </b> {{ company_details?.gstin ?? "" }}</li>
+              </ul>
+              <div>
+                <button
+                  mat-icon-button
+                  aria-label="documents button"
+                  (click)="gotoKYCpage()"
+                >
+                  See all documents
+                  <mat-icon>keyboard_arrow_right</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="tabr">
+              <h3>More details</h3>
+
+              <ul>
+                <li><b>Email: </b> {{ company_details?.admin_email ?? "" }}</li>
+
+                <li><b>State: </b> {{ company_details?.state ?? "" }}</li>
+
+                <li><b>District: </b> {{ company_details?.district ?? "" }}</li>
+
+                <li><b>Address: </b> {{ company_details?.address ?? "" }}</li>
+              </ul>
+            </div>
+            <div class="tabr">
+              <h3>Application</h3>
+
+              <div id="chartContainer8">
+                <canvasjs-chart
+                  [options]="chartOptions8"
+                  [styles]="{ width: '100%', height: '260px' }"
+                ></canvasjs-chart>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+
+      <mat-tab-group
+        mat-align-tabs="center"
+        preserveContent
+        class="custom-tabs"
+        *ngIf="selected_company_flag"
+      >
+        <mat-tab label="Dashboard">
+          <div class="boxrow1">
+            <!-- Box1 starts from here -->
+            <div class="content1">
+              <div class="Box1">
+                <div class="bills">
+                  <div class="details">
+                    <h3>Bills Generated</h3>
+                    <h2>
+                      {{ shortCurrencyNumberformat(box1_data.bills_generated) }}
+                    </h2>
+                  </div>
+                  <div class="icons">
+                    <mat-icon style="text-align: center">₹</mat-icon>
+                  </div>
+                </div>
+                <div class="payment">
+                  <div class="details">
+                    <div class="made">
+                      <h3>Payments made</h3>
+                      <h2>{{ box1_data.payment_made }}</h2>
+                    </div>
+                    <div class="due">
+                      <h3>Payments due</h3>
+                      <h2>{{ box1_data.payment_due }}</h2>
+                    </div>
+                  </div>
+                  <div class="icons">
+                    <mat-icon>credit_card</mat-icon>
+                  </div>
+                </div>
+
+                <div class="avg">
+                  <div class="details">
+                    <h3>AVG. Credits Utilized</h3>
+                    <h2>{{ box1_data.average_credit_utilized }}%</h2>
+                  </div>
+                  <div class="icons">
+                    <mat-icon style="text-align: center">₹</mat-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="Box2">
+                <div class="cred">
+                  <div class="details">
+                    <h3>Credit Utilized</h3>
+                    <div class="example-button-row"></div>
+                    <h2>
+                      {{
+                        shortCurrencyNumberformat(
+                          box1_data?.credit_utilized ?? 0
+                        )
+                      }}
+                      /
+                      {{
+                        shortCurrencyNumberformat(box1_data?.credit_limit ?? 0)
+                      }}
+                    </h2>
+                    <h4>
+                      {{
+                        thousandsSepratorNumberFormat(
+                          box1_data?.credit_utilized ?? 0
+                        )
+                      }}
+                    </h4>
+                  </div>
+                </div>
+                <div class="over">
+                  <div class="details">
+                    <h3>Overdue percentage</h3>
+                    <h2>{{ box1_data.overdue_percentage }} %</h2>
+                  </div>
+                  <div class="icons">
+                    <mat-icon style="text-align: center">₹</mat-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Box2 Starts from here -->
+
+            <div class="content2">
+              <div class="Box1">
+                <div class="score">
+                  <div class="details">
+                    <div class="example-button-row">
+                      <h3>
+                        Score
+                        <mat-icon>error_outline</mat-icon>
+                      </h3>
+                      <button mat-button class="black">
+                        Overall
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                      </button>
+                    </div>
+                    <div class="over">
+                      <h4>Overall score</h4>
+                      <h5>8.5/10</h5>
+                      <h6><span class="in">●</span> Good</h6>
+                    </div>
+                    <div class="ddc">
+                      <div class="d">
+                        <h4>Discount score</h4>
+                        <h5>8.5/10</h5>
+                      </div>
+                      <div class="dd">
+                        <h4>Digital score</h4>
+                        <h5>6/10</h5>
+                      </div>
+                      <div class="c">
+                        <h4>Credit score</h4>
+                        <h5>8.5/10</h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Box3 Starts from here -->
+            <div class="content3">
+              <div class="Box1">
+                <div class="pattern">
+                  <div class="details">
+                    <div class="example-button-row">
+                      <h3>
+                        Patterns
+                        <mat-icon>error_outline</mat-icon>
+                      </h3>
+                      <button mat-button class="white" (click)="openDialog0()">
+                        Open Full Screen
+                        <mat-icon>fullscreen</mat-icon>
+                      </button>
+                    </div>
+                    <div class="row">
+                      <div>
+                        <mat-icon>event_note</mat-icon>
+                      </div>
+                      <div style="width: 100%">
+                        <div class="title">
+                          <h4>Invoices</h4>
+                          <h4>{{ box3_data?.invoices?.totalInvoice ?? 0 }}</h4>
+                        </div>
+                        <!-- <div class="progress"></div> -->
+                        <div class="pat">
+                          <h5>
+                            <mat-progress-bar
+                              class="approved"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' +
+                                (box3_data?.invoices?.confirmed ?? 0)
+                              "
+                              [value]="
+                                box3_data?.invoices?.confirmed_percentage ?? 0
+                              "
+                            ></mat-progress-bar>
+                            Confirmed
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="pending"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + (box3_data?.invoices?.pending ?? 0)
+                              "
+                              [value]="
+                                box3_data?.invoices?.pending_percentage ?? 0
+                              "
+                            ></mat-progress-bar>
+                            Pending
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="part"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + (box3_data?.invoices?.partPay ?? 0)
+                              "
+                              [value]="
+                                box3_data?.invoices?.partPay_percentage ?? 0
+                              "
+                            ></mat-progress-bar>
+                            Part-Paid
+                          </h5>
+                          <h5
+                            [matTooltip]="'Count: ' + box3_data?.invoices?.paid"
+                          >
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [value]="box3_data?.invoices?.paid_percentage"
+                            ></mat-progress-bar>
+                            Paid
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div>
+                        <mat-icon>credit_card</mat-icon>
+                      </div>
+                      <div style="width: 100%">
+                        <div class="title">
+                          <h4>Bill payment pattern (before)</h4>
+                          <h4>
+                            {{ box3_data?.bill_pattern?.totalBillPattern }}
+                          </h4>
+                        </div>
+                        <!-- <div class="progress"></div> -->
+                        <div class="pat">
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + box3_data?.bill_pattern?._15D
+                              "
+                              [value]="box3_data?.bill_pattern?._15D_Percentage"
+                            ></mat-progress-bar>
+                            15D
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + box3_data?.bill_pattern?._30D
+                              "
+                              [value]="box3_data?.bill_pattern?._30D_Percentage"
+                            ></mat-progress-bar>
+                            30D
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + box3_data?.bill_pattern?._45D
+                              "
+                              [value]="box3_data?.bill_pattern?._45D_Percentage"
+                            ></mat-progress-bar>
+                            45D
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + box3_data?.bill_pattern?._60D
+                              "
+                              [value]="box3_data?.bill_pattern?._60D_Percentage"
+                            ></mat-progress-bar>
+                            60D
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + box3_data?.bill_pattern?._90D
+                              "
+                              [value]="box3_data?.bill_pattern?._90D_Percentage"
+                            ></mat-progress-bar>
+                            90D
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' + box3_data?.bill_pattern?.overdue
+                              "
+                              [value]="
+                                box3_data?.bill_pattern?.overdue_Percentage
+                              "
+                            ></mat-progress-bar>
+                            Overdue
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div>
+                        <mat-icon>local_offer</mat-icon>
+                      </div>
+                      <div style="width: 100%">
+                        <div class="title">
+                          <h4>Discount : Interest Charged</h4>
+                          <h4>
+                            {{
+                              box3_data?.discount_interest_charged
+                                ?.total_Int_Dis_Count ?? 0
+                            }}
+                          </h4>
+                        </div>
+                        <!-- <div class="progress"></div> -->
+                        <div class="pat">
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' +
+                                box3_data?.discount_interest_charged?.discount
+                              "
+                              [value]="
+                                box3_data?.discount_interest_charged
+                                  ?.discount_percentage
+                              "
+                            ></mat-progress-bar>
+                            Discounted invoice
+                          </h5>
+                          <h5>
+                            <mat-progress-bar
+                              class="paid"
+                              mode="determinate"
+                              [matTooltip]="
+                                'Count: ' +
+                                box3_data?.discount_interest_charged?.interest
+                              "
+                              [value]="
+                                box3_data?.discount_interest_charged
+                                  ?.interest_percentage
+                              "
+                            ></mat-progress-bar>
+                            Interest Charged
+                          </h5>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="boxrow2">
+            <!-- Business Analist start from here -->
+            <div class="content1">
+              <div class="Box1">
+                <div class="pattern">
+                  <div class="details">
+                    <div class="example-button-row">
+                      <h3>
+                        Business analysis trend
+                        <mat-icon>error_outline</mat-icon>
+                      </h3>
+                      <button mat-button class="white" (click)="openDialog1()">
+                        Open Full Screen
+                        <mat-icon>fullscreen</mat-icon>
+                      </button>
+                    </div>
+                    <div class="row" style="width: 100px">
+                      <h3>Filter by</h3>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Select</mat-label>
+                        <mat-select (selectionChange)="BAT_type($event.value)">
+                          <mat-option value="invoice">Invoice</mat-option>
+                          <mat-option value="payment">Payment</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="row">
+                      <h3>Compare</h3>
+                      <mat-form-field appearance="outline" style="width: 100px">
+                        <mat-label>Month</mat-label>
+                        <mat-select
+                          (selectionChange)="BAT_from_month($event.value)"
+                        >
+                          <mat-option value="">Select Month</mat-option>
+                          <mat-option
+                            *ngFor="let month of month_array"
+                            [value]="month.value"
+                          >
+                            {{ month.name }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" style="width: 100px">
+                        <mat-label>Year</mat-label>
+                        <mat-select
+                          (selectionChange)="BAT_from_year($event.value)"
+                        >
+                          <mat-option value="Invoice">Select Year</mat-option>
+                          <mat-option
+                            *ngFor="let year of year_array"
+                            [value]="year"
+                          >
+                            {{ year }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <!-- <mat-form-field appearance="outline">
+                        <mat-label>Jan 2023 (This month) </mat-label>
+                        <mat-select>
+                          <mat-option>Jan 2023 (This month) </mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                      <h3>with</h3>
+                      <mat-form-field appearance="outline" style="width: 100px">
+                        <mat-label>Month</mat-label>
+                        <mat-select
+                          (selectionChange)="BAT_with_month($event.value)"
+                        >
+                          <mat-option value="">Select Month</mat-option>
+                          <mat-option
+                            *ngFor="let month of month_array"
+                            [value]="month.value"
+                          >
+                            {{ month.name }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline" style="width: 100px">
+                        <mat-label>Year</mat-label>
+                        <mat-select
+                          (selectionChange)="BAT_with_year($event.value)"
+                        >
+                          <mat-option value="Invoice">Select Year</mat-option>
+                          <mat-option
+                            *ngFor="let year of year_array"
+                            [value]="year"
+                          >
+                            {{ year }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <!-- <mat-form-field appearance="outline">
+                        <mat-label>Monthly Average of 2022 </mat-label>
+                        <mat-select>
+                          <mat-option>Monthly Average of 2022 </mat-option>
+                        </mat-select>
+                      </mat-form-field> -->
+                    </div>
+                    <div>
+                      <canvasjs-chart
+                        id="myChart1"
+                        [options]="chartOptions1"
+                        [styles]="{ width: '100%', height: '360px' }"
+                      ></canvasjs-chart>
+                      <!-- <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Invoice generation pattern -->
+            <div class="content2">
+              <div class="Box1">
+                <div class="pattern">
+                  <div class="details">
+                    <div class="example-button-row">
+                      <h3>
+                        Invoice generation pattern
+                        <mat-icon>error_outline</mat-icon>
+                      </h3>
+                      <button mat-button class="white" (click)="openDialog2()">
+                        Open Full Screen
+                        <mat-icon>fullscreen</mat-icon>
+                      </button>
+                    </div>
+                    <div class="row">
+                      <h3>Duration</h3>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Jan 2023 (This month) </mat-label>
+                        <mat-select>
+                          <mat-option>Jan 2023 (This month) </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div id="chartContainer2">
+                      <canvasjs-chart
+                        [options]="chartOptions2"
+                        [styles]="{ width: '100%', height: '360px' }"
+                      ></canvasjs-chart>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content3" style="flex-grow: 3">
+              <div class="Box1">
+                <mat-tab-group class="cust-tab">
+                  <mat-tab label="REPAY">
+                    <div class="yrow">
+                      <h4>1M</h4>
+                      <h4>3M</h4>
+                      <h4>6M</h4>
+                      <h4>1Y</h4>
+                      <h4>2Y</h4>
+                    </div>
+                    <div id="chartContainer3">
+                      <canvasjs-chart
+                        [options]="chartOptions3"
+                        [styles]="{ width: '100%', height: '360px' }"
+                      ></canvasjs-chart>
+                    </div>
+                  </mat-tab>
+                  <mat-tab label="BILLS"> BILLS</mat-tab>
+                  <mat-tab label="CREDIT USAGE"> CREDIT USAGE </mat-tab>
+                  <mat-tab label="PAYBACK"> PAYBACK </mat-tab>
+                </mat-tab-group>
+              </div>
+            </div>
+          </div>
+          <div class="boxrow3">
+            <div class="content1">
+              <div class="Box1">
+                <div class="pattern">
+                  <div class="details">
+                    <div class="example-button-row">
+                      <h3>Geographical Analysis</h3>
+                      <button mat-button class="white" (click)="openDialog3()">
+                        Open Full Screen
+                        <mat-icon>fullscreen</mat-icon>
+                      </button>
+                    </div>
+
+                    <div class="row">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Andhra Pradesh </mat-label>
+                        <mat-select>
+                          <mat-option>Andhra Pradesh </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+
+                      <mat-form-field appearance="outline">
+                        <mat-label>Avg bills vs Chetan Enterpise </mat-label>
+                        <mat-select>
+                          <mat-option
+                            >Avg bills vs Chetan Enterpise
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="bx1">
+                      <div id="chartContainer4">
+                        <canvasjs-chart
+                          [options]="chartOptions5"
+                          [styles]="{ width: '100%', height: '260px' }"
+                        ></canvasjs-chart>
+                      </div>
+                      <div id="chartContainer5">
+                        <canvasjs-chart
+                          [options]="chartOptions5"
+                          [styles]="{ width: '100%', height: '260px' }"
+                        ></canvasjs-chart>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- GST Analyser -->
+
+            <div class="content3">
+              <div class="Box1">
+                <div class="example-button-row">
+                  <h3>GST Analyser</h3>
+                  <button mat-button class="white" (click)="openDialog4()">
+                    Open Full Screen
+                    <mat-icon>fullscreen</mat-icon>
+                  </button>
+                </div>
+                <!-- <mat-form-field appearance="outline">
+                  <mat-label>Overall </mat-label>
+                  <mat-select>
+                    <mat-option>Overall </mat-option>
+                  </mat-select>
+                </mat-form-field> -->
+
+                <div id="chartContainer6">
+                  <canvasjs-chart
+                    [options]="chartOptions6"
+                    [styles]="{ width: '100%', height: '260px' }"
+                  ></canvasjs-chart>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="boxrow4">
+            <!-- comments trail -->
+            <div class="content1">
+              <div class="example-button-row">
+                <h3>Comments Trail</h3>
+                <button mat-button class="white" (click)="openDialog5()">
+                  Open Full Screen
+                  <mat-icon>fullscreen</mat-icon>
+                </button>
+              </div>
+              <mat-tab-group class="cust-tab">
+                <mat-tab label="SALES TEAM">
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum is simply dummy text of
+                      the printing and typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="para">
+                      <input
+                        placeholder="Add comments"
+                        type="text"
+                        name="comm"
+                      />
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>open_in_new</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </mat-tab>
+                <mat-tab label="COLLECTION TEAM">
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum is simply dummy text of
+                      the printing and typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="para">
+                      <input
+                        placeholder="Add comments"
+                        type="text"
+                        name="comm"
+                      />
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>open_in_new</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </mat-tab>
+                <mat-tab label="OPERATION TEAM">
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum is simply dummy text of
+                      the printing and typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="icon">●</div>
+                    <div class="para">
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry.
+                      <span><mat-icon>person</mat-icon> Nirav Kumar</span>
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        [matMenuTriggerFor]="menu"
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item>
+                          <mat-icon>dialpad</mat-icon>
+                          <span>Redial</span>
+                        </button>
+                        <button mat-menu-item disabled>
+                          <mat-icon>voicemail</mat-icon>
+                          <span>Check voice mail</span>
+                        </button>
+                        <button mat-menu-item>
+                          <mat-icon>notifications_off</mat-icon>
+                          <span>Disable alerts</span>
+                        </button>
+                      </mat-menu>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="para">
+                      <input
+                        placeholder="Add comments"
+                        type="text"
+                        name="comm"
+                      />
+                    </div>
+                    <div class="action">
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon button with a home icon"
+                      >
+                        <mat-icon>attach_file</mat-icon>
+                      </button>
+
+                      <button
+                        mat-icon-button
+                        aria-label="Example icon-button with a menu"
+                      >
+                        <mat-icon>open_in_new</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+
+            <!-- Insights -->
+            <div class="content2">
+              <div class="example-button-row">
+                <h3>Insights</h3>
+                <button mat-button class="white" (click)="openDialog6()">
+                  Open Full Screen
+                  <mat-icon>fullscreen</mat-icon>
+                </button>
+              </div>
+              <div class="row">
+                <div class="icon">●</div>
+                <div class="para">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </div>
+              </div>
+              <div class="row">
+                <div class="icon">●</div>
+                <div class="para">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </div>
+              </div>
+              <div class="row">
+                <div class="icon">●</div>
+                <div class="para">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </div>
+              </div>
+              <div class="row">
+                <div class="icon">●</div>
+                <div class="para">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </div>
+              </div>
+              <div class="row">
+                <div class="icon">●</div>
+                <div class="para">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </div>
+              </div>
+              <div class="row">
+                <div class="icon">●</div>
+                <div class="para">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </div>
+              </div>
+              <div class="row">
+                <div class="icon">●</div>
+                <div class="para">
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry.
+                </div>
+              </div>
+            </div>
+
+            <div class="content3">
+              <div class="bcx1">
+                <div class="example-button-row">
+                  <h3>Average Credit Amount</h3>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Jan 2023 (This month) </mat-label>
+                    <mat-select>
+                      <mat-option>Jan 2023 (This month) </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <button mat-button class="white" (click)="openDialog7()">
+                    <mat-icon>fullscreen</mat-icon>
+                  </button>
+                </div>
+
+                <div class="row">
+                  <div class="tit">
+                    <h2><span>1,56,000</span> /month</h2>
+
+                    <h3>Highest - 3,00,000/month</h3>
+                  </div>
+                  <div id="chartContainer7">
+                    <canvasjs-chart
+                      [options]="chartOptions7"
+                      [styles]="{ width: '100%', height: '260px' }"
+                    ></canvasjs-chart>
+                  </div>
+                </div>
+
+                <div class="last">
+                  <div>
+                    <h4>₹89,090</h4>
+                    <h5>Low</h5>
+                  </div>
+                  <div>
+                    <h4>₹1,5600</h4>
+                    <h5>Average</h5>
+                  </div>
+                  <div>
+                    <h4>₹2,75,210</h4>
+                    <h5>High</h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bcx2">
+                <div class="example-button-row">
+                  <h3>Preferred payment method</h3>
+                  <button mat-button class="white" (click)="openDialog8()">
+                    <mat-icon>fullscreen</mat-icon>
+                  </button>
+                </div>
+                <!-- box12 (Payment method) -->
+                <div class="row">
+                  <div class="last">
+                    <h4>UPI</h4>
+                    <mat-progress-bar
+                      mode="determinate"
+                      [matTooltip]="'₹' + box12_data.upi"
+                      [value]="box12_data.upi_percentage"
+                    ></mat-progress-bar>
+                  </div>
+                  <div class="last">
+                    <h4>IMPS</h4>
+                    <mat-progress-bar
+                      [matTooltip]="'₹' + box12_data.imps"
+                      mode="determinate"
+                      [value]="box12_data.imps_percentage"
+                    ></mat-progress-bar>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="last">
+                    <h4>NEFT</h4>
+                    <mat-progress-bar
+                      mode="determinate"
+                      [matTooltip]="'₹' + box12_data.neft"
+                      [value]="box12_data.neft_percentage"
+                    ></mat-progress-bar>
+                  </div>
+                  <div class="last">
+                    <h4>OFFLINE</h4>
+                    <mat-progress-bar
+                      mode="determinate"
+                      [matTooltip]="'₹' + box12_data.offline"
+                      [value]="box12_data.offline_percentage"
+                    ></mat-progress-bar>
+                  </div>
+                  <div class="last">
+                    <h4>RTGS</h4>
+                    <mat-progress-bar
+                      [matTooltip]="'₹' + box12_data.rtgs_percentage"
+                      mode="determinate"
+                      [value]="box12_data.rtgs"
+                    ></mat-progress-bar>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Communication">Content 2</mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</app-layout>

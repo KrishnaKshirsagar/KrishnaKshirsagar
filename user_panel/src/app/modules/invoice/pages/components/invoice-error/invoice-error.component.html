@@ -1,0 +1,47 @@
+<div id="invoiceerror-page">
+  <div class="top-button">
+    <button mat-icon-button class="close-button" (click)="cancle()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <div class="text-center" *ngIf="data.status == 'Rejected'">
+    <h1 >Comment</h1>
+  </div>
+
+  <div class="text-center" *ngIf="data.status !== 'Rejected'">
+    <h1>Consent</h1>    
+  </div>
+  <form
+    [formGroup]="invoice_reject_form"
+    class="example-form"
+    (ngSubmit)="onSubmit()"
+  >
+  <div *ngIf="data.status !== 'Rejected'" style="display: flex; white-space: pre-line;">
+    <mat-checkbox formControlName="consent" (change)="consent_cheack($event)" color="primary">
+      <p [innerText]='consent_msg'></p>
+     </mat-checkbox>
+  </div>
+  <span *ngIf="!consentflag" style="color: rgb(241, 14, 14); font-size: 10px;">Please accept the consent</span>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>Leave a comment</mat-label>
+      <textarea
+        matInput
+        pattern="^[a-zA-Z\s]+$"
+        type="text"
+        formControlName="invoice_comment"
+        required
+      ></textarea>
+      <mat-error style="color: rgb(241, 14, 14)"
+        >Please write a reason</mat-error
+      >
+    </mat-form-field>
+
+    <div class="text-center">
+      <button mat-button color="primary" type="submit" class="btn-primary">
+        <p *ngIf="data.status !== 'Rejected'"> ACCEPT </p>
+        <p *ngIf="data.status == 'Rejected'">SAVE</p>
+      </button>
+    </div>
+  </form>
+</div>

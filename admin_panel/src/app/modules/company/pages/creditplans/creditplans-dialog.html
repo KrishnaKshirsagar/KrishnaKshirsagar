@@ -1,0 +1,37 @@
+<div id="creditplans-dialog">
+  <mat-dialog-content class="mat-typography">
+    <h1 class="text-center">Un-Map Company</h1>
+    <h2 class="text-center">{{ data.company_name }}</h2>
+
+    <form class="example-form" [formGroup]="unmap_form" (ngSubmit)="onSubmit()">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Leave a comment</mat-label>
+        <textarea
+          matInput
+          formControlName="comment"
+          placeholder="Please leave a comment"
+        ></textarea>
+        <mat-error>Please leave a comment to un-map the company</mat-error>
+      </mat-form-field>
+
+      <div class="input-wrapper text-center">
+        <button
+          mat-flat-button
+          type="submit"
+          class="btn-dark"
+          style="margin: 5px"
+        >
+          SUBMIT
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          (click)="cancel()"
+          class="btn-dark"
+        >
+          CANCEL
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

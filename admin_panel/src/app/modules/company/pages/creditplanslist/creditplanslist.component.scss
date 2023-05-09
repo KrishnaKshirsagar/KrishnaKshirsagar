@@ -1,0 +1,246 @@
+#creditplanslist-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  .flexhead {
+    display: grid;
+    grid-template-columns: 0.5fr 1.5fr 8fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0px 0px;
+    gap: 0px 0px;
+    margin-bottom: 15px;
+    h2 {
+      align-self: center;
+      margin-bottom: 0px;
+    }
+    .addplan-btn {
+      width: fit-content;
+      align-self: center;
+    }
+    .back-btn {
+      align-self: center;
+      box-shadow: none;
+      height: 33px;
+      width: 33px;
+      line-height: 17px;
+      background: black;
+    }
+    //  h2 {margin: 0 0 0px; align-self: center;}
+    ::ng-deep {
+      .back .mat-button-wrapper {
+        padding: 0px 0;
+        line-height: 17px;
+      }
+    }
+  }
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+  .mat-form-field {
+    margin-right: 15px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+  .btn-map {
+    background: #f79e1b;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .plansdiv {
+    margin-bottom: 20px;
+  }
+  .gridcontent {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    .input-wrapper {
+      display: grid;
+      grid-template-columns: 0.5fr 1.5fr;
+      grid-template-rows: 1fr;
+      gap: 0px 0px;
+      mat-label {
+        justify-self: start;
+        align-self: center;
+        margin-bottom: 15px;
+        font-weight: 500;
+        font-size: 15px;
+      }
+
+      ::ng-deep {
+        .mat-form-field-appearance-outline .mat-form-field-infix {
+          padding-top: 0.6em;
+        }
+      }
+    }
+
+    .checkbox {
+      margin-bottom: 15px;
+      mat-label {
+        margin-bottom: 0px;
+      }
+      mat-checkbox {
+        justify-self: start;
+        align-self: center;
+      }
+    }
+  }
+
+  .text-center {
+    text-align: center;
+    .btn-export {
+      vertical-align: inherit;
+    }
+  }
+
+  @media only screen and (max-width: 1023px) {
+    .gridcontent {
+      display: block;
+      .input-wrapper {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+      }
+    }
+  }
+
+  th.mat-header-cell:last-of-type,
+  td.mat-cell:last-of-type,
+  td.mat-footer-cell:last-of-type,
+  td.mat-cell,
+  th.mat-header-cell,
+  td.mat-footer-cell {
+    padding: 5px 15px;
+  }
+  th.mat-header-cell,
+  td.mat-cell,
+  td.mat-footer-cell {
+    border: 1px solid rgb(128 128 128 / 12%);
+  }
+}
+
+#creditplanslist-dialog {
+  @media only screen and (max-width: 1023px) {
+    mat-dialog-content {
+      width: 100% !important;
+    }
+  }
+
+  mat-dialog-content {
+    width: 400px;
+  }
+
+  mat-dialog-content {
+    width: 400px;
+  }
+
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}
+
+#creditplansmapping-dialog {
+  .example-additional-selection {
+    opacity: 0.75;
+    font-size: 0.75em;
+  }
+  .mat-form-field {
+    width: 100%;
+  }
+  @media only screen and (max-width: 1023px) {
+    mat-dialog-content {
+      width: 100% !important;
+    }
+  }
+
+  mat-dialog-content {
+    width: 500px;
+  }
+  .answers {
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    h4 {
+      margin-right: 15px;
+      font-weight: 500;
+    }
+  }
+
+  h1 {
+    margin: 0 0 15px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  .mat-card {
+    margin-bottom: 1rem;
+  }
+}

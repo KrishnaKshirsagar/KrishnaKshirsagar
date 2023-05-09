@@ -1,0 +1,317 @@
+<app-layout>
+
+  <div id="kyc-document">
+    <div class="header">
+      <div class="page-header">
+        <div class="left-header">
+          <button mat-mini-fab (click)="goback()"><mat-icon>arrow_back</mat-icon></button>
+        <h1>KYC Documents</h1></div>
+       <div class="download-btn"> <button mat-raised-button color="black" (click)="download_documents()">DOWNLOAD</button></div>
+      </div>
+      <div class="company-details">
+
+        <h3><b>Retailer Name:</b> {{companyDetails && companyDetails.company_name?companyDetails.company_name:""}}<br>
+          <b>GST Number:</b> {{companyDetails && companyDetails.gstin?companyDetails.gstin:""}}<br>
+          <b>Mobile Number:</b> {{companyDetails && companyDetails.company_mobile?companyDetails.company_mobile:""}}
+        </h3>
+      </div>
+      <div class="div-indicator">
+        <mat-card class="mat-elevation-z0">
+          <section>
+            <mat-icon style="color: green;">check_circle</mat-icon>
+            <label> : Approved | </label>
+            <mat-icon style="color: #ffa500;">watch_later</mat-icon>
+            <label> : Processing | </label>
+            <mat-icon style="color: red;">cancel</mat-icon>
+            <label> : Rejected | </label>
+          </section>
+        </mat-card>
+      </div>
+    </div>
+    <form [formGroup]="form">
+      <div class="main-wrapper">
+        <mat-accordion class="CustEx">
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header (click)="selectImage(0)">
+              <mat-panel-title>Aadhaar Proof
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="panelbody">
+              <div class="cards-wrapper" >
+                <mat-card *ngIf="KYCDetails?.aadhar?.number || KYCDetails?.aadhar?.holder || KYCDetails?.aadhar?.dob || KYCDetails?.aadhar?.gender || KYCDetails?.aadhar?.address || KYCDetails?.aadhar?.comment">
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.aadhar?.number">
+                    <mat-label>UID</mat-label>
+                    <input matInput value="{{KYCDetails?.aadhar?.number}}" readonly>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.aadhar?.holder">
+                    <mat-label>Name</mat-label>
+                    <input matInput value="{{KYCDetails?.aadhar?.holder}}" readonly>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.aadhar?.dob">
+                    <mat-label>DOB</mat-label>
+                    <input matInput value="{{KYCDetails?.aadhar?.dob}}" readonly>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.aadhar?.gender">
+                    <mat-label>Gender</mat-label>
+                    <input matInput value="{{KYCDetails?.aadhar?.gender}}" readonly>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.aadhar?.address">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput value="{{KYCDetails?.aadhar?.address}}"  readonly></textarea>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.aadhar?.comment ">
+                    <mat-label>Comment</mat-label>
+                    <textarea matInput value="{{KYCDetails?.aadhar?.comment}}"  readonly></textarea>
+                  </mat-form-field>
+                </mat-card>
+                <mat-card *ngIf="KYCDetails && KYCDetails.aadhar.status=='In-Progress'">
+                  <div class="operation" >
+                    <div >
+                     
+                      <button  mat-mini-fab
+                        [ngClass]="{'green' : aadhaarFlagDone, 'black': !aadhaarFlagDone}"
+                        (click)="doneFlagAadhaar()" ><mat-icon>done</mat-icon></button>&nbsp;&nbsp;
+                      <button mat-mini-fab [ngClass]="{'black' : !aadhaarFlagCancel, 'red': aadhaarFlagCancel}"
+                        (click)="cancelFlagAadhaar()"><mat-icon>close</mat-icon></button><br><br>
+    
+                      <mat-form-field class="e" appearance="outline">
+                        <mat-label>Comments</mat-label>
+                        <mat-select formControlName="aadhar_proof" #aadharValue>
+                          <mat-option *ngFor="let c of aadhaarCommentsList" [value]="c">{{c}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <ng-container *ngIf="aadharValue.value=='Other'">
+                        <mat-form-field appearance="outline">
+                            <textarea  formControlName="aadhar_proof"  matInput ></textarea>                                                      
+                        </mat-form-field>
+                      </ng-container>
+                    </div>
+                    </div>
+                </mat-card>
+              </div>
+             
+              <div class="flex-box">
+                <div *ngIf="KYCDetails?.aadhar?.files?.length>0">
+                  <h3>AADHAAR FRONT </h3>
+                  <mat-card class="example-card" *ngIf="KYCDetails?.aadhar?.files?.length>0">
+                    <mat-card-header>
+                      <p>{{KYCDetails?.aadhar?.files[0]?.document_name}}</p>
+                    </mat-card-header>
+                    <img
+                      *ngIf="(KYCDetails?.aadhar?.files[0]?.document_type== 'png' || KYCDetails?.aadhar?.files[0]?.document_type =='jpeg' || KYCDetails?.aadhar?.files[0]?.document_type =='jpg')"
+                      mat-card-image [src]="KYCDetails?.aadhar?.files[0]?.url" width="230" height="120" alt=""
+                      (click)="openDialog(KYCDetails?.aadhar?.files[0]?.url)">
+
+                    <mat-icon
+                      *ngIf="!(KYCDetails?.aadhar?.files[0]?.document_type == 'png' ||KYCDetails?.aadhar?.files[0]?.document_type =='jpeg' ||KYCDetails?.aadhar?.files[0]?.document_type =='jpg')"
+                      class="file-icon" (click)="openDialog(KYCDetails?.aadhar?.files[0]?.url)"> insert_drive_file
+                    </mat-icon>
+
+                    <mat-card-content>
+                      <p>
+                        Uploaded By : {{KYCDetails?.aadhar?.files[0]?.createdBy}}<br>
+                        Uploaded At : {{KYCDetails?.aadhar?.files[0]?.createdAt | date:date_format}}
+                      </p>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+                <div *ngIf="KYCDetails?.aadhar?.files?.length>1">
+                  <h3>AADHAAR BACK </h3>
+                  <mat-card class="example-card" *ngIf="KYCDetails?.aadhar?.files?.length>1">
+                    <mat-card-header>
+                      <p>{{KYCDetails?.aadhar?.files[1]?.document_name}}</p>
+                    </mat-card-header>
+                    <img
+                      *ngIf="(KYCDetails?.aadhar?.files[1]?.document_type== 'png' || KYCDetails?.aadhar?.files[1]?.document_type =='jpeg' || KYCDetails?.aadhar?.files[1]?.document_type =='jpg')"
+                      mat-card-image [src]="KYCDetails?.aadhar?.files[1]?.url" width="230" height="120" alt=""
+                      (click)="openDialog(KYCDetails?.aadhar?.files[1]?.url)">
+
+                    <mat-icon
+                      *ngIf="!(KYCDetails?.aadhar?.files[1]?.document_type == 'png' ||KYCDetails?.aadhar?.files[1]?.document_type =='jpeg' ||KYCDetails?.aadhar?.files[1]?.document_type =='jpg')"
+                      class="file-icon" (click)="openDialog(KYCDetails?.aadhar?.files[1]?.url)"> insert_drive_file
+                    </mat-icon>
+
+                    <mat-card-content>
+                      <p>
+                        Uploaded By : {{KYCDetails?.aadhar?.files[1]?.createdBy}}<br>
+                        Uploaded At : {{KYCDetails?.aadhar?.files[1]?.createdAt | date:date_format}}
+                      </p>
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+              </div>
+
+              
+            </div>
+
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header (click)="selectImage(0)">
+              <mat-panel-title>PAN Proof
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.pan?.signzyStatus=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.pan?.signzyStatus=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.pan?.signzyStatus=='In-Progress'"  style="color: #ffa500;">watch_later</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.pan?.status=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.pan?.status=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.pan?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="panelbody">
+              <div class="cards-wrapper">
+                <mat-card *ngIf="KYCDetails?.pan?.number || KYCDetails?.pan?.holder || KYCDetails?.pan?.comment ">
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.pan?.number">
+                    <mat-label>PAN Number</mat-label>
+                    <input matInput value="{{KYCDetails?.pan?.number}}" readonly>
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.pan?.holder">
+                    <mat-label>Name</mat-label>
+                    <input matInput value="{{KYCDetails?.pan?.holder}}" readonly>
+                  </mat-form-field>
+  
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.pan?.comment">
+                    <mat-label>Comment</mat-label>
+                    <textarea matInput value="{{KYCDetails?.pan?.comment}}" readonly></textarea>
+                  </mat-form-field>
+                </mat-card>
+                <mat-card  *ngIf="KYCDetails && KYCDetails .pan.status=='In-Progress'" >
+                  <div class="operation">
+                    <button mat-mini-fab
+                      [ngClass]="{'green' : panFlagDone, 'black': !panFlagDone}"
+                      (click)="doneFlagPan()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                    <button mat-mini-fab [ngClass]="{'black' : !panFlagCancel, 'red': panFlagCancel }"
+                      (click)="cancelFlagPan()"><mat-icon>close</mat-icon></button><br><br>
+                    <mat-form-field class="e" appearance="outline">
+                      <mat-label [ngClass]="{'requiredColor':panFlagDone, 'notRequiredColor':!panFlagDone}"
+                        [ngClass]="{'requiredColor':panFlagCancel , 'notRequiredColor':!panFlagCancel}">Comments</mat-label>
+                      <mat-select formControlName="pan_proof" #panValue>
+                        <mat-option *ngFor="let c of panCommentsList" [value]="c">{{c}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <ng-container *ngIf="panValue.value=='Other'">
+                      <mat-form-field appearance="outline">
+                          <textarea  formControlName="pan_proof" matInput  ></textarea>                                                      
+                      </mat-form-field>
+                    </ng-container>
+                  </div>
+                </mat-card>
+                </div>
+                <div class="flex-box">
+                  <div *ngIf="KYCDetails?.pan?.files?.length>0">
+                    
+                    <mat-card class="example-card" *ngIf="KYCDetails?.pan?.files?.length>0">
+                      <mat-card-header>
+                        <p>{{KYCDetails?.pan?.files[0]?.document_name}}</p>
+                      </mat-card-header>
+                      <img
+                        *ngIf="(KYCDetails?.pan?.files[0]?.document_type== 'png' || KYCDetails?.pan?.files[0]?.document_type =='jpeg' || KYCDetails?.pan?.files[0]?.document_type =='jpg')"
+                        mat-card-image [src]="KYCDetails?.pan?.files[0]?.url" width="150" height="120" alt=""
+                        (click)="openDialog(KYCDetails?.pan?.files[0]?.url)">
+  
+                      <mat-icon
+                        *ngIf="!(KYCDetails?.pan?.files[0]?.document_type == 'png' ||KYCDetails?.pan?.files[0]?.document_type =='jpeg' ||KYCDetails?.pan?.files[0]?.document_type =='jpg')"
+                        class="file-icon" (click)="openDialog(KYCDetails?.pan?.files[0]?.url)"> insert_drive_file
+                      </mat-icon>
+  
+                      <mat-card-content>
+                        <p>
+                          Uploaded By : {{KYCDetails?.pan?.files[0]?.createdBy}}<br>
+                          Uploaded At : {{KYCDetails?.pan?.files[0]?.createdAt | date:date_format}}
+                        </p>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </div>
+  
+              
+              </div>
+              
+
+          </mat-expansion-panel>
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header (click)="selectImage(0)">
+              <mat-panel-title>Mobile Number
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.mobile?.signzyStatus=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.mobile?.signzyStatus=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.mobile?.signzyStatus=='In-Progress'"  style="color: #ffa500;">watch_later</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.mobile?.status=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.mobile?.status=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.mobile?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="panelbody">
+              <div class="cards-wrapper">
+                <mat-card  *ngIf="KYCDetails?.mobile?.number || KYCDetails?.mobile?.holder || KYCDetails?.mobile?.comment">
+                <mat-form-field appearance="outline" *ngIf="KYCDetails?.mobile?.number">
+                  <mat-label>Mobile No.</mat-label>
+                  <input matInput value="+91 {{KYCDetails?.mobile?.number}}" readonly>
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="KYCDetails?.mobile?.holder">
+                  <mat-label>Name</mat-label>
+                  <input matInput value="{{KYCDetails?.mobile?.holder}}" readonly>
+              
+                </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="KYCDetails?.mobile?.comment">
+                  <mat-label>Comment</mat-label>
+                  <textarea matInput value="{{KYCDetails?.mobile?.comment}}" readonly></textarea>
+                </mat-form-field>
+              </mat-card>
+              <mat-card *ngIf="KYCDetails && KYCDetails.mobile.status=='In-Progress'">
+                <div class="operation"    >
+                  <button  mat-mini-fab
+                    [ngClass]="{'green' : mobileFlagDone, 'black': !mobileFlagDone}"
+                    (click)="doneFlagMobile()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                  <button mat-mini-fab [ngClass]="{'black' : !mobileFlagCancel, 'red': mobileFlagCancel}"
+                    (click)="cancelFlagMobile()"><mat-icon>close</mat-icon></button><br><br>
+                  <mat-form-field class="e" appearance="outline">
+                    <mat-label [ngClass]="{'requiredColor':mobileFlagDone, 'notRequiredColor':!mobileFlagDone}"
+                      [ngClass]="{'requiredColor':mobileFlagCancel , 'notRequiredColor':!mobileFlagCancel}">Comments</mat-label>
+                    <mat-select formControlName="contact" #mobileValue>
+                      <mat-option *ngFor="let c of mobileCommentsList" [value]="c">{{c}}</mat-option>
+                    </mat-select>
+
+                  </mat-form-field>
+                  <ng-container *ngIf="mobileValue.value=='Other'">
+                    <mat-form-field appearance="outline">
+                        <textarea  formControlName="contact" matInput  ></textarea>                                                      
+                    </mat-form-field>
+                  </ng-container>
+
+                </div>
+              </mat-card>
+              </div>
+              
+              
+
+            </div>
+
+          </mat-expansion-panel>
+
+
+        </mat-accordion>
+        <div class="btn-view">
+          <button type="submit" mat-flat-button class="btn-dark" (click)="openBusDoc()">NEXT STEP</button>
+          <button type="submit" mat-flat-button class="sub-dark" (click)="onSubmit()">SUBMIT</button>
+        </div>
+      </div>
+
+    </form>
+
+
+  </div>
+</app-layout>

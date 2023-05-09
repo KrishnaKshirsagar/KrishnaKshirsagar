@@ -1,0 +1,237 @@
+<div
+  class="sidenav_container"
+  [@onSideNavChange]="sideNavState ? 'open' : 'close'"
+>
+  <div style="height: 100%">
+    <div class="logo-link smalllogo">
+      <img
+        class="logo"
+        style="margin-right: 20px"
+        src="../../../favicon.ico"
+        alt="Logo"
+      />
+    </div>
+    <div class="logo-link biglogo">
+      <img
+        class="logo"
+        src="../../../../assets/images/logo-white.png"
+        alt="Logo"
+      />
+    </div>
+
+    <div class="matsidemenu">
+      <mat-nav-list>
+
+        <mat-list-item
+          routerLinkActive="active"
+          [matMenuTriggerFor]="customerSingleView"
+          *ngIf="userRole == 'xuritiAdmin'"
+        >
+          <mat-icon mat-list-icon>graphic_eq</mat-icon>
+          <a matLine>Customer Single View</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openDashboardPage()"
+          *ngIf="userRole == 'xuritiAdmin' || userRole == 'xuritiStaff'"
+        >
+          <mat-icon mat-list-icon>home</mat-icon>
+          <a matLine>Dashboard</a>
+        </mat-list-item>
+
+     
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openInvoicePage()"
+          *ngIf="userRole == 'xuritiAdmin' "
+        >
+          <mat-icon mat-list-icon>receipt</mat-icon>
+          <a matLine>Invoices</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openOfflinepaymentPage()"
+          *ngIf="userRole == 'xuritiAdmin' "
+        >
+          <mat-icon mat-list-icon>attach_money</mat-icon>
+          <a matLine>Offline Payment</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openCompanyPage()"
+          *ngIf="
+            userRole == 'xuritiAdmin' ||
+            userRole == 'xuritiStaff' ||
+            userRole == 'xuritiCreditMgr'
+          "
+        >
+          <mat-icon mat-list-icon>work</mat-icon>
+          <a matLine>Manage Business</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openUsermanagentPage()"
+          *ngIf="userRole == 'xuritiAdmin' "
+        >
+          <mat-icon mat-list-icon>supervised_user_circle</mat-icon>
+          <a matLine>Manage Users</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openStaffManagementPage()"
+          *ngIf="userRole == 'xuritiAdmin'"
+        >
+          <mat-icon mat-list-icon>group_work</mat-icon>
+          <a matLine>Manage Staff</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openPaymentHistory()"
+          *ngIf="userRole == 'xuritiAdmin'"
+        >
+          <mat-icon mat-list-icon>money</mat-icon>
+          <a matLine>Payment History</a>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="openCollection()" *ngIf="userRole == 'xuritiAdmin' || userRole =='xuritiStaff' || userRole =='xuritiCollectionMgr' || userRole =='xuritiCollectionStaff' || userRole =='xuritiCollectionAgent'">
+          <mat-icon mat-list-icon> monetization_on </mat-icon>
+          <a matLine>Collection</a>
+        </mat-list-item>
+
+
+        <mat-list-item routerLinkActive="active" (click)="openEmandateHistory()" *ngIf="userRole == 'xuritiAdmin' || userRole =='xuritiStaff'">
+          <mat-icon mat-list-icon>payment</mat-icon>
+          <a matLine>E-Mandate History</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openCreditVerification()"
+          *ngIf="userRole == 'xuritiCreditMgr'"
+        >
+          <mat-icon mat-list-icon>local_atm</mat-icon>
+          <a matLine>Credit Limit Approval</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="creditLimitHistory()"
+          *ngIf="userRole == 'xuritiCreditMgr'"
+        >
+          <mat-icon mat-list-icon>change_history</mat-icon>
+          <a matLine>Credit Limit History</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openNbfc()"
+          *ngIf="userRole == 'xuritiAdmin' "
+        >
+          <mat-icon mat-list-icon>account_balance</mat-icon>
+          <a matLine>NBFC</a>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          [matMenuTriggerFor]="reports"
+          *ngIf="userRole == 'xuritiAdmin'|| userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff'"
+        >
+          <mat-icon mat-list-icon>show_chart</mat-icon>
+          <a matLine>Reports</a>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" *ngIf="userRole == 'xuritiAdmin' || userRole =='xuritiStaff'">
+          <mat-icon mat-list-icon>notifications</mat-icon>
+          <a matLine>Manage Notifications</a>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="openAgent()"
+          *ngIf="userRole == 'xuritiAdmin' || userRole == 'xuritiStaff'">
+          <mat-icon mat-list-icon>assignment</mat-icon>
+          <a matLine>Agent Visit</a>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="openHome()" *ngIf="userRole == 'xuritiKycAgent' ">
+          <mat-icon mat-list-icon>home</mat-icon>
+          <a matLine>Home</a>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="openPending()" *ngIf="userRole == 'xuritiKycAgent' ">
+          <mat-icon mat-list-icon>assignment_late</mat-icon>
+          <a matLine>Pending</a>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="openApproved()" *ngIf="userRole == 'xuritiKycAgent' ">
+          <mat-icon mat-list-icon>assignment_turned_in</mat-icon>
+          <a matLine>Approved</a>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="openRejected()" *ngIf="userRole == 'xuritiKycAgent' ">
+          <mat-icon mat-list-icon>cancel_presentation</mat-icon>
+          <a matLine>Rejected</a>
+        </mat-list-item>
+      </mat-nav-list>
+
+      <mat-menu #reports="matMenu" yPosition="below">
+        <!-- <button mat-menu-item routerLinkActive="active" (click)="openTransactionsstatement()">Transactions Statement</button> -->
+        <button mat-menu-item routerLinkActive="active" (click)="openCompaniesSummary()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          Business Summary
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openInvoiceSummary()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          Invoice Summary
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openLedgerReports()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          Ledger Report
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openTransactionLedger()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          Transaction Ledger
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openMisreports()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          MIS Reports
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openReceivablesStatement()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          Receivables Statement
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openReceivablesAgeing()">
+          Receivables Ageing
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openReceivablesAgeingByInvoice()">
+          Receivables Ageing By Invoice
+        </button>
+
+        <button mat-menu-item routerLinkActive="active" (click)="openDisbursementStatement()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          Disbursement Statement
+        </button>
+      </mat-menu>
+
+      <mat-menu #customerSingleView="matMenu" yPosition="below">
+        <!-- <button mat-menu-item routerLinkActive="active" (click)="openTransactionsstatement()">Transactions Statement</button> -->
+        <button mat-menu-item routerLinkActive="active" (click)="openBusinessAnalytics()"
+          *ngIf="!(userRole == 'xuritiCollectionMgr' || userRole == 'xuritiCollectionStaff')">
+          Business Analytics
+        </button>
+      </mat-menu>
+
+    </div>
+  </div>
+</div>

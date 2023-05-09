@@ -1,0 +1,651 @@
+
+
+<app-layout>
+  <div id="new-dashboard">
+ 
+
+  <div class="invoice-analysis">
+    <div class="invoice-header"><span>INVOICES</span><mat-icon>receipt</mat-icon></div>
+    <div class="invoices-wrapper">
+      <div class="invoice-details">
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="OVERALL INVOICE">
+            <div class="invoice-filter">
+              <mat-form-field appearance="outline">
+                <input type="text"
+                 placeholder="Seller Name"
+                 matInput
+                [formControl]="overallSeller"
+                [matAutocomplete]="overallseller"
+                (input)="filterData({seller:$event, chart:'overall invoice'})" />
+
+                <mat-autocomplete
+                 [displayWith]="displayBuyerFn"
+                 (optionSelected)="optionSelected({optionSelectedValue:$event.option.value,filterType:'overall invoice'})"
+                  #overallseller="matAutocomplete">
+
+                  <mat-option
+                 *ngFor="let option of overallinvoiceSellerListTemp"
+                  [value]="option">
+
+                    {{option}}
+
+                  </mat-option>
+                </mat-autocomplete>
+                <button mat-button (click)="company_name_clear('clear overall seller')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline">
+                <input type="text" placeholder="NBFC" aria-label="Number" matInput [formControl]="overall_nbfc"
+                  [matAutocomplete]="overallnbfc" (input)="filterData({nbfc:$event,chart:'overall invoice'})"  />
+                <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="optionSelected({optionSelected:$event.option.value,filterType:'overall invoice' })"
+                  #overallnbfc="matAutocomplete">
+                  <mat-option *ngFor="let option of overallinvoice_nbfc_ListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear('clear overall nbfc')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" *ngIf="invoiceType!='dateRange'">
+                <mat-select [formControl]="overallDate" (selectionChange)="optionSelected({filterType:'overall invoice'})" placeholder="Select Date">
+                  <mat-option value="6">Last 6 Month</mat-option>
+                  <mat-option value="12">Last 1 Year</mat-option>
+                  <!-- <mat-option value="1">Last 1 Day</mat-option> -->
+                  <!-- <mat-option value="dateRange">Date Range</mat-option> -->
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType=='dateRange'">
+      
+                <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="invoicedateRange" [max]="invoicemaxDate">
+                  <input matStartDate placeholder="Start" formControlName="start" readonly />
+                  <input matEndDate placeholder="End" formControlName="end" readonly />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-button color="danger" matDateRangePickerCancel
+                      (click)="invoiceCancelMatSelect()">CANCEL</button>
+                    <button mat-raised-button color="primary" matDateRangePickerApply (click)="chartsFilter()">
+                      APPLY
+                    </button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+      
+              <div class="invoice-type" >
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="overallType" (change)="overallTypeFilter()">
+                <mat-radio-button value="invoiceAmount" style="margin-bottom:5px" [checked]="true">Amount</mat-radio-button>
+                <mat-radio-button value="invoiceCount">Count</mat-radio-button>
+              </mat-radio-group>
+              </div>
+            </div>
+            <div class="invoice-cards-charts">
+              <div class="invoice-cards">
+                <div class="card">
+                  <span>TOTAL</span>
+                  <h1>{{ overallType =='invoiceAmount'  ? '&#x20B9;'+ this.shortCurrencyNumberformat(overallInvoice) : overallInvoice  }}</h1>
+                </div>
+        
+                <div class="card">
+                  <span>PAID</span>
+                  <h1>{{ overallType =='invoiceAmount'  ?  '&#x20B9;'+ this.shortCurrencyNumberformat(overallInvoicePaid) : overallInvoicePaid  }}</h1>
+                </div>
+        
+                <div class="card">
+                  <span>DISBURSED</span>
+                  <h1>{{ overallType =='invoiceAmount'  ?  '&#x20B9;'+ this.shortCurrencyNumberformat(overallInvoiceDisbursed) : overallInvoiceDisbursed }}</h1>
+                </div>
+              </div>
+              <div  class="invoice-charts"  >
+                <highcharts-chart  [options]="monthlyInvoiceAnalysis" [Highcharts]="highcharts" ></highcharts-chart>
+              </div>
+              <button mat-mini-fab (click)="download('overall')"><mat-icon>assignment_returned</mat-icon></button>
+              
+            </div>
+            
+          </mat-tab>
+          <mat-tab label="INVOICE DETAILS">
+            <div class="invoice-filter">
+              <mat-form-field appearance="outline">
+                <input type="text" placeholder="Seller Name"  matInput [formControl]="invoiceSellerSelect"
+                  [matAutocomplete]="invoiceSeller1" (input)="filterData({seller:$event,chart:'invoice'})"  />
+                <mat-autocomplete [displayWith]="displayFn" (optionSelected)="optionSelected({optionSelectedValue: $event.option.value, filterType:'invoice pie'})"
+                  #invoiceSeller1="matAutocomplete">
+                  <mat-option *ngFor="let option of invoiceSellerListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear('clear invoice seller')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline">
+                <input type="text" placeholder="NBFC" aria-label="Number" matInput [formControl]="nbfcSelect" [(ngModel)]="nbfcdup"
+                  [matAutocomplete]="nbfc" (input)="filterData({nbfc:$event,chart:'invoice'})"  />
+                <mat-autocomplete [displayWith]="displayFn" (optionSelected)="optionSelected({optionSelectedValue: $event.option.value, filterType:'invoice pie'})"
+                  #nbfc="matAutocomplete">
+                  <mat-option *ngFor="let option of invoice_nbfc_ListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear('clear invoice nbfc')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceDate!='dateRange'">
+                <mat-select [(ngModel)]="invoiceDate" placeholder="Select Date" (selectionChange)="filterData({chart:'invoice',invoiceDate:invoiceDate})">
+                  <mat-option 
+                    (click)="invoiceDate= '';
+                    optionSelected({filterType:'invoice pie'})"
+                  >
+                  Invoice Type
+                  </mat-option>
+                  <mat-option value="7">7 Days</mat-option>
+                  <mat-option value="30">30 Days</mat-option>
+                  <mat-option value="90">3 Months</mat-option>
+                  <mat-option value="dateRange">Date Range</mat-option>
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceDate=='dateRange'">
+      
+                <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="invoicedateRange" [max]="invoicemaxDate">
+                  <input matStartDate placeholder="Start" formControlName="start" readonly />
+                  <input matEndDate placeholder="End" formControlName="end" readonly />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-button color="danger" matDateRangePickerCancel
+                      (click)="invoiceDate = ''">CANCEL</button>
+                    <button mat-raised-button color="primary" matDateRangePickerApply (click)="filterData({chart:'invoice',invoiceDate:invoiceDate})">
+                      APPLY
+                    </button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+
+              <div class="invoice-type" >
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="invoiceType" (change)="invoiceTypeFilter()">
+                <mat-radio-button value="invoiceAmount" style="margin-bottom:5px" [checked]="true">Amount</mat-radio-button>
+                <mat-radio-button value="invoiceCount">Count</mat-radio-button>
+              </mat-radio-group>
+              </div>
+              
+            </div>
+            <div class="invoice-cards-charts">
+              <div class="invoice-cards">
+                <div class="card blue">
+                  <span>TOTAL</span>
+                  <h1>{{ invoiceType =='invoiceCount' || invoiceType == undefined ? invoiceTotal : '&#x20B9;'+ this.shortCurrencyNumberformat(this.invoiceTotal) }}</h1>
+                </div>
+        
+                <div class="card purple" >
+                  <span>PAID</span>
+                  <h2>{{ invoiceType =='invoiceCount' || invoiceType == undefined ? invoicePaid : '&#x20B9;'+ this.shortCurrencyNumberformat(this.invoicePaid) }}</h2>
+                  <span>PARTPAY</span>
+                  <h2>{{ invoiceType =='invoiceCount' || invoiceType == undefined ? invoicePartPay : '&#x20B9;'+ this.shortCurrencyNumberformat(this.invoicePartPay) }}</h2>
+                </div>
+        
+                <!-- <div class="card purple">
+                  <span>PAID</span>
+                  <h1>{{ invoiceType =='invoiceCount' || invoiceType == undefined ? invoicePaid : '&#x20B9;'+ this.shortCurrencyNumberformat(this.invoicePaid) }}</h1>
+                </div> -->
+                
+                <div class="card green">
+                  <span>CONFIRMED</span>
+                  <h1>{{ invoiceType =='invoiceCount' || invoiceType == undefined ? invoiceConfirmed : '&#x20B9;'+ this.shortCurrencyNumberformat(this.invoiceConfirmed) }}</h1>
+                </div>
+
+                <div class="card yellow">
+                  <span>PENDING</span>
+                  <h1>{{ invoiceType =='invoiceCount' || invoiceType == undefined ? invoicePending : '&#x20B9;'+ this.shortCurrencyNumberformat(this.invoicePending) }}</h1>
+                </div>
+
+                <div class="card red">
+                  <span>REJECTED</span>
+                  <h1>{{ invoiceType =='invoiceCount' || invoiceType == undefined ? invoiceRejected : '&#x20B9;'+ this.shortCurrencyNumberformat(this.invoiceRejected) }}</h1>
+                </div>
+              </div>
+              <div class="invoice-charts">
+                <highcharts-chart  [options]="invoiceOption" [Highcharts]="highcharts"></highcharts-chart>
+              </div>
+              <button mat-mini-fab (click)="download('invoice')"><mat-icon>assignment_returned</mat-icon></button>
+            </div>
+
+          </mat-tab>
+          
+          
+        </mat-tab-group>
+      </div>
+      <div class="invoiceOverdue">
+       <mat-tab-group mat-align-tabs="center">
+        <mat-tab label="OVERDUE INVOICES">
+          <div class="invoice-filter">
+            <mat-form-field appearance="outline">
+              <input type="text" placeholder="Seller Name"  matInput [formControl]="overDueSeller"
+                [matAutocomplete]="overdueSeller" (input)="filterData({seller:$event, chart:'overdue'})"  />
+              <mat-autocomplete [displayWith]="displayFn" (optionSelected)="optionSelected({optionSelectedValue: overDueSeller, filterType:'overdue seller column', overdue:overdue})"
+                #overdueSeller="matAutocomplete">
+                <mat-option *ngFor="let option of invoiceSellerListTemp" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+              <button type="button" mat-button (click)="company_name_clear('overdue seller clear')" matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline">
+              <input type="text" placeholder="NBFC"  matInput [formControl]="overDue_nbfc"
+                [matAutocomplete]="overduenbfc" (input)="filterData({nbfc:$event, chart:'overdue'})"  />
+              <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="optionSelected({optionSelectedValue: overDue_nbfc, filterType:'overdue seller column'})"
+                #overduenbfc="matAutocomplete">
+                <mat-option *ngFor="let option of overdue_nbfc_listTemp" [value]="option">
+                  {{option}}
+                </mat-option>
+              </mat-autocomplete>
+              <button type="button" mat-button (click)="company_name_clear('overdue nbfc clear')" matSuffix mat-icon-button aria-label="Clear">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+           
+            <div class="overdue-type" >
+              <mat-radio-group aria-label="Select an option" [(ngModel)]="overDueType" (change)="overdueTypeFilter()">
+              <mat-radio-button value="overdueAmount" style="margin-bottom:5px" [checked]="true">Amount</mat-radio-button>
+              <mat-radio-button value="overdueCount">Count</mat-radio-button>
+            </mat-radio-group>
+            </div>
+          </div>
+          <div class="invoice-cards-charts">
+            <div class="invoice-cards">
+              <div class="card">
+                <span>0-30 DAYS</span>
+                 <h1>{{ overDueType =='overdueCount' || overDueType == undefined ? overDue_0  : '&#x20B9;'+ this.shortCurrencyNumberformat(this.overDue_0) }}</h1>
+              </div>
+      
+              <div class="card">
+                <span>30-60 DAYS</span>
+                <h1>{{ overDueType =='overdueCount' || overDueType == undefined ? overDue_30  : '&#x20B9;'+ this.shortCurrencyNumberformat(this.overDue_30) }}</h1>
+              </div>
+      
+              <div class="card">
+                <span>60-90 DAYS</span>
+                <h1>{{ overDueType =='overdueCount' || overDueType == undefined ? overDue_60  : '&#x20B9;'+ this.shortCurrencyNumberformat(this.overDue_60) }}</h1>
+              </div>
+  
+              <div class="card">
+                <span>90-120 DAYS</span>
+                <h1>{{ overDueType =='overdueCount' || overDueType == undefined ? overDue_90  : '&#x20B9;'+ this.shortCurrencyNumberformat(this.overDue_90) }}</h1>
+              </div>
+  
+              
+            </div>
+            <div class="invoice-charts">
+              <highcharts-chart style='width:96%; margin:0% 2%' [options]="invoiceOverDue" [Highcharts]="highcharts"></highcharts-chart>
+            </div>
+            <button mat-mini-fab (click)="download('overdue')"><mat-icon>assignment_returned</mat-icon></button>
+          </div>
+        </mat-tab>
+       </mat-tab-group>
+      </div>
+    </div>
+  </div>
+
+  <div class="payment-analysis">
+    <div class="payment-header"><span>PAYMENTS</span><mat-icon>payment</mat-icon></div>
+    <div class="payment-wrapper">
+      <div class="payment-details">
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="PAYMENT">
+            <div class="payment-filter">
+              <mat-form-field appearance="outline">
+                <input type="text" placeholder="Seller Name"  matInput [formControl]="paymentSeller"
+                  [matAutocomplete]="paymentseller" (input)="filterData({chart:'payment',seller:$event})"  />
+                <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="optionSelected({filterType:'payment'})"
+                  #paymentseller="matAutocomplete">
+                  <mat-option *ngFor="let option of paymentSellerListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear('clear payment seller')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType!='dateRange'">
+                <mat-select [formControl]="paymentDate" placeholder="Select Date" (selectionChange)="optionSelected({filterType:'payment'})">
+                  <mat-option value="6">Last 6 Months</mat-option>
+                  <mat-option value="12">Last 1 Year</mat-option>
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType=='dateRange'">
+      
+                <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="invoicedateRange" [max]="invoicemaxDate">
+                  <input matStartDate placeholder="Start" formControlName="start" readonly />
+                  <input matEndDate placeholder="End" formControlName="end" readonly />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-button color="danger" matDateRangePickerCancel
+                      (click)="invoiceCancelMatSelect()">CANCEL</button>
+                    <button mat-raised-button color="primary" matDateRangePickerApply (click)="chartsFilter()">
+                      APPLY
+                    </button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+      
+            
+              <div class="payment-type" >
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="paymentType" (change)="paymentTypeFilter()">
+                <mat-radio-button value="paymentAmount" style="margin-bottom:5px" [checked]="true">Amount</mat-radio-button>
+                <mat-radio-button value="paymentCount">Count</mat-radio-button>
+              </mat-radio-group>
+              </div>
+            </div>
+            <div class="payment-cards-charts">
+              <div class="payment-cards">
+                <div class="card">
+                  <span>TOTAL</span>
+                  <h1>{{ paymentType =='paymentAmount' ? '&#x20B9;'+ this.shortCurrencyNumberformat(totalPayment)  : totalPayment }}   </h1>
+                </div>
+        
+                <div class="card">
+                  <span>RECEIVED</span>
+                  <h1>{{ paymentType =='paymentAmount' ? '&#x20B9;'+ this.shortCurrencyNumberformat(receivedPayment) : receivedPayment    }}</h1>
+                </div>
+        
+                <div class="card">
+                  <span>DUE</span>
+                  <h1>{{ paymentType =='paymentAmount' ? '&#x20B9;'+ this.shortCurrencyNumberformat(duePayment) : duePayment   }}</h1>
+                </div>
+              </div>
+              <div class="payment-charts">
+                <highcharts-chart [options]="paymentChart" [Highcharts]="highcharts"></highcharts-chart>
+              </div>
+              <button mat-mini-fab (click)="download('payment')"><mat-icon>assignment_returned</mat-icon></button>
+            </div>
+
+          </mat-tab>
+          
+        </mat-tab-group>
+      </div>
+      <div class="payment-details" >
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="PAYMENT TRENDS">
+            <div class="payment-filter">
+              <mat-form-field appearance="outline">
+                <input type="text" placeholder="Seller Name"  matInput [formControl]="paymentTrendsSeller"
+                  [matAutocomplete]="paymenttrendseller" (input)="filterData({chart:'payment trends',seller:$event})"  />
+                <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="optionSelected({filterType:'payment trends'})"
+                  #paymenttrendseller="matAutocomplete">
+                  <mat-option *ngFor="let option of paymentTrendsSellerListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear('clear payment trends seller')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <!-- <mat-form-field appearance="outline">
+                <input type="text" placeholder="NBFC" aria-label="Number" matInput [formControl]="payment_nbfc"
+                  [matAutocomplete]="paymentnbfc" (input)="filterData({nbfc:$event,chart:'payment'})"  />
+                <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="optionSelected({filterType:'payment'})"
+                  #paymentnbfc="matAutocomplete">
+                  <mat-option *ngFor="let option of payment_nbfc_ListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear()" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field> -->
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType!='dateRange'">
+                <mat-select [formControl]="paymentTrendsDate" placeholder="Select Date" (selectionChange)="optionSelected({filterType:'payment trends'})">
+                  <mat-option value="1">Last 6 Months</mat-option>
+                  <mat-option value="12">Last 1 Year</mat-option>
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType=='dateRange'">
+      
+                <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="invoicedateRange" [max]="invoicemaxDate">
+                  <input matStartDate placeholder="Start" formControlName="start" readonly />
+                  <input matEndDate placeholder="End" formControlName="end" readonly />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-button color="danger" matDateRangePickerCancel
+                      (click)="invoiceCancelMatSelect()">CANCEL</button>
+                    <button mat-raised-button color="primary" matDateRangePickerApply (click)="chartsFilter()">
+                      APPLY
+                    </button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+      
+              <!-- <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="paymentTrendsType" (selectionChange)="paymentTrendsFilter()" placeholder="Invoice Type">
+                  <mat-option>Payment Type</mat-option>
+                  <mat-option value="paymentAmount">Amount</mat-option>
+                  <mat-option value="paymentCount">Count</mat-option>
+                </mat-select>
+              </mat-form-field> -->
+              <div class="payment-type" >
+                <mat-radio-group aria-label="Select an option" [(ngModel)]="paymentTrendsType" (change)="paymentTrendsFilter()">
+                <mat-radio-button value="paymentAmount" style="margin-bottom:5px" [checked]="true">Amount</mat-radio-button>
+                <mat-radio-button value="paymentCount">Count</mat-radio-button>
+              </mat-radio-group>
+              </div>
+            </div>
+            <div class="payment-cards-charts">
+              <div class="payment-cards">
+                <div class="card">
+                  <span>PAID</span>
+                  <h1>{{ paymentTrendsType =='paymentAmount' ? '&#x20B9;'+ this.shortCurrencyNumberformat(trendsPaid)  : trendsPaid }}   </h1>
+                </div>
+        
+                <div class="card">
+                  <span>PARTPAY</span>
+                  <h1>{{ paymentTrendsType =='paymentAmount' ? '&#x20B9;'+ this.shortCurrencyNumberformat(trendsPartpay) : trendsPartpay }}</h1>
+                </div>
+        
+              </div>
+              <div class="payment-charts">
+                <highcharts-chart [options]="paymentTrendsChart" [Highcharts]="highcharts"></highcharts-chart>
+              </div>
+              <button mat-mini-fab (click)="download('payment')"><mat-icon>assignment_returned</mat-icon></button>
+            </div>
+
+          </mat-tab>
+          
+        </mat-tab-group>
+      </div>
+      
+      
+      
+    </div>
+  </div>
+
+  <div class="retailers-analysis">
+    <div class="retailer-header"><span>RETAILERS ONBOARDED</span><mat-icon>recent_actors</mat-icon></div>
+    <div class="retailer-wrapper">
+      <div class="retailer-details">
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="RETAILERS">
+            <div class="retailer-filter">
+              <mat-form-field appearance="outline">
+                <input type="text" placeholder="Seller Name"  matInput [formControl]="retailerSeller"
+                  [matAutocomplete]="retailerseller" (input)="filterData({seller:$event,chart:'retailers'})"  />
+                <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="optionSelected({filterType:'retailers'})"
+                  #retailerseller="matAutocomplete">
+                  <mat-option *ngFor="let option of retailerSellerListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear('clear retailer seller')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <!-- <mat-form-field appearance="outline">
+                <input type="text" placeholder="NBFC" aria-label="Number" matInput [formControl]="sellerSelect"
+                  [matAutocomplete]="seller" (input)="InvoiceSellerSuggestion($event)"  />
+                <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="getSellerId($event.option.value)"
+                  #seller="matAutocomplete">
+                  <mat-option *ngFor="let option of company_Name" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear()" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field> -->
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType!='dateRange'">
+                <mat-select [formControl]="retailerDate" (selectionChange)="optionSelected({filterType:'retailers'})" placeholder="Select Date">
+                  <mat-option value="6">Last 6 Month</mat-option>
+                  <mat-option value="12">Last 1 Year</mat-option>
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType=='dateRange'">
+      
+                <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="invoicedateRange" [max]="invoicemaxDate">
+                  <input matStartDate placeholder="Start" formControlName="start" readonly />
+                  <input matEndDate placeholder="End" formControlName="end" readonly />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-button color="danger" matDateRangePickerCancel
+                      (click)="invoiceCancelMatSelect()">CANCEL</button>
+                    <button mat-raised-button color="primary" matDateRangePickerApply (click)="chartsFilter()">
+                      APPLY
+                    </button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+      
+            </div>
+            <div class="retailer-cards-charts">
+              <div class="retailer-cards">
+                <div class="card">
+                  <span>TOTAL</span>
+                  <h1>{{totalRetailers}}</h1>
+                </div>
+
+                <div class="card">
+                  <span>APPROVED</span>
+                  <h1>{{approvedRetailers}}</h1>
+                </div>
+
+                <div class="card">
+                  <span>HOLD</span>
+                  <h1>{{holdRetailers}}</h1>
+                </div>
+
+                <div class="card">
+                  <span>IN-PROGRESS</span>
+                  <h1>{{inprogressRetailers}}</h1>
+                </div>
+
+                <div class="card">
+                  <span>IN-ACTIVE</span>
+                  <h1>{{inactiveRetailers}}</h1>
+                </div>
+        
+              </div>
+              <div class="retailer-charts">
+                <highcharts-chart [options]="retailerOption" [Highcharts]="highcharts"></highcharts-chart>
+              </div>
+              <button mat-mini-fab (click)="download('retailer')"><mat-icon>assignment_returned</mat-icon></button>
+            </div>
+
+          </mat-tab>
+          
+        </mat-tab-group>
+      </div>
+      <div class="retailer-details" >
+        <mat-tab-group mat-align-tabs="center">
+          <mat-tab label="NBFC MAPPED">
+            <div class="retailer-filter">
+              <mat-form-field appearance="outline">
+                <input type="text" placeholder="NBFC Name"  matInput [formControl]="nbfc_mapped_name"
+                  [matAutocomplete]="nbfcmapped" (input)="filterData({nbfc:$event,chart:'nbfc map'})"  />
+                <mat-autocomplete [displayWith]="displayBuyerFn" (optionSelected)="optionSelected({filterType:'nbfc map'})"
+                  #nbfcmapped="matAutocomplete">
+                  <mat-option *ngFor="let option of nbfc_mapped_nbfcListTemp" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="company_name_clear('clear nbfc mapped nbfcs')" matSuffix mat-icon-button aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType!='dateRange'">
+                <mat-select [formControl]="nbfcDate" (selectionChange)="optionSelected({filterType:'nbfc map'})" placeholder="Select Date">
+                  <mat-option value="6">Last 6 Month</mat-option>
+                  <mat-option value="12">Last 1 Year</mat-option>
+                </mat-select>
+              </mat-form-field>
+      
+              <mat-form-field appearance="outline" *ngIf="invoiceType=='dateRange'">
+      
+                <mat-date-range-input [rangePicker]="rangePicker" [formGroup]="invoicedateRange" [max]="invoicemaxDate">
+                  <input matStartDate placeholder="Start" formControlName="start" readonly />
+                  <input matEndDate placeholder="End" formControlName="end" readonly />
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="rangePicker"></mat-datepicker-toggle>
+                <mat-date-range-picker #rangePicker>
+                  <mat-date-range-picker-actions>
+                    <button mat-button color="danger" matDateRangePickerCancel
+                      (click)="invoiceCancelMatSelect()">CANCEL</button>
+                    <button mat-raised-button color="primary" matDateRangePickerApply (click)="chartsFilter()">
+                      APPLY
+                    </button>
+                  </mat-date-range-picker-actions>
+                </mat-date-range-picker>
+              </mat-form-field>
+      
+            </div>
+            <div class="retailer-cards-charts">
+              <div class="retailer-cards">
+                <div class="card">
+                  <span>MAPPED</span>
+                  <h1>{{nbfcCount}}</h1>
+                </div>
+                </div>
+                <div class="retailer-charts">
+            <highcharts-chart [options]="nbfc_mapped_chart" [Highcharts]="highcharts"></highcharts-chart>
+                  </div>
+                  <button mat-mini-fab (click)="download('nbfc map')"><mat-icon>assignment_returned</mat-icon></button>
+            
+          </div>
+          </mat-tab>
+        </mat-tab-group>
+       
+      </div>
+      
+      
+      
+    </div>
+  </div>
+
+</div>
+</app-layout>

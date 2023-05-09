@@ -1,0 +1,314 @@
+<app-layout>
+    <div id="payouthistory-page">
+        <div class="margin-top margin-bottom">
+          <div class="loginform">
+            <div class="tableheader ">
+              <div class="text-left">
+                <h2 i18n="@@BA1">Disbursement Statement</h2>
+              </div>
+              <div>
+                <button mat-icon-button color="accent" matTooltip="Export Excel" matTooltipPosition="above"
+                  class="exel-icon" (click)="
+                  exporter.exportTable('xlsx', {
+                    fileName: 'Disbursement',
+                    sheet: 'Disbursement',
+                    Props: { Author: 'Xuriti' }
+                  })
+                " aria-label="Example icon button with a menu icon">
+                  <mat-icon>assignment_returned</mat-icon>
+                </button>
+              </div>
+
+              <mat-form-field appearance="outline" class="autosuggetion left-box">
+                <mat-label>NBFC Name</mat-label>
+                <input
+                  type="text"
+                  placeholder="NBFC Name"
+                  matInput
+                  [formControl]="nbfcSelect"
+                  [matAutocomplete]="auto"
+                  (input)="nbfcAutoSuggestion($event)"
+                />
+                <mat-autocomplete
+                  #auto="matAutocomplete"
+                  [displayWith]="displayNbfc"
+                  (optionSelected)="nbfcId($event.option.value)"
+                >
+                  <mat-option *ngFor="let nbfc of nbfc_name" [value]="nbfc">
+                    {{ nbfc.nbfc_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="nbfc_clear(nbfcSelect)"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="autosuggetion left-box">
+                <mat-label>Anchor Name</mat-label>
+                <input
+                  type="text"
+                  placeholder="Anchor Name"
+                  matInput
+                  [formControl]="anchorSelect"
+                  [matAutocomplete]="auto_1"
+                  (input)="companySuggetion($event)"
+                />
+                <mat-autocomplete
+                  #auto_1="matAutocomplete"
+                  [displayWith]="displayFn"
+                  (optionSelected)="getAnchorId($event.option.value)"
+                >
+                  <mat-option *ngFor="let company of company_Name" [value]="company">
+                    {{ company.company_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="anchor_clear(anchorSelect)"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="autosuggetion left-box">
+                <mat-label>Retailer Name</mat-label>
+                <input
+                  type="text"
+                  placeholder="Retailer Name"
+                  matInput
+                  [formControl]="dealer"
+                  [matAutocomplete]="auto_2"
+                  (input)="companySuggetion($event)"
+                />
+                <mat-autocomplete
+                  #auto_2="matAutocomplete"
+                  [displayWith]="displayFn"
+                  (optionSelected)="getDealerId($event.option.value)"
+                >
+                  <mat-option *ngFor="let company of company_Name" [value]="company">
+                    {{ company.company_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="dealer_clear(dealer)"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <!-- <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <input
+                  matInput
+                  
+                  placeholder="Status"
+                />
+                <button
+                  type="button"
+                  mat-button
+                  
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>As on</mat-label>
+                <input
+                  matInput
+                  
+                  placeholder="As on"
+                />
+                <button
+                  type="button"
+                  mat-button
+                  
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field> -->
+             
+              <mat-form-field appearance="outline">
+                <mat-label>As on</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="datepicker"
+                  [max]="maxDate"
+                  [(ngModel)]="invoiceDate"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="datepicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #datepicker>
+                  <mat-datepicker-actions>
+                    <button mat-button matDatepickerCancel (click)="date_cancle('as_on_date')">Cancel</button>
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="invoicedate()"
+                      matDatepickerApply
+                    >
+                      Apply
+                    </button>
+                  </mat-datepicker-actions>
+                </mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            
+    
+            <table mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource"
+              matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z0">
+    
+              <!-- Dealer Name -->
+              <ng-container matColumnDef="dealer_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dealer_name"
+                  i18n="@@BA7">
+                  Retailer Name
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA8">
+                  <b>
+                    {{
+                      element && element.dealer_name
+                      ? element.dealer_name
+                      : ""
+                      }}
+                  </b>
+                </td>
+              </ng-container>
+
+              <!-- Anchor Column -->
+              <ng-container matColumnDef="anchor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by anchor"
+                  i18n="@@BA7">
+                  Anchor Name
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA8">
+                 <b>
+                  {{element && element.anchor ? element.anchor : ''}}
+                 </b>
+                </td>
+              </ng-container>
+    
+              <!-- Financing Partner Column -->
+              <ng-container matColumnDef="financing_partner">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by financing_partner"
+                  i18n="@@BA3">
+                  NBFC Name
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA4">   
+                    <b>
+                      {{element && element.finacing_partner ? element.finacing_partner : ''}}
+                    </b>
+                </td>
+              </ng-container>
+    
+              <!-- invoice_date Column -->
+              <ng-container matColumnDef="invoice_date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by invoice_date"
+                  i18n="@@BA9">
+                  Invoice Date
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{
+                  ( element && element.invoice_date ? element.invoice_date : "") | date : date_format
+                  }}
+                </td>
+              </ng-container>
+
+              <!-- documentid Column -->
+              <ng-container matColumnDef="docunmet_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by docunmet_id"
+                  i18n="@@BA9">
+                  Document ID
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{
+                  (element.docunmet_id ? element.docunmet_id : "")
+                  }}
+                </td>
+              </ng-container>
+    
+              <!-- gross_invoice Column -->
+              <ng-container matColumnDef="gross_invoice">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gross_invoice"
+                  i18n="@@BA9">
+                  Gross Invoice
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ (element.gross_invoice_value ? element.gross_invoice_value : 0) | currency : currency_format }}
+                </td>
+              </ng-container>
+
+              <!-- bill_discount_charge Column -->
+              <ng-container matColumnDef="bill_discount_charge">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by bill_discount_charge"
+                  i18n="@@BA9">
+                  Bill Discount Charge
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ ( element && element.bill_discount_charge ? element.bill_discount_charge : 0) | currency : currency_format }}
+                </td>
+              </ng-container>
+
+              <!-- credit note Column -->
+              <ng-container matColumnDef="credit_note">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by credit_note"
+                  i18n="@@BA9">
+                  Credit Note
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ element.credit_note ? element.credit_note : "" }}
+                </td>
+              </ng-container>
+
+              <!-- balance_payable Column -->
+              <ng-container matColumnDef="balance_payable">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by balance_payable"
+                  i18n="@@BA9">
+                  Balance Payable
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ ( element && element.balance_payble ? element.balance_payble : 0) | currency : currency_format }}
+                </td>
+              </ng-container>
+    
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="text-center">
+                    No Record Found
+                  </td>
+                </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+              aria-label="Select page of periodic elements">
+            </mat-paginator>
+          </div>
+        </div>
+    </div>
+</app-layout>

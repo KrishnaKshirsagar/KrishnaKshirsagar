@@ -1,0 +1,260 @@
+<div
+  class="sidenav_container"
+  [@onSideNavChange]="sideNavState ? 'open' : 'close'"
+>
+  <div style="height: 100%">
+    <div class="logo-link">
+      <a>
+        <img
+          class="logo"
+          src="../../../../assets/images/logo-white.png"
+          alt="Logo"
+        />
+      </a>
+    </div>
+    <div class="userbox">
+      <div class="userprofile">
+        <!-- <img src="../../../../assets/images/usericon.png" alt="usericon" /> -->
+        <div class="userinfo">
+          <p>Welcome!</p>
+          <h2>{{ username }}</h2>
+        </div>
+      </div>
+
+      <div class="usermenu" *ngIf="user_role != 'nbfcUser'">
+        <mat-nav-list class="cname">
+          <mat-list-item
+            (click)="openCompaniesPage()"
+            class="mtcon"
+            routerLinkActive="active"
+          >
+            <a matLine> {{ companyName }} </a>
+            <mat-icon>repeat</mat-icon>
+          </mat-list-item>
+        </mat-nav-list>
+      </div>
+    </div>
+
+    <div class="matsidemenu" *ngIf="user_role != 'nbfcUser'">
+      <mat-nav-list *ngIf="!accessFlag">
+        <mat-list-item
+          [routerLinkActive]="['active']"
+          (click)="openDashboardPage()"
+        >
+          <a matLine>Dashboard</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          (click)="openKycPage()"
+          routerLinkActive="active"
+          *ngIf="user_role != 'HO_user' && company_status !== 'Inactive'"
+        >
+          <a matLine> KYC</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          (click)="openInvoicePage('purchases')"
+          routerLinkActive="active"
+          *ngIf="
+            company_status !== 'Inactive' &&
+            company_status !== 'In-Progress' &&
+            company_status !== 'Rejected'
+          "
+        >
+          <a matLine>Invoices</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          (click)="openAssociatedCompaniesPage()"
+          routerLinkActive="active"
+          *ngIf="
+            company_status !== 'Inactive' &&
+            company_status !== 'In-Progress' &&
+            company_status !== 'Rejected'
+          "
+        >
+          <a matLine>Associated Business</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openUserPage()"
+          *ngIf="
+            user_role != 'HO_user' &&
+            company_status !== 'Inactive' &&
+              company_status !== 'In-Progress' &&
+              company_status !== 'Rejected'
+          "
+        >
+          <a matLine>User Management</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openBankAccountPage()"
+          *ngIf="
+            user_role != 'HO_user' &&
+            company_status !== 'Inactive' &&
+              company_status !== 'In-Progress' &&
+              company_status !== 'Rejected'
+          "
+        >
+          <a matLine>Bank Accounts</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openTransactionPage()"
+          *ngIf="
+            company_status !== 'Inactive' &&
+            company_status !== 'In-Progress' &&
+            company_status !== 'Rejected'
+          "
+        >
+          <a matLine>Payment History</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          [matMenuTriggerFor]="reports"
+          *ngIf="
+            company_status !== 'In-Progress' && company_status !== 'Rejected'
+          "
+        >
+          <a matLine>Reports</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-menu #reports="matMenu" xPosition="before">
+          <button
+            mat-menu-item
+            routerLinkActive="active"
+            (click)="openTransactionalStatement()"
+          >
+            Transaction Ledger
+          </button>
+
+          <button
+            mat-menu-item
+            routerLinkActive="active"
+            (click)="openTransactionLedger()"
+          >
+            Transactional Statement
+          </button>
+          <!-- <button mat-menu-item routerLinkActive="active">Ledger Report</button> -->
+
+          <button
+            mat-menu-item
+            routerLinkActive="active"
+            (click)="BuyerVirtualAccounts()"
+            *ngIf="user_role != 'HO_user'"
+          >
+            Retailer Virtual Accounts
+          </button>
+
+          <button
+            mat-menu-item
+            routerLinkActive="active"
+            (click)="RecievableAgeingbyInvoices()"
+            *ngIf="user_role != 'HO_user'"
+          >
+            Recievables Ageing by Invoices
+          </button>
+        </mat-menu>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="openCompanyProfilePage()"
+          *ngIf="
+            user_role != 'HO_user' &&
+            company_status !== 'Inactive' &&
+            company_status !== 'In-Progress' &&
+            company_status !== 'Rejected'
+          "
+        >
+          <a matLine>Business Profile</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          [routerLink]="['/register/entity']"
+        >
+          <a matLine>Add New Business</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+
+    <!-- ---------- NBFC Side nav starts-------------- -->
+    <div class="matsidemenu" *ngIf="user_role == 'nbfcUser'">
+      <mat-nav-list *ngIf="!accessFlag">
+        <mat-list-item
+          [routerLinkActive]="['active']"
+          (click)="openNBFCDashboardPage()"
+        >
+          <a matLine>Dashboard</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          (click)="openNBFCInvoicesPage()"
+          routerLinkActive="active"
+        >
+          <a matLine>Invoices</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+        <mat-list-item (click)="openNBFCBuyersPage()" routerLinkActive="active">
+          <a matLine>Mapped Retailers</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item
+          routerLinkActive="active"
+          (click)="reconcilationHistory()"
+        >
+          <a matLine>Reconciliation History</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="Disbursement()">
+          <a matLine>Disbursement</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="Reconcilation()">
+          <a matLine>Reconciliation</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+
+        <mat-list-item routerLinkActive="active" (click)="PaymentHistory()">
+          <a matLine>Payment History</a>
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+    <!-- ------- NBFC Side nav stop here ----------- -->
+  </div>
+
+  <div
+    class="matsidemenu bottommatlist"
+    *ngIf="accessFlag && user_role != 'nbfcUser'"
+  >
+    <mat-nav-list>
+      <mat-list-item
+        routerLinkActive="active"
+        [routerLink]="['/register/entity']"
+      >
+        <a matLine>Add New Business</a>
+        <mat-icon>keyboard_arrow_right</mat-icon>
+      </mat-list-item>
+    </mat-nav-list>
+  </div>
+</div>

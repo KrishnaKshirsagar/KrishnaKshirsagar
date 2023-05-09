@@ -1,0 +1,107 @@
+<div id="paymentstatus-page">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <div class="loginform">
+          <div class="top1">
+            <div>
+              <img
+                src="assets/images/logo-white.png"
+                alt="bannerimage"
+                class="banner"
+              />
+            </div>
+            <h1 i18n="@@ABA1">Payment Status</h1>
+          </div>
+          <form>
+            <div class="invoicetitle">
+              <!-- <h2 i18n="@@ABA1">Payment Status</h2> -->
+            </div>
+            <div class="w-100 text-center">
+              <h2 class="sucmsg" *ngIf="order_status == 'Paid'">
+                Payment Successful
+              </h2>
+
+              <h2 class="failmsg" *ngIf="order_status == 'Failed'">
+                Payment Failed
+              </h2>
+
+              <mat-icon class="biganim1" *ngIf="order_status == 'Paid'"
+                >check_circle_outline</mat-icon
+              >
+
+              <mat-icon class="biganim2" *ngIf="order_status == 'Failed'"
+                >cancel_presentation</mat-icon
+              >
+            </div>
+            <div>
+              <div class="tableheader w-100">
+                <div class="w-50 pays">
+                  <!-- <h3>
+                    Invoice Id:
+                    <span> {{ transactionDetails.invoice_id }} </span>
+                  </h3> -->
+                  <h3>
+                    Order Id: <span> {{ transactionDetails.order_id }} </span>
+                  </h3>
+                  <h3>
+                    Order Status:
+                    <span> {{ transactionDetails.order_status }} </span>
+                  </h3>
+                </div>
+                <div class="w-50 pays">
+                  <h3>
+                    Order Currency:
+                    <span>{{ transactionDetails.order_currency }} </span>
+                  </h3>
+                  <h3>
+                    Order Amount:
+                    <span>
+                      {{
+                        transactionDetails.order_amount
+                          | currency: currency_format
+                      }}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <div class="tableheader w-100">
+                <div class="w-50 pays">
+                  <!-- <h3>
+                    Order Status:
+                    <span> {{ transactionDetails.order_status }} </span>
+                  </h3> -->
+                </div>
+                <div class="w-50 pays">
+                  <!-- <h3> Interest Payable: <span> Test </span></h3>    -->
+                </div>
+              </div>
+            </div>
+
+            <!-- <div>
+                  <button mat-button type="submit" color="primary" class="btn-primary" i18n="@@ABA12">PAY NOW</button>
+                </div> -->
+          </form>
+
+          <div class="w-50 text-center">
+            <div>
+              <button
+                mat-button
+                type="submit"
+                color="primary"
+                class="btn-primary"
+                i18n="@@ABA12"
+                (click)="gotoHomepage()"
+              >
+                Home
+              </button>
+
+              <!-- <button mat-button type="submit" color="primary" class="btn-primary" i18n="@@ABA12"> Cancel</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

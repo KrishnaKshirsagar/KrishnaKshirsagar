@@ -1,0 +1,24 @@
+version: "3.8"
+services:
+  #Front end
+  frontend:
+    hostname: frontend-service
+    image: frontend-service
+    build:
+      context: frontend-service
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "5012:5012"
+    restart: always
+
+  #Nginx Service
+  nginx:
+    image: nginx
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend

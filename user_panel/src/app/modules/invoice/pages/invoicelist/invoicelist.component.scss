@@ -1,0 +1,515 @@
+#invoicelist-page {
+    @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+    ::ng-deep .mat-typography {
+        line-height: 12px;
+        font-size: 10px;
+        font-weight: 300;
+        line-height: 25px;
+        font-family: "Montserrat";
+        display: table;
+        width: 100%;
+
+    }
+
+    .header-table {
+        margin: 2rem;
+
+        margin-bottom: 1.25rem;
+        font-weight: 200;
+        font-size: medium;
+    }
+
+    //   .container-thead {
+    //     display: flex;
+    //     box-sizing: border-box;
+    //     padding: 0 16px;
+    //     width: 100%;
+    //     flex-direction: row;
+    //     align-items: center;
+    //     white-space: nowrap;
+    //   }
+    thead {
+        display: flex;
+        flex-direction: row;
+        min-height: max-content;
+        // display: table-cell;
+        flex-wrap: nowrap;
+        
+    }
+
+    th {
+        // overflow: auto;
+        padding: 5px;
+        color: #f7f3f3;
+        background: #3e3838f6;
+        // height: auto;
+
+
+        border-radius: 0.625rem;
+        // margin: 10px;
+        align-items: left;
+    }
+
+    // thead tr th {
+
+    //     padding-top: 0.625rem;
+
+    //     color: #f7f3f3;
+    //     border-radius: 0.625rem;
+    //     font-family: 'Montserrat';
+    // }
+
+    //   .row-wrapper{
+    //     height: 2.5rem;
+    //     padding: 1.8rem;
+
+    //     padding-top: 0.625rem;
+    //     background: #3e3838f6;
+    //     color: #f7f3f3;
+    //     border-radius: 0.625rem;
+    //     font-family: 'Montserrat';
+    //    }
+    tbody {
+        width: 100%;
+        display: table;
+        margin: 5px;
+       
+
+        tr {
+            FONT-SIZE: smaller;
+            FONT-FAMILY: system-ui;
+            MARGIN:10PX;
+            width:10px;
+            max-width: 20px;
+        }
+    }
+
+
+
+
+}
+
+// .header-table {
+//     font-family: 'Montserrat';
+//     margin: 2rem;
+//     margin-left: 1rem;
+//     margin-top: 1.25rem;
+//     margin-bottom: 1.25rem;
+
+//     font-weight: 400;
+//     font-size: x-large;
+
+// }
+
+// ::ng-deep .paginator{
+//     font-family: 'Montserrat';
+// }
+
+// /*----------------------------------------------------- CSS DESIGN FOR THE TOP FILTER------------------------------------------------------------------------------------ */
+
+// /* ------------------------------------------------------------------ CSS DESIGN OF THE TABLE   ------------------------------------------------------------------------- */
+
+// .container-table {
+//     display: flex;
+//     overflow-x: hidden;
+//     flex-direction: column;
+//     flex-wrap: nowrap;
+//     align-items: flex-start;
+//     min-width: 4.5rem;
+//     border-spacing: 0px;
+//     width: 100%;
+//     align-content: space-between;
+//     justify-content: space-around;
+//     font-family: 'Montserrat';
+//     line-height: 25px;
+
+// }
+
+// // .container-table thead {
+
+// //     font-family: 'Montserrat';
+// //     padding: 0.5rem;
+// //     width: 100%;
+
+// // }
+
+// // .status {
+// //     display: flex;
+// //     align-items: center;
+// //     font-family: 'Montserrat';
+// // }
+
+// // // .status-background {
+// // //     background: rgba(52, 53, 54, 0.25);
+// // //     border-radius: 30px;
+// // //     padding: 0px 7px 0px 5px;
+// // //     font-size:x-small;
+// // //     font-family: 'Montserrat';
+// // //     box-shadow: none;
+
+// // //     font-family: 'Montserrat';
+// }
+
+
+.invoice-no {
+
+    padding: 11px;
+    width: 10px;
+}
+
+.status-img{
+    
+}
+
+.uploded-by {
+    padding-left: 23px;
+    width: 38px;
+    max-width: 49px;
+    
+}
+
+.total-amount {
+    width: 42px;
+    border-left-width: 10px;
+    padding-left: 57px;
+    padding-right: 27px;
+}
+
+.Gst-invoice-amount {
+    width: 11px;
+    padding: 20px;
+    max-width: 125px;
+    padding-right: 43px;
+    padding-left: 26px;
+}
+
+.Gst-Date{
+    padding-left:10px;
+    width: 60px;
+}
+
+.gst-saving{
+    width: 84px;
+    height: 42px;
+    padding-left: 62px;
+    padding-right: 22px;
+}
+
+.gst-loss{
+    padding-right: 40px;
+    height: 42px;
+    width: 56px;
+    padding-left: 8px;
+}
+
+.payable-amount{
+    width: 91px;
+    height: 32px;
+    padding-left: 20px;
+   
+}
+
+.Invoice-due-date{
+    padding-left: 41px;
+    width: 60px;
+}
+.status{
+    width: 108px;
+    height: 42px;
+    padding-left: 35px;
+    
+   
+}
+
+.created-at{
+    width: 82px;
+    padding-left: 10px;
+}
+
+.action{
+    padding-left: 30px;
+
+}
+
+.outstanding-amount{
+    width: 40px;
+    padding-left: 66px;
+    
+}
+
+
+
+.saving
+{   width: 3rem;
+    max-width: 2.5rem;
+
+}
+
+.outstanding{
+    width: 3rem;
+    max-width: 3REM;
+
+}
+// // .container-table tbody {
+
+// //     font-family: 'Montserrat';
+// //     padding-right: 2rem;
+// //     word-wrap: break-word;
+// //     min-width: 5.5rem;
+// //     table-layout:auto;
+// //     flex-direction: row;
+// //     margin-left: auto;
+// //     margin-right: auto;
+// //     width: 100%;
+// //     flex-direction: row;
+// //     flex-wrap: nowrap;
+// //     justify-content: space-evenly;
+// //     align-items: baseline;
+// //     align-content: center;
+// //     margin-top: 25px;
+// //     margin-left: 29px;
+// //     cursor: pointer;
+
+// // }
+
+// // .container-table tbody tr {
+
+// //     display: flex;
+// //     padding-left: 1rem;
+// //     padding-right: 1rem;
+// //     flex-direction: row;
+// //     flex-wrap: nowrap;
+// //     justify-content: space-between;
+// //     align-items: center;
+// //     width: 100%;
+
+// // }
+
+// /*------------------------------------------------------- CSS STYLING FOR THE  TABLE HEADER CARDS ---------------------------------------------------------------------------------*/
+
+// .second-card-header-1 {
+//     position: absolute;
+//     width: 5.75rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     font-family: 'Montserrat';
+//     padding-left: 1rem;
+//     text-align: -webkit-center;
+//     margin-left: 22px;
+
+// }
+
+// .second-card-header-2 {
+//     position: absolute;
+//     width: 10.1rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 8rem;
+//     font-family: 'Montserrat';
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     text-align: -webkit-center;
+
+// }
+
+// .second-card-header-3 {
+//     position: absolute;
+//     width: 7.5rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 20rem;
+//     font-family: 'Montserrat';
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     text-align: -webkit-center;
+
+// }
+
+// .second-card-header-4 {
+//     position: absolute;
+//     width: 11.5rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 29.5rem;
+//     font-family: 'Montserrat';
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     text-align: -webkit-center;
+
+// }
+
+// .second-card-header-5 {
+//     position: absolute;
+//     width: 8.5rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 43rem;
+//     font-family: 'Montserrat';
+//     text-align: -webkit-center;
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+// }
+
+// .second-card-header-6 {
+//     position: absolute;
+//     width: 7.8rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 54rem;
+//     font-family: 'Montserrat';
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     text-align: -webkit-center;
+
+// }
+
+// .second-card-header-7 {
+//     position: absolute;
+//     width: 7.8rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 64rem;
+//     font-family: 'Montserrat';
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     text-align: -webkit-center;
+
+// }
+
+// .second-card-header-8 {
+//     position: absolute;
+//     width: 9.0rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 74rem;
+//     margin-right: 2rem;
+//     font-family: 'Montserrat';
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     text-align: -webkit-center;
+
+// }
+
+// .second-card-header-9 {
+//     position: absolute;
+//     width: 5.8rem;
+//     height: 0.5rem;
+//     padding: 0.8rem;
+//     padding-bottom: 1.5rem;
+//     padding-top: 0.2rem;
+//     margin-left: 85rem;
+//     font-family: 'Montserrat';
+
+//     background: #3e3838f6;
+//     color: #f7f3f3;
+//     border-radius: 0.625rem;
+//     text-align: -webkit-center;
+// }
+
+// .second-card-header-10 {
+//   position: absolute;
+//   width: 5.8rem;
+//   height: 0.5rem;
+//   padding: 0.8rem;
+//   padding-bottom: 1.5rem;
+//   padding-top: 0.2rem;
+//   margin-left: 85rem;
+//   font-family: 'Montserrat';
+
+//   background: #3e3838f6;
+//   color: #f7f3f3;
+//   border-radius: 0.625rem;
+//   text-align: -webkit-center;
+
+// }
+
+// .second-card-header-11 {
+//   position: absolute;
+//   width: 5.8rem;
+//   height: 0.5rem;
+//   padding: 0.8rem;
+//   padding-bottom: 1.5rem;
+//   padding-top: 0.2rem;
+//   margin-left: 85rem;
+//   font-family: 'Montserrat';
+
+//   background: #3e3838f6;
+//   color: #f7f3f3;
+//   border-radius: 0.625rem;
+//   text-align: -webkit-center;
+
+// }
+
+// .second-card-header-12 {
+//   position: absolute;
+//   width: 5.8rem;
+//   height: 0.5rem;
+//   padding: 0.8rem;
+//   padding-bottom: 1.5rem;
+//   padding-top: 0.2rem;
+//   margin-left: 85rem;
+//   font-family: 'Montserrat';
+
+//   background: #3e3838f6;
+//   color: #f7f3f3;
+//   border-radius: 0.625rem;
+//   text-align: -webkit-center;
+
+// }
+
+// .second-card-header-13 {
+//   position: absolute;
+//   width: 5.8rem;
+//   height: 0.5rem;
+//   padding: 0.8rem;
+//   padding-bottom: 1.5rem;
+//   padding-top: 0.2rem;
+//   margin-left: 85rem;
+//   font-family: 'Montserrat';
+
+//   background: #3e3838f6;
+//   color: #f7f3f3;
+//   border-radius: 0.625rem;
+//   text-align: -webkit-center;
+
+// }
+
+// .Gst{
+//     padding-left: 1.5rem;
+//     margin: 1rem;
+// }
+// }

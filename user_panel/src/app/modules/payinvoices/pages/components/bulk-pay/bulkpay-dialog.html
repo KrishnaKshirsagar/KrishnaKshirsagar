@@ -1,0 +1,212 @@
+<div id="bulkpay-dialog">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <form [formGroup]="paynow_form" (ngSubmit)="paynow()">
+          <div class="invoicetitle">
+            <h2 i18n="@@ABA1">Pay Now</h2>
+            <button
+            mat-icon-button
+            class="close-button"
+            [mat-dialog-close]="true"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          </div>
+          <mat-dialog-content class="mat-typography">
+            <div>
+              <div class="tableheader w-100 pays">
+              
+                <mat-form-field class="example-full-width" appearance="outline">
+                  <mat-label>Seller</mat-label>
+                  <input type="text"
+                         placeholder="Please Select Seller"
+                         aria-label="Number"
+                         matInput
+                         [formControl]="myControl"
+                         [matAutocomplete]="auto">
+                  <mat-autocomplete [displayWith]="displayFn" (optionSelected)="onChange($event.option.value)" #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of sellerlist" [value]="option">
+                      {{option.company_name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <button type="button" mat-button (click)="clear(myControl)" matSuffix mat-icon-button aria-label="Clear" >
+                    <mat-icon>close</mat-icon>
+                  </button>                  
+                </mat-form-field>
+              </div>
+              
+              <div class="tableheader w-100">
+                <div class="w-100 pays">
+                  <h3>
+                    <!-- Outstanding Amount: -->
+                    Total Invoice Amount:
+                    <span>
+                      {{ (total_outstanding_amount && total_outstanding_amount > 0 ? total_outstanding_amount : 0) | currency:
+                      currency_format}}
+                    </span>
+                  </h3>
+                </div>
+               
+              </div>
+
+              <div class="tableheader w-100">
+                <div class="w-100 pays">
+                  <h3>
+                    <!-- GST Amount -->
+                    GST Amount:
+                    <span>
+                      {{ (gst_amount && gst_amount > 0 ? gst_amount : 0) | currency:
+                      currency_format}}
+                    </span>
+                  </h3>
+                </div>     
+
+              </div>
+
+              <div class="tableheader w-100">               
+                <div class="w-50 pays">
+                  <h3>
+                    Total Discount:
+                    <span style="color: rgb(9, 192, 18)">
+                      {{ (total_discount && total_discount > 0 ? total_discount : 0) | currency: currency_format}}
+                    </span>
+                  </h3>
+                 
+                </div>
+                <div class="w-50 pays">
+                  <h3>
+                    Interest:
+                    <span>
+                      {{ (total_interest && total_interest > 0 ? total_interest : 0) | currency:
+                      currency_format}}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <div class="tableheader w-100" style="display: block">
+                <div class="w-100 pays">
+                  <mat-radio-group class="example-radio-group">
+                    <mat-radio-button
+                      class="example-radio-button"
+                      [value]="payableAmount"
+                      color="primary"
+                      (click)="onSelectCompleteAmount(true)"
+                      [checked]="payment_option_flag"
+                    >
+                      <h3>
+                        Payable Amount <label style="font-size: 12px;"> *Inc GST</label>:
+                        <span
+                          >{{ (total_amount && total_amount > 0 ? total_amount : 0) | currency: currency_format}}</span
+                        >
+                      </h3>
+                    </mat-radio-button>
+
+                    <mat-radio-button
+                      class="example-radio-button"
+                      value=""
+                      color="primary"
+                      (click)="onSelectCompleteAmount(false)"
+                    >
+                      <h3>Part Payment:</h3>
+                    </mat-radio-button>                    
+                  </mat-radio-group>
+                </div>
+                <div
+                  class="w-100 pays"                
+                >
+                  <mat-form-field
+                    appearance="outline"
+                    (focusout)="onEnterAmount($event)"
+                    *ngIf="!fullAmountPayflag"
+                    style="font-size: 13px; "
+                  >
+                    <input
+                      matInput
+                      formControlName="partPay"
+                      type="number"
+                      min="0"
+                      id="partamt"
+                    />
+                  </mat-form-field>
+                  <div style="align-self: center">
+                    <span
+                    *ngIf="errorflag"
+                    style="color: rgb(241, 14, 14); margin-left: 2px;"
+                    i18n="@@ABA3"
+                    >
+                      Please provide a valid amount
+                  </span>
+                   
+                    </div>
+                </div>
+                <div class="w-100 pays">
+                  <h3 (click)="openpaymentSummery()" class="psum" style="color: blue;">Payment Summary</h3>
+                </div>  
+
+                <!-- Show discount and interest when we settle amt -->
+                <div class="tableheader w-100" *ngIf="!fullAmountPayflag">
+                  <div class="w-50 pays">
+                    <h3>
+                      Discount Received:
+                      <span style="color: rgb(9, 192, 18)">
+                        {{ (partpay_discount && partpay_discount > 0 ? partpay_discount : 0) | currency: currency_format}}
+                      </span>
+                    </h3>
+                   
+                  </div>
+                  <div class="w-50 pays">
+                    <h3>
+                      Interest:
+                      <span>
+                        {{ (partpay_interest && partpay_interest > 0 ? partpay_interest : 0) | currency:
+                        currency_format}}
+                      </span>
+                    </h3>
+                  </div>
+                </div>
+
+                <div class="tableheader w-100" *ngIf="!fullAmountPayflag">
+                  <div class="w-50 pays">
+                    <h3>
+                      GST Settled:
+                      <span style="color: rgb(9, 192, 18)">
+                        {{ (gst_settled && gst_settled > 0 ? gst_settled : 0) | currency: currency_format}}
+                      </span>
+                    </h3>
+                   
+                  </div>
+                </div>              
+              </div>            
+            </div>
+          </mat-dialog-content>
+          <div class="tableheader w-100">
+            <div class="w-50 pays text-center">
+              <button
+                mat-button
+                type="submit"
+                color="primary"
+                class="btn-primary"
+                i18n="@@ABA12"
+              >
+                CONFIRM
+              </button>
+            </div>
+            <div class="w-50 pays text-center">
+              <button
+                mat-button
+                color="primary"
+                class="btn-primary"
+                i18n="@@ABA12"
+                [mat-dialog-close]="true"
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

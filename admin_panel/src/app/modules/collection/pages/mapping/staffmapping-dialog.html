@@ -1,0 +1,42 @@
+<div id="staffmapping-dialog">
+  <mat-dialog-content>
+    <h1 class="text-center">Map Company</h1>
+    <form class="example-form">
+      <mat-form-field appearance="outline">
+        <mat-label> Map Company</mat-label>
+        <input
+          type="text"
+          placeholder="Select Company"
+          matInput
+          [matAutocomplete]="auto"
+          (input)="companySuggetion($event)"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          [displayWith]="displayFn"
+          (optionSelected)="getPosts($event.option.value)"
+        >
+          <mat-option *ngFor="let company of company_Name" [value]="company">
+            {{ company.company_name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <div class="input-wrapper text-center">
+        <button
+          mat-button
+          color="primary"
+          cdkFocusInitial
+          type="button"
+          (click)="companyMap()"
+          style="margin: 5px"
+        >
+          SUBMIT
+        </button>
+        <button mat-button color="warn" type="button" (click)="cancel()">
+          CANCEL
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

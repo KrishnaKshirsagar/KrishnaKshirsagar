@@ -1,0 +1,132 @@
+.mat-drawer-container {
+  background-color: #ffffff;
+}
+.sidenav_container {
+  min-width: 72px;
+  height: calc(100vh - 200px);
+}
+.cname a {
+  word-wrap: break-word;
+  white-space: pre-line;
+  // text-transform: lowercase;
+}
+.cname a::first-letter {
+  text-transform: capitalize;
+}
+.matsidemenu {
+  width: 100%;
+  mat-icon {
+    color: #fff;
+    margin-left: 20px;
+    font-size: 24px;
+  }
+  .mat-button {
+    color: #fff;
+  }
+}
+
+.item-icon {
+  margin: 0px 8px;
+}
+.collapse_nav {
+  padding: 0px 10px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.list-item {
+  margin: 10px 0;
+}
+.active-link {
+  color: white;
+}
+.mat-nav-list a,
+.mat-icon-button {
+  color: white;
+}
+.logo-link {
+  text-align: center;
+}
+.logo {
+  max-height: 35px;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+.userbox {
+  padding: 10px;
+  background: #333333;
+  border: 1px solid #ffffff80;
+  border-radius: 10px;
+  img {
+    max-height: 45px;
+    border-radius: 100%;
+  }
+  .userprofile {
+    display: flex;
+  }
+  .userinfo {
+    padding-left: 5px;
+    padding-right: 5px;
+    p {
+      color: white;
+      margin-bottom: 0px;
+    }
+    h2 {
+      color: white;
+      margin-bottom: 0px;
+      font-size: 16px;
+    }
+  }
+  .usermenu {
+    ::ng-deep {
+      .mat-select-value {
+        color: #000000;
+      }
+      .mtcon .mat-list-item-content {
+        padding: 0 4px;
+      }
+      .mat-form-field-appearance-outline .mat-form-field-wrapper {
+        padding-bottom: 0em;
+      }
+      .mat-form-field-infix {
+        border-top: 0.44375em solid transparent;
+      }
+      .mat-form-field-appearance-outline .mat-select-arrow-wrapper {
+        transform: translateY(-9%);
+      }
+      .mat-form-field-appearance-outline .mat-form-field-outline {
+        background: white;
+        border-radius: 10px;
+      }
+      .mat-form-field-appearance-outline .mat-form-field-outline:hover {
+        background: white;
+        border-radius: 10px;
+      }
+    }
+  }
+}
+.usermenu {
+  .mat-nav-list .mat-list-item {
+    margin-bottom: 0px;
+    margin-top: 0px;
+  }
+  mat-icon {
+    color: #fff;
+    font-size: 24px;
+  }
+}
+.mat-nav-list .mat-list-item {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  height: 37px;
+}
+
+.bottommatlist {
+  margin-top: 75px;
+}
+
+.mat-nav-list .active {
+  background: #333333;
+}

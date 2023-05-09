@@ -1,0 +1,24 @@
+#kyc-doc-dailog{
+    min-width:40rem;
+    height:30rem;
+    overflow-y:hidden;
+
+    .flex {
+        display: flex;
+      }
+     
+      .kyc-dailog-header{
+      display: flex;
+      justify-content: space-between;
+  
+      .mat-icon-button {
+        padding: 0;
+        min-width: 0;
+        width: 25px;
+        height: 25px;
+        flex-shrink: 0;
+        line-height: 25px;
+        border-radius: 50%;
+      }
+    }
+}

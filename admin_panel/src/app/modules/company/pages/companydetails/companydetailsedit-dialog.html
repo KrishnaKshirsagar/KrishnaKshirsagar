@@ -1,0 +1,87 @@
+<mat-dialog-content class="mat-typography">
+  <div id="companydetailsedit-dialog">
+    <h1 class="text-center">Company Details Verification</h1>
+    <h2 class="text-center">{{this.data.company_update_data.company_name}}</h2>
+    <form
+      class="verify-form"
+      [formGroup]="verify_form"
+      (ngSubmit)="verifyCompany()"
+    >
+      <section class="example-section">
+        <table>
+          <thead class="thead">
+            <th>Field</th>
+            <th>Value</th>
+            <th>Verify</th>
+          </thead>
+          <tbody class="tbody">
+            <tr *ngIf="this.data.companynameflag">
+              <td>Company Name</td>
+              <td>{{this.data.company_update_data.company_name}}</td>
+              <td>
+                <mat-checkbox
+                  formControlName="company_name"
+                  color="primary"
+                ></mat-checkbox>
+              </td>
+            </tr>
+            <tr *ngIf="this.data.gstinflag">
+              <td>GST No</td>
+              <td>{{this.data.company_update_data.gstin}}</td>
+              <td>
+                <mat-checkbox
+                  formControlName="gstin"
+                  color="primary"
+                ></mat-checkbox>
+              </td>
+            </tr>
+            <tr *ngIf="this.data.panflag">
+              <td>PAN</td>
+              <td>{{this.data.company_update_data.pan}}</td>
+              <td>
+                <mat-checkbox
+                  formControlName="pan"
+                  color="primary"
+                ></mat-checkbox>
+              </td>
+            </tr>
+            <tr *ngIf="this.data.tanflag">
+              <td>TAN</td>
+              <td>{{this.data.company_update_data.tan}}</td>
+              <td>
+                <mat-checkbox
+                  formControlName="tan"
+                  color="primary"
+                  readonly
+                ></mat-checkbox>
+              </td>
+            </tr>
+            <tr *ngIf="this.data.cinflag">
+              <td>CIN</td>
+              <td>{{this.data.company_update_data.cin}}</td>
+              <td>
+                <mat-checkbox
+                  formControlName="cin"
+                  color="primary"
+                  readonly
+                ></mat-checkbox>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <div class="button">
+        <div>
+          <button mat-button color="primary" cdkFocusInitial type="submit">
+            VERIFY
+          </button>
+        </div>
+        <div>
+          <button mat-button color="warn" type="button" (click)="cancel()">
+            CANCEL
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</mat-dialog-content>

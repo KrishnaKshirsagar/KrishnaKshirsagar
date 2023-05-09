@@ -1,0 +1,31 @@
+<div id="reportserror-page">
+  <div class="text-center">
+    <h1>Comment</h1>
+  </div>
+
+  <form
+    [formGroup]="invoice_reject_form"
+    class="example-form"
+    (ngSubmit)="onSubmit()"
+  >
+    <mat-form-field appearance="fill">
+      <mat-label>Leave a comment</mat-label>
+      <textarea
+        matInput
+        pattern="^[a-zA-Z\s]+$"
+        type="text"
+        formControlName="invoice_comment"
+        required
+      ></textarea>
+      <mat-error style="color: rgb(241, 14, 14)"
+        >Please write a reason to reject this invoice</mat-error
+      >
+    </mat-form-field>
+
+    <div class="text-center">
+      <button mat-button color="primary" type="submit" class="btn-primary">
+        SAVE
+      </button>
+    </div>
+  </form>
+</div>

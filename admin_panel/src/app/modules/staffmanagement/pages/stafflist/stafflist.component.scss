@@ -1,0 +1,140 @@
+#stafflist-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+  }
+
+  td.mat-cell,th.mat-header-cell{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+  .mat-form-field {
+    margin-right: 15px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-upload {
+    background: #f79e1b;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+    padding: 5px 31px;
+    vertical-align: 2px;
+    font-size: 18px;
+    border-radius: 7px;
+  }
+  .text-right {
+    text-align: right;
+  }
+}
+
+#staffinvite-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}
+
+#add-edit-staff-dialog {
+  .flex {
+    display: flex;
+  }
+
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .example-full-width {
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .flex {
+      display: block;
+    }
+  }
+}

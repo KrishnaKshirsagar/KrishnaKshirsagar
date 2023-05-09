@@ -1,0 +1,402 @@
+<app-layout>
+  <div id="credit-page">
+
+    <div class="main-wrapper backdiv" >
+      <button
+        mat-mini-fab
+        color="primary"
+        (click)="onClickBack()"
+        class="back"
+        aria-label="back button"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2>GSTIN Details</h2>
+      
+    </div>
+    <div class="fetchButtonContainer">
+      <button *ngIf="fetchButton"  mat-raised-button (click)="TriggerApi()">Fetch</button>
+    </div>
+  
+    <div class="gstndetailes">
+      
+      <div class="gstdetailes">
+        <h3>Constitution Of Business :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.constitutionOfBusiness
+              ? this.data.gstnDetailed.constitutionOfBusiness
+              : ""
+          }}
+        </p>
+        <h3>Legal Name Of Business :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.legalNameOfBusiness
+              ? this.data.gstnDetailed.legalNameOfBusiness
+              : ""
+          }}
+        </p>
+        <h3>Centre Jurisdiction :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.centreJurisdiction
+              ? this.data.gstnDetailed.centreJurisdiction
+              : ""
+          }}
+        </p>
+        <h3>State Jurisdiction :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.stateJurisdiction
+              ? this.data.gstnDetailed.stateJurisdiction
+              : ""
+          }}
+        </p>
+        <h3>Registration Date :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.registrationDate
+              ? this.data.gstnDetailed.registrationDate
+              : ""
+          }}
+        </p>
+        <h3>Nature Of Business Activities :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.natureOfBusinessActivities
+              ? this.data.gstnDetailed.natureOfBusinessActivities
+              : ""
+          }}
+        </p>
+        <h3>Compliance Rating :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.complianceRating
+              ? this.data.gstnDetailed.complianceRating
+              : ""
+          }}
+        </p>
+        <h3>Director Names :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.directorNames
+              ? this.data.gstnDetailed.directorNames
+              : ""
+          }}
+        </p>
+        <h3>Tax Payer Type :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.taxPayerType
+              ? this.data.gstnDetailed.taxPayerType
+              : ""
+          }}
+        </p>
+        <h3>Trade Name Of Business :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.tradeNameOfBusiness
+              ? this.data.gstnDetailed.tradeNameOfBusiness
+              : ""
+          }}
+        </p>
+        <h3>Principal Place Address :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.principalPlaceAddress &&
+            this.data.gstnDetailed.principalPlaceAddress.address
+              ? this.data.gstnDetailed.principalPlaceAddress.address
+              : ""
+          }}
+        </p>
+        <h3>Aggregate TurnOver Range :</h3>
+        <p>
+          Maximum:
+          {{
+            this.data &&
+            this.data.aggregateTurnOverRange &&
+            this.data.aggregateTurnOverRange.maximum
+              ? this.data.aggregateTurnOverRange.maximum
+              : ""
+          }}
+          <br />
+          Minimum:
+          {{
+            this.data &&
+            this.data.aggregateTurnOverRange &&
+            this.data.aggregateTurnOverRange.minimum
+              ? this.data.aggregateTurnOverRange.minimum
+              : ""
+          }}
+        </p>
+
+        <h3>Gross Total Income :</h3>
+        <p>
+          {{
+            this.data && this.data.grossTotalIncome
+              ? this.data.grossTotalIncome
+              : ""
+          }}
+        </p>
+        <h3>Gross Total Income Financial Year :</h3>
+        <p>
+          {{
+            this.data && this.data.grossTotalIncomeFinancialYear
+              ? this.data.grossTotalIncomeFinancialYear
+              : ""
+          }}
+        </p>
+        <h3>GSTIN :</h3>
+        <p>{{ this.data && this.data.gstin ? this.data.gstin : "" }}</p>
+        <h3>GSTIN Status :</h3>
+        <p>{{ this.data && this.data.gstnDetailed.gstinStatus ? this.data.gstnDetailed.gstinStatus : "" }}</p>
+        <h3>additionalPlaceAddress :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnDetailed &&
+            this.data.gstnDetailed.additionalPlaceAddress[0] &&
+            this.data.gstnDetailed.additionalPlaceAddress[0].address
+              ? this.data.gstnDetailed.additionalPlaceAddress[0].address
+              : ""
+          }}
+        </p>
+      </div>
+      <div></div>
+    </div>
+
+    <div>
+      <h2>GSTN Record :</h2>
+      <div class="gst_record">
+        <h3>Reg Type :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].gstinRefId
+              ? this.data.gstnRecords[0].gstinRefId
+              : ""
+          }}
+        </p>
+        <h3>Email Id :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].emailId
+              ? this.data.gstnRecords[0].emailId
+              : ""
+          }}
+        </p>
+        <h3>Application Status :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].applicationStatus
+              ? this.data.gstnRecords[0].applicationStatus
+              : ""
+          }}
+        </p>
+        <h3>Registration Name :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].registrationName
+              ? this.data.gstnRecords[0].registrationName
+              : ""
+          }}
+        </p>
+        <h3>Gstin RefId :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].gstinRefId
+              ? this.data.gstnRecords[0].gstinRefId
+              : ""
+          }}
+        </p>
+        <h3>Tin Number :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].tinNumber
+              ? this.data.gstnRecords[0].tinNumber
+              : ""
+          }}
+        </p>
+        <h3>Mobile Number :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].mobNum
+              ? this.data.gstnRecords[0].mobNum
+              : ""
+          }}
+        </p>
+        <h3>Gst Number :</h3>
+        <p>
+          {{
+            this.data &&
+            this.data.gstnRecords[0] &&
+            this.data.gstnRecords[0].gstin
+              ? this.data.gstnRecords[0].gstin
+              : ""
+          }}
+        </p>
+      </div>
+    </div>
+
+    <div>
+      <h2>Filing Status :</h2>
+
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2"
+      >
+        <!-- Filiing Year Column -->
+        <ng-container matColumnDef="filingYear">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by filingYear"
+          >
+            Filiing Year
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.filingYear }}
+          </td>
+        </ng-container>
+
+        <!-- Month Of Filiing Column -->
+        <ng-container matColumnDef="monthOfFiling">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by monthOfFiling"
+            *matHeaderCellDef
+          >
+            Month Of Filing
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.monthOfFiling }}
+          </td>
+        </ng-container>
+
+        <!-- Method Of Filing Column -->
+        <ng-container matColumnDef="methodOfFilling">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by methodOfFilling"
+            *matHeaderCellDef
+          >
+            Method Of Filing
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.methodOfFilling }}
+          </td>
+        </ng-container>
+
+        <!-- date Of_filing Column -->
+        <ng-container matColumnDef="dateOfFiling">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by dateOfFiling"
+            *matHeaderCellDef
+          >
+            Date Of Filing
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.dateOfFiling }}
+          </td>
+        </ng-container>
+
+        <!-- Gst type Column -->
+        <ng-container matColumnDef="gstType">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by gstType"
+            *matHeaderCellDef
+          >
+            GST Type
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.gstType }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="annual_return">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by annual_return"
+            *matHeaderCellDef
+          >
+            Annual Return
+          </th>
+          <td mat-cell *matCellDef="let element"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="gstStatus">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by gstStatus"
+            *matHeaderCellDef
+          >
+            Gst Status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.gstStatus }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">No Users Found</td>
+        </tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 50]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</app-layout>

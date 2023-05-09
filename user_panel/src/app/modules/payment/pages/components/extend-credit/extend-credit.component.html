@@ -1,0 +1,120 @@
+<div id="extend-credit-page">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <form>
+          <div class="invoicetitle">
+            <h2 i18n="@@ABA1">Pay Later</h2>
+            <h3></h3>
+          </div>
+
+          <mat-dialog-content class="mat-typography">
+            <div>
+              <div class="tableheader w-100 pays">
+                <h3>
+                  Seller: <span> {{ data.seller_name }} </span>
+                </h3>
+              </div>
+
+              <div class="tableheader w-100">
+                <div class="w-50 pays">
+                  <h3>
+                    Invoice No : <span> {{ data.invoice_number }} </span>
+                  </h3>
+                  <h3>
+                    Invoice Due Date:
+                    <span>
+                      {{ data.invoice_due_date | date: Date_Format }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="w-50 pays">
+                  <h3>
+                    Invoice Amount:
+                    <span>
+                      {{ data.invoice_amount | currency: currency_format }}
+                    </span>
+                  </h3>
+                  <h3>
+                    Outstanding Amount:
+                    <span>
+                      {{ data.outstanding_amount | currency: currency_format }}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <div class="tableheader w-100">
+                <div class="pays">
+                  <h3>
+                    Extended Due Date : <span> {{ data.extended_due_date | date: Date_Format }} </span>
+                  </h3>
+                </div>                
+              </div>
+
+              <div class="tableheader w-100">
+                <div class="w-50 pays">
+                  <mat-label style="color: rgb(241, 14, 14)" *ngIf="errorflag"
+                    >Please select invoice due date</mat-label
+                  >
+                  <mat-form-field appearance="outline" style="width: 100%">
+                    <mat-label>Select Invoice Due Date</mat-label>
+                    <mat-select
+                      (selectionChange)="invoiceNewDueDate($event.value)"
+                      required
+                    >
+                      <mat-option value="7"> 7 Days </mat-option>
+                      <mat-option value="15"> 15 Days </mat-option>
+                      <mat-option value="30"> 30 Days </mat-option>
+                      <mat-option value="45"> 45 Days </mat-option>
+                      <mat-option value="60"> 60 Days </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+                  <h3>
+                    New Outstanding Amount:
+                    <span
+                      >{{ new_Outstanding_amount | currency: currency_format }}
+                    </span>
+                  </h3>
+                </div>
+
+                <div class="w-50 pays">
+                  <h3>
+                    New Due Date:
+                    <span> {{ new_due_date | date: Date_Format }} </span>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </mat-dialog-content>
+          <div class="tableheader w-100">
+            <div class="w-50 pays">
+              <button
+                mat-button
+                type="submit"
+                color="primary"
+                class="btn-primary"
+                i18n="@@ABA12"
+                (click)="onSubmit()"
+              >
+                CONFIRM
+              </button>
+            </div>
+            <div class="w-50 pays">
+              <button
+                mat-button
+                color="primary"
+                class="btn-primary"
+                i18n="@@ABA12"
+                [mat-dialog-close]="true"
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

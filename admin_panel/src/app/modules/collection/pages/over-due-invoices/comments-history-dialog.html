@@ -1,0 +1,97 @@
+<div id="comments-history-dialog">
+
+  <div class="add-dailog">
+   <h2 mat-dialog-title> Comments History </h2>
+    <button
+      mat-icon-button
+      class="close-button"
+      [mat-dialog-close]="true"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  
+  <table style="margin-top:10px;"
+      mat-table
+      [dataSource]="dataSource1"
+      matSort
+      (matSortChange)="announceSortChange($event)"
+      class="mat-elevation-z2"
+    >
+
+     <!--comment_category Column -->
+     <ng-container matColumnDef="comment_category">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by comment_category"
+      >
+      Comment Category
+      </th>
+      <td mat-cell *matCellDef="let element">
+         {{element.comment_category}}
+      </td>
+    </ng-container>
+
+      <!--comment Column -->
+      <ng-container matColumnDef="comment">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by comment"
+        >
+        Comments
+        </th>
+        <td mat-cell *matCellDef="let element">
+           {{element.comment | titlecase}}
+        </td>
+      </ng-container>
+
+
+      <!-- commented_by Column -->
+      <ng-container matColumnDef="commented_by">
+        <th
+          mat-header-cell
+          mat-sort-header
+          sortActionDescription="Sort by commented_by"
+          *matHeaderCellDef
+        >
+        Commented By
+        </th>
+        <td mat-cell *matCellDef="let element">
+           {{element.commented_by}}
+        </td>
+      </ng-container>
+
+      <!-- Payment Date Column -->
+      <ng-container matColumnDef="createdAt">
+        <th
+          mat-header-cell
+          mat-sort-header
+          sortActionDescription="Sort by createdAt"
+          *matHeaderCellDef
+        >
+        Commented At
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{(element.timeStamp) | date : Date_Format}}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="text-center">
+          No Record Found
+        </td>
+      </tr>
+    </table>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 15]"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements"
+    >
+    </mat-paginator>
+</div>

@@ -1,0 +1,461 @@
+<div id="invoicestatus-page">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <div class="loginform">
+          <div class="top1">
+            <div>
+              <img
+                src="assets/images/logo-white.png"
+                alt="bannerimage"
+                class="banner"
+              />
+            </div>
+            <div class="heading"><h1 i18n="@@BA1">Invoices</h1></div>
+          </div>
+          <div class="pay-page-btn">
+            <button
+              *ngIf="type == 'payment'"
+              mat-flat-button
+              class="btn-primary"
+              (click)="payInvoice()"
+            >
+            PAY NOW
+            </button>
+          </div>
+
+          <div *ngIf="type == 'invoice'">
+             <!-- Invoice list table for status change-->
+            <table
+            mat-table            
+            matTableExporter
+            [hiddenColumns]="[7]"
+            #exporter="matTableExporter"
+            [dataSource]="invoice_dataSource"
+            matSort
+            (matSortChange)="announceSortChange($event)"
+            class="mat-elevation-z0"
+            matTableResponsive
+          >
+            <!-- invoice_no Column -->
+            <ng-container matColumnDef="invoice_number">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_number"
+              >
+                Invoice No
+              </th>
+              <td mat-cell *matCellDef="let element" data-label="Invoice No">
+                {{ element && element.invoice_number ? element.invoice_number : '' }}
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="company_name">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Seller Name
+              </th>
+              <td mat-cell *matCellDef="let element" data-label="Seller Name">
+                {{ element && element.seller && element.seller.company_name ? element.seller.company_name : '' }}
+              </td>
+            </ng-container>
+
+            <!-- GST Column -->
+            <ng-container matColumnDef="total_tax">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                GST Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="GST Amount"
+              >
+                {{ (element && element.bill_details && element.bill_details.gst_summary && element.bill_details.gst_summary.total_tax ? element.bill_details.gst_summary.total_tax : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- invoice_amount Column -->
+            <ng-container matColumnDef="invoice_amount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_amount"
+              >
+                Invoice Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Invoice Amount"
+              >
+                {{ (element && element.invoice_amount ? element.invoice_amount : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- Total invoice_amount Column -->
+            <ng-container matColumnDef="total_invoice_amount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by total_invoice_amount"
+              >
+                Total Invoice Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Total Invoice Amount"
+              >
+                {{ (element && element.total_invoice_amount ? element.total_invoice_amount : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- invoice_due_date Column -->
+            <ng-container matColumnDef="invoice_due_date">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_due_date"
+              >
+                Invoice Due Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Invoice Due Date"
+              >
+                {{
+                  (element.extended_due_date
+                    ? element.extended_due_date
+                    : element.invoice_due_date
+                  ) | date: Date_Format
+                }}
+              </td>
+            </ng-container>
+
+            <!-- invoice_status Column -->
+            <ng-container matColumnDef="invoice_status">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_status"
+              >
+                Status
+              </th>
+              <td mat-cell *matCellDef="let element" data-label="Status">
+                {{ element && element.invoice_status ? element.invoice_status : '' }}
+              </td>
+            </ng-container>
+
+            <!-- actionsstatic Column -->
+          <ng-container matColumnDef="actionsstatic">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by actionsstatic"
+            >
+              Action
+            </th>
+            <td mat-cell *matCellDef="let element" data-label="Action">
+              <div>
+                <button
+                  *ngIf="element.invoice_file"
+                  mat-icon-button
+                  matTooltip="Download"
+                  aria-label="Download"
+                  (click)="viewInvoice(element.invoice_file)"
+                >
+                  <mat-icon class="pdfdown">picture_as_pdf</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  (click)="confirmInvoice(element)"
+                  [disabled]="action_flag == true"
+                  *ngIf="element.invoice_status == 'Pending'"
+                  matTooltip="Confirm"
+                  aria-label="Confirm"
+                >
+                  <mat-icon>check</mat-icon>
+                </button>
+
+                <button
+                  mat-icon-button
+                  (click)="rejectInvoice(element)"
+                  [disabled]="action_flag == true"
+                  *ngIf="element.invoice_status == 'Pending'"
+                  matTooltip="Reject"
+                  aria-label="Reject"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </td>
+          </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="invoice_displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: invoice_displayedColumns"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="text-center">No Invoice Found</td>
+            </tr>
+            </table>
+            <mat-paginator
+              [pageSizeOptions]="[10, 20, 50]"
+              showFirstLastButtons
+              [pageSize]="10"
+              aria-label="Select page of periodic elements"
+            >
+            </mat-paginator>
+
+          </div>
+
+         
+          <div *ngIf="type == 'payment'">
+            <!-- invoice list for payment -->
+            <table            
+            mat-table
+            matTableExporter          
+            #exporter="matTableExporter"
+            [dataSource]="payment_dataSource"
+            matSort
+            (matSortChange)="announceSortChange($event)"
+            class="mat-elevation-z0"
+            matTableResponsive
+          >
+            <!-- invoice_no Column -->
+            <ng-container matColumnDef="invoice_number">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_number"
+              >
+                Invoice No
+              </th>
+              <td mat-cell *matCellDef="let element" data-label="Invoice No">
+                {{ element && element.invoice_number ? element.invoice_number : '' }}
+              </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="company_name">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                Seller Name
+              </th>
+              <td mat-cell *matCellDef="let element" data-label="Seller Name">
+                {{ element && element.seller && element.seller.company_name ? element.seller.company_name : '' }}
+              </td>
+            </ng-container>
+
+            <!-- GST Column -->
+            <ng-container matColumnDef="total_tax">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+              >
+                GST Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="GST Amount"
+              >
+                {{ (element && element.bill_details && element.bill_details.gst_summary && element.bill_details.gst_summary.total_tax ? element.bill_details.gst_summary.total_tax : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- invoice_amount Column -->
+            <ng-container matColumnDef="invoice_amount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_amount"
+              >
+                Invoice Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Invoice Amount"
+              >
+                {{ (element && element.invoice_amount ? element.invoice_amount : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- Total invoice_amount Column -->
+            <ng-container matColumnDef="total_invoice_amount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by total_invoice_amount"
+              >
+                Total Invoice Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Total Invoice Amount"
+              >
+                {{ (element && element.total_invoice_amount ? element.total_invoice_amount : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- outstanding_amount Column -->
+            <ng-container matColumnDef="outstanding_amount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by outstanding_amount"
+              >
+                Outstanding Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Outstanding Amount"
+              >
+                {{ (element && element.outstanding_amount ? element.outstanding_amount : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- Total discount Column -->
+            <ng-container matColumnDef="discount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by discount"
+              >
+                Discount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Discount"
+                style="color: green"
+              >
+                {{ (element && element.discount ? element.discount : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- Total interest Column -->
+            <ng-container matColumnDef="interest">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by interest"
+              >
+              Interest
+              </th>
+              <td
+                style="color: red"
+                mat-cell
+                *matCellDef="let element"
+                data-label="Interest"
+              >
+                {{ (element && element.interest ? element.interest : 0) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- Payable Amt Column -->
+            <ng-container matColumnDef="payable_amount">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by payable_amount"
+              >
+              Payable Amount
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Payable Amount"
+              >
+                {{ ( getPayableAmount(element) ) | currency: currency_format }}
+              </td>
+            </ng-container>
+
+            <!-- invoice_due_date Column -->
+            <ng-container matColumnDef="invoice_due_date">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_due_date"
+              >
+                Invoice Due Date
+              </th>
+              <td
+                mat-cell
+                *matCellDef="let element"
+                data-label="Invoice Due Date"
+              >
+                {{
+                  (element.extended_due_date
+                    ? element.extended_due_date
+                    : element.invoice_due_date
+                  ) | date: Date_Format
+                }}
+              </td>
+            </ng-container>
+
+            <!-- invoice_status Column -->
+            <ng-container matColumnDef="invoice_status">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                mat-sort-header
+                sortActionDescription="Sort by invoice_status"
+              >
+                Status
+              </th>
+              <td mat-cell *matCellDef="let element" data-label="Status">
+                {{ element && element.invoice_status ? element.invoice_status : '' }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="payment_displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: payment_displayedColumns"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="text-center">No Invoice Found</td>
+            </tr>
+            </table>
+
+            <mat-paginator
+              [pageSizeOptions]="[10, 20, 50]"
+              showFirstLastButtons
+              [pageSize]="10"
+              aria-label="Select page of periodic elements"
+            >
+            </mat-paginator>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

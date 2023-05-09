@@ -1,0 +1,83 @@
+<div id="payment-summery">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <div class="invoicetitle">
+          <h2 i18n="@@ABA1">Payment Summary</h2>
+          <button
+          mat-icon-button
+          class="close-button"
+          [mat-dialog-close]="true"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+        </div>
+        <mat-dialog-content class="mat-typography">
+           
+          <table mat-table [dataSource]="dataSource" class="mat-elevation-z0" matSort>
+        
+            <!-- Invoice No -->
+            <ng-container matColumnDef="invoice_number">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>  Invoice No
+                  </th>
+              <td mat-cell *matCellDef="let row"> {{row.invoice_number ? row.invoice_number : ''}} </td>
+            </ng-container>
+        
+            <!-- Outstanding Amount -->
+            <ng-container matColumnDef="previous_outstanding">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Outstanding Amount
+                </th>
+              <td mat-cell *matCellDef="let row"> {{(row.outstanding_amount ? row.outstanding_amount : 0) | currency: currency_format }} </td>
+            </ng-container>
+        
+            <!-- Amount Cleared -->
+            <ng-container matColumnDef="amount_cleared">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>  Amount Cleared
+                  </th>
+              <td mat-cell *matCellDef="let row"> {{(row.amount_cleared ? row.amount_cleared : 0) | currency: currency_format }} </td>
+            </ng-container>
+        
+            <!-- GST Settled -->
+            <ng-container matColumnDef="gst">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> GST Settled
+                </th>
+              <td mat-cell *matCellDef="let row"> {{(row.gst ? row.gst : 0) | currency: currency_format }} </td>
+            </ng-container>
+        
+          <!-- Discount Settled  -->
+          <ng-container matColumnDef="discount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Discount
+              </th>
+            <td mat-cell *matCellDef="let row"> {{(row.discount ? row.discount : 0) | currency: currency_format }} </td>
+          </ng-container>
+
+          <!-- Interest -->
+          <ng-container matColumnDef="interest">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Interest
+              </th>
+            <td mat-cell *matCellDef="let row"> {{(row.interest ? row.interest : 0) | currency: currency_format }} </td>
+          </ng-container>
+
+          <!-- Remaining Outstanding Amount -->
+          <ng-container matColumnDef="outstanding_amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Remaining Outstanding Amount
+              </th>
+            <td mat-cell *matCellDef="let row"> {{(row.remaining_outstanding ? row.remaining_outstanding : 0) | currency: currency_format }} </td>
+          </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No Records Found</td>
+            </tr>
+          </table>
+            
+          <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+
+        </mat-dialog-content>
+      </div>
+    </div>
+  </div>
+</div>

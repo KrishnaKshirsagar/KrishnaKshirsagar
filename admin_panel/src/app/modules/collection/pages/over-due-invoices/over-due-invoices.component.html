@@ -1,0 +1,278 @@
+<app-layout>
+  <div id="over-due-invoices-page">
+    <div class="main-wrapper">
+      <h2>Retailer with Overdue Invoices</h2>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Search by Retailer Name</mat-label>
+        <input
+          matInput
+          [formControl]="buyerControl"
+          (keyup)="filterBuyerName($event)"
+          placeholder="Search by Retailer"
+        />
+        <button
+          type="button"
+          mat-button
+          (click)="clearBuyerName(buyerControl)"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <!-- <div class="transheader">
+        
+       
+
+        <mat-form-field appearance="outline">
+          <mat-label>Search by Invoice Number</mat-label>
+          <input
+            matInput
+            [formControl]="invoiceControl"
+            (keyup)="filterInvoiceNumer($event)"
+            placeholder="Search by Invoice Number"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="clearInvoice(invoiceControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Search by Anchor Name</mat-label>
+          <input
+            matInput
+            [formControl]="invoiceControl"
+            (keyup)="filterSellerName($event)"
+            placeholder="Search by Anchor"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="clearSellerName(invoiceControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Select Invoice Status</mat-label>
+          <mat-select (selectionChange)="invoiceByStatus($event.value)">
+            <mat-option value="" selected> Select Invoice Status</mat-option>
+            <mat-option value="Confirmed"> Confirmed </mat-option>
+            <mat-option value="Partpay"> Partpay </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Select Collection Status</mat-label>
+          <mat-select (selectionChange)="filterByCollectionStatus($event.value)">
+              <mat-option value="" selected> Select Collection Status </mat-option>
+              <mat-option value="Collection">Collection</mat-option>
+              <mat-option value="In-Progress">In-Progress</mat-option>
+              <mat-option value="Collected">Collected</mat-option>
+              <mat-option value="Escalated">Escalated</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
+
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2"
+      >
+         <!-- retailer_name Number Column -->
+         <ng-container matColumnDef="retailer_name">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by retailer_name"
+          >
+          Retailer Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.retailer_name ? element.retailer_name : ""}}
+          </td>
+        </ng-container>
+
+        <!-- retailer_gstin Column -->
+        <ng-container matColumnDef="retailer_gstin">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by retailer_gstin"
+            *matHeaderCellDef
+          >
+          Retailer GST
+          </th>
+          <td mat-cell *matCellDef="let element">
+          <b>
+            {{ element && element.retailer_gstin ? element.retailer_gstin : ""}}
+          </b>
+          </td>
+        </ng-container>
+
+        <!-- retailer_email Column -->
+        <ng-container matColumnDef="retailer_email">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by retailer_email"
+            *matHeaderCellDef
+          >
+          Retailer Email
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <b>
+              {{ element && element.retailer_email ? element.retailer_email : "" }}
+            </b>
+          </td>
+        </ng-container>
+
+        <!-- retailer_mobile Column -->
+        <ng-container matColumnDef="retailer_mobile">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by retailer_mobile"
+            *matHeaderCellDef
+          >
+          Retailer Mobile
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ (element && element.retailer_mobile ? element.retailer_mobile : "") }}
+          </td>
+        </ng-container>
+
+        <!-- company_status -->
+        <ng-container matColumnDef="company_status">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by company_status"
+            *matHeaderCellDef
+          >
+          Business status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.company_status ? element.company_status : "") }}
+          </td>
+        </ng-container>
+
+        <!-- Invoice Due Date Column -->
+        <ng-container matColumnDef="overdue_invoices">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by overdue_invoices"
+            *matHeaderCellDef
+          >
+            Overdue Count
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.overdue_invoices ? element.overdue_invoices : 0)  }}
+          </td>
+        </ng-container>
+
+        <!-- assigned_to Column -->
+        <ng-container matColumnDef="assigned_to">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by assigned_to"
+            *matHeaderCellDef
+          >
+          <div *ngIf="user_role != 'xuritiCollectionAgent'">
+            Assigned To
+          </div>
+
+          <div *ngIf="user_role == 'xuritiCollectionAgent'">
+            Assigned By
+          </div>
+
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div *ngIf="user_role != 'xuritiCollectionAgent'">
+              {{ ( element && element.assigned_to ? element.assigned_to : "") }}
+            </div>
+
+            <div *ngIf="user_role == 'xuritiCollectionAgent'">
+              {{ ( element && element.assigned_to ? element.assigned_by : "") }}
+            </div>
+            
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+          <td mat-cell *matCellDef="let row" style="text-align: center">
+            <div style="display: flex;">
+              <button
+              mat-mini-fab
+              class="btn-view"
+              matTooltip="Manage Collection"
+              (click)="openManageInvoice(row.retailer_id)"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <!-- <button
+              type="button"
+              mat-mini-fab
+              class="btn-view"
+              matTooltip="Comments History"
+              (click)="openCommentsDialog(row)"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon>comment</mat-icon>
+            </button>
+
+            
+
+            <button
+            type="button"
+            mat-mini-fab
+            class="btn-view"
+                matTooltip="Audit-Trail"
+                (click)="autidtrail(row)"
+                aria-label="Audit-Trail"
+              >
+                <mat-icon >search</mat-icon>
+                
+              </button> -->
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">No Overdue Invoice Found</td>
+        </tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[10, 25, 50]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</app-layout>

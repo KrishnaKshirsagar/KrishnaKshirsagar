@@ -1,0 +1,190 @@
+<div id="paynow-dialog">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <form [formGroup]="paynow_form" (ngSubmit)="paynow()">
+          <div class="invoicetitle">
+            <h2 i18n="@@ABA1">Pay Now</h2>
+            <button
+            mat-icon-button
+            class="close-button"
+            [mat-dialog-close]="true"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+          </div>
+          <mat-dialog-content class="mat-typography">
+            <div>
+              <div class="tableheader w-100 pays">
+                <h3>
+                  Seller: <span> {{invoicedata.seller.company_name}} </span>
+                </h3>
+              </div>
+              <div class="tableheader w-100">
+                <div class="w-50 pays">
+                  <h3>
+                    Invoice No: <span> {{invoicedata.invoice_number}}</span>
+                  </h3>
+                  <h3>
+                    Invoice Date:
+                    <span>
+                      {{ invoicedata.invoice_date | date: Date_Format }}
+                    </span>
+                  </h3>
+                </div>
+                <div class="w-50 pays">
+                  <h3>
+                    Invoice Amount:
+                    <span>
+                      {{invoicedata.invoice_amount | currency: currency_format}}
+                    </span>
+                  </h3>
+                  <h3>
+                    Invoice Due Date:
+                    <span>
+                      {{ (invoicedata.extended_due_date ?
+                      invoicedata.extended_due_date :
+                      invoicedata.invoice_due_date) | date: Date_Format }}
+                    </span>
+                  </h3>
+                </div>
+              </div>
+
+              <div class="tableheader w-100">
+                <div class="w-50 pays">
+                  <h3>
+                    Outstanding Amount:
+                    <span>
+                      {{ invoicedata.outstanding_amount | currency:
+                      currency_format}}
+                    </span>
+                  </h3>
+                </div>
+                <div class="w-50 pays">
+                  <h3 *ngIf="discountflag == false">
+                    Interest Payable:
+                    <span style="color: rgb(241, 14, 14)">
+                      {{interestAmount | currency: currency_format}}
+                    </span>
+                  </h3>
+                  <h3 *ngIf="discountflag == true">
+                    Discount % :
+                    <span style="color: rgb(9, 192, 18)">
+                      {{discount_percent}}
+                    </span>                   
+                  </h3>
+                </div>
+              </div>
+
+              <div class="tableheader w-100" style="display: block">
+                <div class="w-100 pays">
+                  <mat-radio-group class="example-radio-group">
+                    <mat-radio-button
+                      class="example-radio-button"
+                      [value]="payableAmount"
+                      color="primary"
+                      (click)="onSelectCompleteAmount(true)"
+                      checked
+                    >
+                      <h3>
+                        Total Amount:
+                        <span 
+                          >{{ (days <= 0 ? invoicedata.outstanding_amount : total_amount)| currency: currency_format}}</span
+                        >
+                      </h3>
+                    </mat-radio-button>
+
+                    <mat-radio-button
+                      class="example-radio-button"
+                      value=""
+                      color="primary"
+                      (click)="onSelectCompleteAmount(false)"
+                    >
+                      <h3>Settle Your Amount:</h3>
+                    </mat-radio-button>                    
+                  </mat-radio-group>
+                </div>
+
+                <div
+                  class="w-100 pays"
+                  style="margin-top: 0px;
+                  padding-top: 0px;
+                  display: grid;
+                  grid-template-columns: 1fr 1fr;
+                  grid-template-rows: 1fr;
+                  gap: 0px 0px;"
+                >
+                <div style="align-self: center">
+                  <h3
+                    *ngIf="discountflag == true"
+                    style="align-self: center"
+                  >
+                    Discount:
+                    <span style="color: rgb(9, 192, 18)">
+                      {{ (fullAmountPayflag == false ? partpay_discount : discountAmount) | currency: currency_format}}
+                    </span>
+                  </h3>
+                  </div>
+                  <mat-form-field
+                    appearance="outline"
+                    (input)="onEnterAmount($event)"
+                    *ngIf="!fullAmountPayflag"
+                    style="font-size: 13px; float: right;"
+                  >
+                    <input
+                      matInput
+                      formControlName="partPay"
+                      type="number"
+                      min="0"
+                      id="partamt"
+                    />
+                  </mat-form-field>
+                 
+                </div>
+                <span
+                *ngIf="errorflag"
+                style="color: rgb(241, 14, 14); float:right; margin-top: -15px;
+                margin-right: 62px;"
+                i18n="@@ABA3"
+                >
+                  Please provide a valid amount
+              </span>
+              </div>
+
+              <div class="tableheader w-100 pays">
+                <h3>
+                  Payable Amount:
+                  <span> {{ payableAmount | currency: currency_format}} </span>
+                </h3>
+              </div>
+            </div>
+          </mat-dialog-content>
+          <div class="tableheader w-100">
+            <div class="w-50 pays text-center">
+              <button
+                mat-button
+                type="submit"
+                color="primary"
+                class="btn-primary"
+                i18n="@@ABA12"
+              >
+                CONFIRM
+              </button>
+            </div>
+            <div class="w-50 pays text-center">
+              <button
+                mat-button
+                color="primary"
+                class="btn-primary"
+                i18n="@@ABA12"
+                [mat-dialog-close]="true"
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<mat-sidenav-container
+  fullscreen
+  class="mat-drawer-class"
+  [hasBackdrop]="false"
+>
+  <mat-sidenav #sidenav mode="side" position="start" [opened]="authorized">
+    <app-sidebar [routes]="routes"></app-sidebar>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar *ngIf="authorized">
+      <ng-container>
+        <button mat-icon-button (click)="sidenav.toggle()" class="example-icon">
+          <mat-icon>menu</mat-icon>
+        </button>
+        <div style="margin-left: 10px" *ngIf="!accessFlag">
+          <h2>{{ companyName ? companyName : "" }}</h2>
+        </div>
+      </ng-container>
+      <span class="spacer"></span>
+
+      <ng-container
+        *ngIf="!accessFlag && user_role != 'nbfcUser' && seller_flag == 'false'"
+      >
+        <div class="flex-div cred">
+          <div class="divs">
+            <div class="lable">Total Credit</div>
+            <div class="amount">
+              {{
+                (companyDetails && companyDetails.creditLimit
+                  ? companyDetails.creditLimit
+                  : 0
+                ) | currency: currency_format
+              }}
+            </div>
+          </div>
+
+          <div class="divs">
+            <div class="lable">Credit Available</div>
+            <div class="amount">
+              {{
+                (companyDetails && companyDetails.avail_credit
+                  ? companyDetails.avail_credit
+                  : 0
+                ) | currency: currency_format
+              }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container position="end">
+        <button mat-button color="primary">
+          <mat-icon>logout</mat-icon>
+          <span class="profile-name" (click)="logout()">LOGOUT</span>
+        </button>
+        <!-- <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item [routerLink]="['/users/me']">
+            <mat-icon>person</mat-icon>
+            <span>Profile</span>
+          </button>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon color="primary">logout</mat-icon>
+            <span class="text-primary">Logout</span>
+          </button>
+        </mat-menu> -->
+      </ng-container>
+    </mat-toolbar>
+
+    <div id="main">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

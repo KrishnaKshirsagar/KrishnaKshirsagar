@@ -1,0 +1,138 @@
+<div id="invoicelist-page">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <div class="loginform">
+          <div class="top1">
+            <div>
+              <img
+                src="assets/images/logo-white.png"
+                alt="bannerimage"
+                class="banner"
+              />
+            </div>
+            <div><h1 i18n="@@BA1">Pay Invoices</h1></div>
+          </div>
+
+          <div class="top">
+            <mat-icon
+              class="exel-icon"
+              (click)="
+                exporter.exportTable('xlsx', {
+                  fileName: 'InvoiceList',
+                  sheet: 'sheet_name',
+                  Props: { Author: 'Xuriti' }
+                })
+              "
+              >assignment_returned
+            </mat-icon>
+            <button mat-flat-button class="btn-primary-outline">Pay All</button>
+          </div>
+
+          <div>
+            <table
+              mat-table
+              matTableExporter
+              [hiddenColumns]="[4]"
+              #exporter="matTableExporter"
+              [dataSource]="dataSource"
+              matSort
+              class="mat-elevation-z0"
+            >
+              <!-- Invoice No. Column -->
+              <ng-container matColumnDef="invoice_number">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  sortActionDescription="Sort by invoice_number"
+                  i18n="@@BA7"
+                >
+                  Invoice No
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA8">
+                  {{ element.invoice_no }}
+                </td>
+              </ng-container>
+
+              <!-- Invoice Amount Column -->
+              <ng-container matColumnDef="invoiceamount">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  sortActionDescription="Sort by invoiceamount"
+                  i18n="@@BA5"
+                >
+                  Invoice Amount
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA6">
+                  {{ element.invoice_amount | currency: currency_format }}
+                </td>
+              </ng-container>
+
+              <!-- Due Date Column -->
+              <ng-container matColumnDef="duedate">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  mat-sort-header
+                  sortActionDescription="Sort by duedate"
+                  i18n="@@BA9"
+                >
+                  Invoice Due Date
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{
+                    (element.extended_due_date
+                      ? element.extended_due_date
+                      : element.invoice_due_date
+                    ) | date: Date_Format
+                  }}
+                </td>
+              </ng-container>
+
+              <!--  Actions Column -->
+
+              <ng-container matColumnDef="actions">
+                <th
+                  mat-header-cell
+                  *matHeaderCellDef
+                  class="actioncol"
+                  i18n="@@BA11"
+                >
+                  Actions
+                </th>
+                <td mat-cell *matCellDef="let row" class="text-center">
+                  <button
+                    mat-flat-button
+                    class="btn-primary"
+                    (click)="payInvoice(row)"
+                    *ngIf="row.invoice_status == 'Confirmed'"
+                  >
+                    PAY NOW
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+              <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell text-center" colspan="12">
+                  No Invoice Found
+                </td>
+              </tr>
+            </table>
+            <!-- <mat-paginator
+            [pageSizeOptions]="[10, 15, 50]"
+            showFirstLastButtons
+            aria-label="Select page of periodic elements"
+          >
+          </mat-paginator> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

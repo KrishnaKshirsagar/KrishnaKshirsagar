@@ -1,0 +1,276 @@
+#invoicesdetails-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+    margin-top: 15px;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+  .input-wrapper button {
+    margin: 5px;
+  }
+  .mat-form-field {
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 100%;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .actioncol {
+    text-align: center;
+  }
+
+  .comments {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    button {
+      background: black;
+      color: white;
+    }
+  }
+  
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .details {
+    background: #fffdfb;
+    h2 {
+      font-size: 17px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      span {
+        font-weight: 400;
+        color: #7a6f6f;
+        font-size: 17px;
+      }
+    }
+    .mat-checkbox {
+      margin: 0px 10px;
+    }
+  }
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .mat-card-title {
+    display: flex;
+    margin-bottom: 15px;
+    h2 {
+      margin: 3px 0 3px;
+    }
+  }
+  .bsbox {
+    padding: 20px 15px 5px 15px;
+    background: #fffbf4;
+    border-radius: 20px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex-item-left {
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    flex: 50%;
+  }
+
+  .btndiv {
+    display: grid;
+    grid-template-columns: 0.2fr 1.8fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0px 0px;
+    gap: 0px 0px;
+    align-items: center;
+
+    .btn-dark {
+      width: max-content;
+      height: 35px;
+    }
+  }
+  .gridcontent {
+    display: grid;
+    grid-template-columns: 0.8fr 1.1fr 1.1fr;
+    grid-template-rows: 1fr;
+
+    gap: 10px 10px;
+    margin-bottom: 15px;
+    padding: 15px 15px 15px 15px;
+    background: #fffbf4;
+    border-radius: 20px;
+    mat-label {
+      font-weight: 500;
+      font-size: 15px;
+    }
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 767px) {
+    .flex-container {
+      flex-direction: column;
+    }
+
+    .mat-card-title {
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+#creditplanswitch-dialog {
+  .mat-dialog-content {
+    width: 500px;
+  }
+  .mat-form-field {
+    width: 100%;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  @media (max-width: 767px) {
+    .mat-dialog-content {
+      width: 100%;
+    }
+  }
+}
+
+#companydetailsapprove-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}
+
+#companydetailsedit-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+    padding: 0px 5px;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex-item-left {
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    flex: 50%;
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 767px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+}
+
+#invoicedetailsdelete-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}

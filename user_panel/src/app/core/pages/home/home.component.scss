@@ -1,0 +1,152 @@
+#home-page {
+  height: 100vh;
+  h1 {
+    font-size: 65px;
+    line-height: initial;
+  }
+  .color-primary {
+    color: #f79e1b;
+  }
+  h2 {
+    font-size: 35px;
+    line-height: initial;
+    font-weight: 400;
+  }
+  .margindiv {
+    margin-top: 9%;
+    margin-bottom: 9%;
+  }
+  .bottom-logo {
+    max-height: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .bottom-text {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .logo {
+    max-height: 45px;
+  }
+  .image-responsive {
+    max-width: 100%;
+    height: auto;
+  }
+  .logotext {
+    font: normal normal normal 16px/26px Lato;
+  }
+  .margin-top {
+    margin-top: 2rem;
+  }
+  .bg-white {
+    background: white;
+  }
+  .margin-bottom {
+    margin-bottom: 2rem;
+  }
+  .btn-primary {
+    background: #f79e1b 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    color: white;
+    padding: 12px 90px;
+    font-size: 17px;
+    line-height: initial;
+    box-shadow: none;
+    border: none;
+  }
+
+  .btn-secondary {
+    background: #f6f2e9 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    padding: 6px;
+  }
+
+  .input-wrapper {
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .text-right {
+    text-align: right;
+  }
+
+  .flex-div {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex-container {
+    position: relative;
+    height: 90vh;
+    margin: auto;
+
+    .verticallycenter {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto;
+      width: 78vw;
+      height: 45vh;
+      text-align: center;
+    }
+  }
+
+  .flex-item-left {
+    padding: 10px;
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    padding: 10px;
+    flex: 50%;
+  }
+
+  .divcontainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 800px) {
+    h1 {
+      font-size: 30px;
+      line-height: initial;
+    }
+    h2 {
+      font-size: 20px;
+      line-height: initial;
+    }
+    .flex-container {
+      flex-direction: column;
+    }
+    .margin-bottom {
+      margin-bottom: 1rem;
+    }
+    .margin-top {
+      margin-top: 1rem;
+    }
+    .loginform {
+      padding: 0px 30px;
+    }
+    .flex-div {
+      display: block;
+      text-align: center;
+    }
+    .flex-div p {
+      text-align: center;
+    }
+    .loginform h2,
+    .loginform p {
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,64 @@
+#main {
+  min-height: calc(100vh - 64px);
+}
+mat-sidenav {
+  background: #000000 !important;
+  padding: 20px 10px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-shadow: none !important;
+  min-width: 250px;
+  max-width: 251px;
+}
+.mat-toolbar {
+  background: white;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12),
+    0 1px 1px 0 rgba(0, 0, 0, 0.2) !important;
+  position: relative;
+}
+.sidenav-content-close {
+  margin-left: 0 !important;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-drawer-class {
+  background-color: #ffffff !important;
+}
+
+.flex-div {
+  display: flex;
+  flex-direction: row;
+}
+.cred {
+  border-radius: 8px;
+  padding: 6px 0;
+  .lable {
+    color: #ffffff;
+    font-size: 12px;
+    padding-right: 5px;
+  }
+  .amount {
+    color: #ffffff;
+    font-size: 16px;
+    padding-left: 5px;
+  }
+  .divs {
+    padding: 0 13px;
+    width: 100%;
+    display: flex;
+    background: #f79e1b;
+    border-radius: 8px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  animation: mymove 5s infinite;
+}
+
+@keyframes mymove {
+  50% {
+    box-shadow: inset 0px 0px 10px #f79e1b;
+  }
+}

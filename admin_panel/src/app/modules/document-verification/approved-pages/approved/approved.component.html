@@ -1,0 +1,120 @@
+<app-layout>
+  <div id="pending-list">
+    <div class="main-wrapper">
+     
+      <h2>Approved Documents</h2>
+   <mat-form-field style="padding-bottom: 20px;" appearance="outline" class="redClass" >
+    <mat-label>Search by Retailer Name</mat-label>
+    <input type="text" matInput (keyup)="applyFilterById($event)" [formControl]="companyNameControl" placeholder="Search by Company Name">
+    <button
+    type="button"
+    mat-button
+    (click)="clear(companyNameControl)"
+    matSuffix
+    mat-icon-button
+    aria-label="Clear"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  </mat-form-field>
+   
+
+       
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z2" matSort>
+        <!-- paymentid Column -->
+
+
+        <!-- <ng-container matColumnDef="sl_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by sl_no">
+            Sl No.
+          </th>
+          <td class="number" mat-cell *matCellDef="let element" >
+          </td>
+        </ng-container> -->
+
+        <ng-container matColumnDef="merchant_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by merchant_name">
+            Retailer Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.company_name ? element.company_name : "-" }}
+          
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="anchor_name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by anchor_name">
+            Anchor Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <!-- {{ element && element.company_name ? element.company_name : "-" }} -->
+          
+          </td>
+        </ng-container>
+        <!-- invoiceno Column -->
+
+        <ng-container matColumnDef="gst_in">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef sortActionDescription="Sort by gst_in">
+            GST Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.gstin  ? element.gstin : "-" }}
+            <!-- Edwjigdvjqv123 -->
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="kyc_doc_pending">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by kyc_doc_pending">
+            Approved KYC Documents
+          </th>
+          <td class="number" mat-cell *matCellDef="let element">
+            {{ element && element.count? element.count : 0 }}
+            <!-- 2/3 -->
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bus_doc_pending">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef sortActionDescription="Sort by bus_doc_pending">
+            Approved Business Documents
+          </th>
+          <td class="number"  mat-cell *matCellDef="let element">
+            {{ element && element.otherCount ? element.otherCount : 0 }}
+            <!-- 4/7 -->
+          </td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="action">
+          <th mat-header-cell mat-sort-header *matHeaderCellDef>
+            Action
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.mobile_number ? element.mobile_number : "" }} -->
+          <!--<button mat-mini-fab (click)="openDoc(element)"><mat-icon>subdirectory_arrow_right</mat-icon></button>
+          </td>
+        </ng-container> -->
+
+
+
+        <!-- transactiondate Column -->
+
+
+        <!-- amount Column -->
+
+
+        <!-- status Column -->
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center" >Result Not Found</td>
+        </tr>
+      </table>
+      <mat-paginator 
+        [pageSizeOptions]="[10, 20, 50, dataSource.data.length ]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </div> 
+   </div>
+   
+  </app-layout>

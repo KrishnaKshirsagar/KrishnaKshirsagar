@@ -1,0 +1,183 @@
+<app-layout>
+  <div id="emandateshistory-page">
+    <div class="main-wrapper">
+      <h2>E-mandates History</h2>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Search Invoice Number</mat-label>
+        <input
+          (keyup)="invoiceNumberFilter($event)"
+          #input
+          matInput
+          [formControl]="invoiceNumberControl"
+          placeholder="Search Invoice Number"
+        />
+        <button
+          type="button"
+          mat-button
+          (click)="clear(invoiceNumberControl)"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Transaction Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="datepicker"
+          [max]="maxDate"
+          [(ngModel)]="transactionDate"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="datepicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel (click)="date_cancle('transaction_date')">Cancel</button>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="get_transaction_date()"
+              matDatepickerApply
+            >
+              Apply
+            </button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2"
+      >
+        <!-- paymentid Column -->
+        <ng-container matColumnDef="payment_Id">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by payment_Id"
+          >
+            Order ID
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.payment_Id ? element.payment_Id : "" }}
+          </td>
+        </ng-container>
+
+        <!-- invoiceno Column -->
+        <ng-container matColumnDef="invoice_no">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by invoice_no"
+          >
+            Invoice No
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.invoice_no ? element.invoice_no : "" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="due_date">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by due_date"
+            *matHeaderCellDef
+          >
+            Invoice Due Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ getDueDate(element) | date: Date_Format }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="new_due_date">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by new_due_date"
+            *matHeaderCellDef
+          >
+            Invoice New Due Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ getNewduedate(element) | date: Date_Format }}
+          </td>
+        </ng-container>
+
+        <!-- transactiondate Column -->
+        <ng-container matColumnDef="updated_at">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by updated_at"
+            *matHeaderCellDef
+          >
+            Transaction Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element.updated_at ? element.updated_at : "") | date: Date_Format
+            }}
+          </td>
+        </ng-container>
+
+        <!-- amount Column -->
+        <ng-container matColumnDef="outstanding_amount">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by outstanding_amount"
+            *matHeaderCellDef
+          >
+            Outstanding Amount
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element.outstanding_amount
+                ? element.outstanding_amount
+                : ("" | currency: currency_format)
+            }}
+          </td>
+        </ng-container>
+
+        <!-- status Column -->
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by status"
+            *matHeaderCellDef
+          >
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.status ? element.status : "" }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 50]"
+        showFirstLastButtons
+        (page)="applyPagination($event)"
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</app-layout>

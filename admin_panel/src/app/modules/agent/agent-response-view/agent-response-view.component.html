@@ -1,0 +1,114 @@
+<app-layout>
+  <div id="emandateshistory-page">
+    <div class="main-wrapper">
+      <h2>Agent Form</h2>
+        
+      <mat-form-field appearance="outline">
+        <mat-label>Search by Agent Name</mat-label>
+        <input 
+        (keyup)="applyFilter($any($event).target.value)"
+         matInput 
+         placeholder="Search by Agent Name">
+      </mat-form-field>
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2">
+
+        <ng-container matColumnDef="Agent_Name" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Agent_Name" >
+           Agent Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.createdBy ? element.createdBy : "" }}
+          </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="Merchant_Name" >
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Merchant_Name" >
+          Retailer Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.business_owner_name ? element.business_owner_name : "" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gstin">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by gstin" *matHeaderCellDef>
+            GST Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.gstin ? element.gstin : "" }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="mob_no">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by mob_no">
+           Mobile Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.mobile_number? element.mobile_number : "" }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="visit_date">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by visit_date" *matHeaderCellDef>
+            Visited Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ (element && element.createdAt ? element.createdAt : "") | date : Date_Format }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bussiness_address">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by bussiness_address" *matHeaderCellDef>
+            Bussiness Address
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ (element && element.bussiness_address ? element.bussiness_address : "") }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="comment">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by comment" *matHeaderCellDef>
+            Comment
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ (element && element.comment ? element.comment : "") }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="preview">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by preview" *matHeaderCellDef>
+            Preview
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <button
+            mat-mini-fab
+            class="btn-view"
+            matTooltip="View Full Details"
+            (click)="openDialog(element)"
+            aria-label="Example icon button with a delete icon"
+          >
+            <mat-icon>image</mat-icon>
+          </button>
+          </td>
+        </ng-container>
+        
+
+       
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">Result Not Found</td>
+        </tr>
+      </table>
+      <mat-paginator
+      [pageSizeOptions]="[10, 20, 50]"
+      showFirstLastButtons
+      aria-label="Select page of periodic elements"
+    >
+    </mat-paginator>
+    </div>
+  </div>
+</app-layout>
+
+

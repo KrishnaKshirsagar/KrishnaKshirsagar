@@ -1,0 +1,265 @@
+<app-layout>
+  <div id="userlist-page">
+    <div class="main-wrapper">
+      <h2>Manage Users</h2>
+
+      <button
+      mat-icon-button
+      (click)="
+        exporter.exportTable('xlsx', {
+          fileName: 'Manage_Users_Summary',
+          sheet: 'Manage_Users_Summary',
+          Props: { Author: 'Xuriti' }
+        })
+      "
+      matTooltip="Export Excel"
+      matTooltipPosition="below"
+      class="exel-icon"
+      aria-label="Example icon button with a menu icon"
+    >
+    <mat-icon>assignment_returned</mat-icon>
+    </button>
+
+      <mat-form-field appearance="outline">
+        <mat-label>User Name</mat-label>
+        <input
+          matInput
+          (keyup)="applyFilter($event)"
+          placeholder="Search by User Name"
+          [formControl]="NameControl"
+        />
+        <button
+          type="button"
+          mat-button
+          (click)="name_clear(NameControl)"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Email ID</mat-label>
+        <input
+          matInput
+          (keyup)="filterbyEmail($event)"
+          placeholder="Search User by Email ID"
+          [formControl]="emailControl"
+        />
+        <button
+          type="button"
+          mat-button
+          (click)="email_clear(emailControl)"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Mobile Number</mat-label>
+        <input
+          matInput
+          (keyup)="filterbyMobile($event)"
+          placeholder="Search User by Mobile Number"
+          [formControl]="mobileControl"
+        />
+        <button
+          type="button"
+          mat-button
+          (click)="mobile_clear(mobileControl)"
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>User Status</mat-label>
+        <mat-select (selectionChange)="userStatus($event.value)">
+          <mat-option selected value=""> Select User Status </mat-option>
+          <mat-option value="Inactive"> Inactive </mat-option>
+          <mat-option value="Active"> Active </mat-option>
+          <mat-option value="Pending"> Pending </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Registration Date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="datepicker"
+          [max]="maxDate"
+          [(ngModel)]="registrationDate"
+          readonly
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="datepicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #datepicker>
+          <mat-datepicker-actions>
+            <button mat-button matDatepickerCancel (click)="date_cancle('register_date')">Cancel</button>
+            <button
+              mat-raised-button
+              color="primary"
+              matDatepickerApply
+              (click)="registrationDateFilter()"
+            >
+              Apply
+            </button>
+          </mat-datepicker-actions>
+        </mat-datepicker>
+      </mat-form-field>
+
+      <table
+        mat-table
+        matTableExporter
+        #exporter="matTableExporter"
+        [hiddenColumns]="[5]"
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2"
+      >
+        <!-- Username Column -->
+        <ng-container matColumnDef="username">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by username"
+          >
+            User Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <b>
+              {{ element && element.first_name ? element.first_name : "" }}
+              {{ element && element.last_name ? element.last_name : "" }}
+            </b>
+          </td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by email"
+            *matHeaderCellDef
+          >
+            Email Address
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.email ? element.email : "" }}
+          </td>
+        </ng-container>
+
+        <!-- Mobile Column -->
+        <ng-container matColumnDef="mobile_number">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by mobile_number"
+            *matHeaderCellDef
+          >
+            Mobile Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.mobile_number ? element.mobile_number : "" }}
+          </td>
+        </ng-container>
+
+        <!-- date Column -->
+        <ng-container matColumnDef="register_date">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by register_date"
+            *matHeaderCellDef
+          >
+            Registration Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.createdAt ? element.createdAt : "")
+                | date: Date_Format
+            }}
+          </td>
+        </ng-container>
+
+        <!-- registeredby Column -->
+        <!-- <ng-container matColumnDef="registeredby">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by registeredby"
+            *matHeaderCellDef
+          >
+            Registered by
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.registeredby }}</td>
+        </ng-container> -->
+
+        <!-- status Column -->
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by status"
+            *matHeaderCellDef
+          >
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <b>
+              {{ element && element.status ? element.status : "" }}
+            </b>
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+          <td mat-cell *matCellDef="let row" style="text-align: center">
+            <button
+              mat-mini-fab
+              class="btn-view"
+              matTooltip="Edit User"
+              (click)="openDialog(row._id)"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-stroked-button
+              (click)="resendInviteUser(row)"
+              [disabled]="row.status == 'Active' || row.status == 'active'"
+            >
+              RESEND INVITE
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">No Users Found</td>
+        </tr>
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 50]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</app-layout>

@@ -1,0 +1,801 @@
+<div id="credit-page">
+
+    <div class="backdiv">
+      <button
+        mat-mini-fab
+        onclick="history.go(-1)"
+        class="back-btn"
+        aria-label="back button"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Business KYC</h1>
+        <div>
+          <button 
+          mat-flat-button
+          class="download-btn"
+          matTooltip="Download All KYC Documents" 
+          type="button" (click)="download_documents()"
+          >
+          DOWNLOAD
+         </button>
+        </div>
+    </div>
+
+    <div class="main-wrapper">
+      <h3> <b> Business Name :</b>  {{company_data.company_name}} <br> <b>GST Number :</b>  {{company_data.gst_number}}  </h3>
+
+      <mat-accordion class="example-headers-align">
+        <div class="div-indicator">
+          <mat-card class="mat-elevation-z0">
+            <section>
+              <mat-icon style="color: green;">check_circle</mat-icon>
+              <label> : Approved | </label>
+              <mat-icon style="color: #ffa500;">watch_later</mat-icon>
+              <label> : Processing | </label>
+              <mat-icon style="color: red;">cancel</mat-icon>
+              <label> : Rejected </label>
+            </section>
+          </mat-card>
+        </div>
+
+      
+        <mat-accordion class="CustEx">
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Face Recognition*
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.faceMatch?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.faceMatch?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.faceMatch?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div class="panelbody" *ngIf="this.faceMatch.verified">
+
+            <div class="text-center">
+              <img [src]="this.faceMatch.frist" class="imgs">
+              
+              <h3>Image Captured </h3>
+             
+            </div>
+            <div>
+              <mat-form-field appearance="outline" *ngIf="KYCDetails?.faceMatch?.comment && KYCDetails?.faceMatch?.comment!=''">
+                <mat-label>Comment</mat-label>
+                <textarea matInput [value]="KYCDetails?.faceMatch?.comment" readonly="true"></textarea>
+              </mat-form-field>
+            </div>
+
+
+            <div class="text-center">
+              <img src="../../../../../assets/images/usericon.png" class="imgs">
+              
+              <h3>Passport Photo</h3>
+              
+            </div>
+
+
+            <div class="text-center">
+              
+              <h1> Matching : {{faceMatch.matchPercentage}}</h1>
+              
+            </div>
+
+            </div>
+         
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              PAN Details* (Individual)
+            </mat-panel-title>
+            <mat-panel-description>
+              <mat-icon matTooltip="Signzy " *ngIf="KYCDetails?.pan?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+              <mat-icon matTooltip="Signzy " *ngIf="KYCDetails?.pan?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+              <mat-icon matTooltip="Signzy " *ngIf="KYCDetails?.pan?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              <mat-icon matTooltip="Agent  " *ngIf="KYCDetails?.pan?.signzyStatus=='Approved'" style="color: green;">check_circle</mat-icon>
+              <mat-icon matTooltip="Agent  " *ngIf="KYCDetails?.pan?.signzyStatus=='Rejected'" style="color: red;">cancel</mat-icon>
+              <mat-icon matTooltip="Agent  " *ngIf="KYCDetails?.pan?.signzyStatus=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+           <div>
+              <mat-card class="example-card" *ngFor="let doc of pandetails.panurl">
+                <mat-card-header>
+                <p>{{doc.document_name}}</p>
+                </mat-card-header>
+                  <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                  mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(aadhar_details.front.url)">
+  
+                  <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                  class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file 
+                 </mat-icon>
+  
+                <mat-card-content>
+                  <p>
+                    Uploaded By : {{doc.createdBy}}<br>
+                    Uploaded At : {{doc.createdAt | date:date_format}} 
+                  </p>
+                </mat-card-content>
+                </mat-card>
+            </div>
+          <div>
+             <div>
+                <b>PAN  Number :  </b>{{pandetails.panNumber}} <br> <br>
+                <b>Holder Name :  </b>{{pandetails.holder}}
+             </div>
+             <div>
+              <mat-form-field appearance="outline" *ngIf="KYCDetails?.pan?.comment && KYCDetails?.pan?.comment!=''">
+                <mat-label>Comment</mat-label>
+                <textarea matInput [value]="KYCDetails?.pan?.comment" readonly="true"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          </mat-expansion-panel>
+         
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Aadhaar Details* (Individual)
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <div class="flex-box">
+              <div *ngIf="aadhar_details.front">
+                <h2>AADHAAR  FRONT </h2>
+                <mat-card class="example-card" *ngIf="aadhar_details.front">
+                  <mat-card-header>
+                  <p>{{aadhar_details.front.document_name}}</p>
+                  </mat-card-header>
+                    <img *ngIf="(aadhar_details.front.document_type == 'png' || aadhar_details.front.document_type =='jpeg' || aadhar_details.front.document_type =='jpg')" 
+                    mat-card-image [src]="aadhar_details.front.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(aadhar_details.front.url)">
+    
+                    <mat-icon *ngIf="!(aadhar_details.front.document_type == 'png' || aadhar_details.front.document_type =='jpeg' || aadhar_details.front.document_type =='jpg')"
+                    class="file-icon" (click)="open_Doc_Dialog(aadhar_details.front.url)"> insert_drive_file 
+                   </mat-icon>
+    
+                  <mat-card-content>
+                    <p>
+                      Uploaded By : {{aadhar_details.front.createdBy}}<br>
+                      Uploaded At : {{aadhar_details.front.createdAt | date:date_format}} 
+                    </p>
+                  </mat-card-content>
+                  </mat-card>
+              </div>
+
+              <div *ngIf="aadhar_details.back">
+                <h2>AADHAAR  BACK </h2>
+                  <mat-card class="example-card" *ngIf="aadhar_details.back">
+                    <mat-card-header>
+                    <p>{{aadhar_details.back.document_name}}</p>
+                    </mat-card-header>
+                      <img *ngIf="(aadhar_details.back.document_type == 'png' || aadhar_details.back.document_type =='jpeg' || aadhar_details.back.document_type =='jpg')" 
+                      mat-card-image [src]="aadhar_details.back.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(aadhar_details.back.url)">
+      
+                      <mat-icon *ngIf="!(aadhar_details.back.document_type == 'png' || aadhar_details.back.document_type =='jpeg' || aadhar_details.back.document_type =='jpg')"
+                      class="file-icon" (click)="open_Doc_Dialog(aadhar_details.back.url)"> insert_drive_file 
+                     </mat-icon>
+      
+                    <mat-card-content>
+                      <p>
+                        Uploaded By : {{aadhar_details.back.createdBy}}<br>
+                        Uploaded At : {{aadhar_details.back.createdAt | date:date_format}} 
+                      </p>
+                    </mat-card-content>
+                    </mat-card>
+              </div>
+            </div>
+
+            <div>
+            <div>
+
+              <b>Aadhaar Number: </b> {{aadhar_details.number}} <br><br>
+              <b>Name: </b> {{aadhar_details.holder}}<br> <br>
+              <b>Gender: </b> {{aadhar_details.gender}}<br> <br>
+              <b>DOB: </b> {{aadhar_details.dob}} <br> <br>
+              <b>Address: </b> {{aadhar_details.address}}
+
+            </div>
+            <div  style="margin-top: 10px;"> 
+              <mat-form-field appearance="outline" *ngIf="KYCDetails?.aadhar?.comment && KYCDetails?.aadhar?.comment!=''">
+                <mat-label>Comment</mat-label>
+                <textarea matInput [value]="KYCDetails?.aadhar?.comment" readonly="true"></textarea>
+              </mat-form-field>
+            </div>
+
+            <!-- <div>
+              <b *ngIf="aadhar_details.front">AADHAAR FRONT : 
+                <button
+                  mat-mini-fab
+                  class="btn-view"
+                  matTooltip="View"
+                  (click)="open_Doc_Dialog(aadhar_details.front)"
+                  aria-label="Example icon button with a delete icon"
+                >
+                  <mat-icon>description</mat-icon>
+                </button>
+              </b> <br> <br>
+
+              <b *ngIf="aadhar_details.back">AADHAAR BACK : 
+                <button
+                mat-mini-fab
+                class="btn-view"
+                matTooltip="View"
+                (click)="open_Doc_Dialog(aadhar_details.back)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>description</mat-icon>
+              </button>
+              </b> <br> <br>
+            </div> -->
+
+            </div>
+         
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Mobile Details
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon matTooltip="Signzy " *ngIf=" KYCDetails?.mobile?.signzyStatus=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon matTooltip="Signzy " *ngIf=" KYCDetails?.mobile?.signzyStatus=='Rejected'" style="color: red;" >cancel</mat-icon>
+                <mat-icon matTooltip="Signzy " *ngIf=" KYCDetails?.mobile?.signzyStatus=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                <mat-icon matTooltip="Agent  " *ngIf=" KYCDetails?.mobile?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon matTooltip="Agent  " *ngIf=" KYCDetails?.mobile?.status=='Rejected'" style="color: red;" >cancel</mat-icon>
+                <mat-icon matTooltip="Agent  " *ngIf=" KYCDetails?.mobile?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+               
+                  <b>Mobile Number :  </b>{{mobile_details.number}} <br> <br>
+                  <b>Holder Name :</b> {{mobile_details.holder}}
+              
+               <div style="margin-top: 10px;">
+                <mat-form-field appearance="outline" *ngIf="KYCDetails?.mobile?.comment && KYCDetails?.mobile?.comment!=''">
+                  <mat-label>Comment</mat-label>
+                  <textarea matInput [value]="KYCDetails?.mobile?.comment" readonly="true"></textarea>
+                </mat-form-field>
+              </div>
+              <div></div>
+            
+            </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Business Proof* (Any one of the following)
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.business?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.business?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.business?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="flex-box">
+              <mat-card class="example-card"  *ngFor="let doc of business_proof_details.business_proof_link">
+              <mat-card-header>
+              <p>{{doc.document_name}}</p>
+              </mat-card-header>
+                <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+
+                <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file 
+               </mat-icon>
+
+              <mat-card-content>
+                <p>
+                  Uploaded By : {{doc.createdBy}}<br>
+                  Uploaded At : {{doc.createdAt | date:date_format}} 
+                </p>
+              </mat-card-content>
+              </mat-card>
+            </div>
+
+            <div>
+              <div>
+
+              <b>Document Type:  </b> {{business_proof_details.documentType}} <br> <br>
+              <b>Document Number: </b> {{business_proof_details.documentNumber}}
+
+             </div>
+             <div  style="margin-top: 10px;">
+              <mat-form-field appearance="outline" *ngIf="KYCDetails?.business?.comment && KYCDetails?.business?.comment!=''">
+                <mat-label>Comment</mat-label>
+                <textarea matInput [value]="KYCDetails?.business?.comment" readonly="true"></textarea>
+              </mat-form-field>
+            </div>
+            <!-- <div>
+            <b>Document  : 
+            <button
+            *ngFor="let doc of business_proof_details.business_proof_link"
+              mat-mini-fab
+              class="btn-view"
+              matTooltip="View"
+              (click)="open_Doc_Dialog(doc)"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon>description</mat-icon>
+            </button> 
+            </b>
+            </div> -->
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Ownership  Proof (Any one of the following)
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.ownership?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.ownership?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.ownership?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="flex-box">
+              <mat-card class="example-card"  *ngFor="let doc of ownership_proof_details.ownershipProofLink">
+                <mat-card-header>
+                  <p>{{doc.document_name}}</p>
+                  </mat-card-header>
+                    <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                    mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+    
+                    <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                    class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                   </mat-icon>
+    
+                  <mat-card-content>
+                    <p>
+                      Uploaded By : {{doc.createdBy}}<br>
+                      Uploaded At : {{doc.createdAt | date:date_format}} 
+                    </p>
+                  </mat-card-content>
+              </mat-card>
+              </div>
+
+            <div>
+              <div>
+
+              <b>Document Type:  </b> {{ownership_proof_details?.documentType}} <br> <br>
+              <b>Document Number: </b> {{ownership_proof_details?.documentNumber}}
+
+             </div>
+             <div>
+              <mat-form-field appearance="outline" *ngIf="KYCDetails?.ownership?.comment && KYCDetails?.ownership?.comment!=''">
+                <mat-label>Comment</mat-label>
+                <textarea matInput [value]="KYCDetails?.ownership?.comment" readonly="true"></textarea>
+              </mat-form-field>
+            </div>
+            <!-- <div>
+            <b>Document  : 
+              <button
+              *ngFor="let doc of ownership_proof_details.ownershipProofLink"
+                mat-mini-fab
+                class="btn-view"
+                matTooltip="View"
+                (click)="open_Doc_Dialog(doc)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>description</mat-icon>
+              </button> 
+            </b>
+            </div> -->
+            </div>
+         
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Vintage Proof
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.vintage?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.vintage?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.vintage?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="flex-box">
+              <mat-card class="example-card" *ngFor="let doc of vintage_proof_details.VintageProofLink">
+                  <p>{{doc.document_name}}</p>
+                    <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                    mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+    
+                    <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                    class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                   </mat-icon>
+    
+                  <mat-card-content>
+                    <p>
+                      Uploaded By : {{doc.createdBy}}<br>
+                      Uploaded At : {{doc.createdAt | date:date_format}} 
+                    </p>
+                  </mat-card-content>
+              </mat-card>
+              </div>
+
+            <div>
+              <!-- <div>
+              <b>Document Type:  </b>  <br> <br>
+             </div> -->
+             <div>
+              <mat-form-field appearance="outline" *ngIf="KYCDetails?.vintage?.comment && KYCDetails?.vintage?.comment!=''">
+                <mat-label>Comment</mat-label>
+                <textarea matInput [value]="KYCDetails?.vintage?.comment" readonly="true"></textarea>
+              </mat-form-field>
+            </div>
+            <!-- <div>
+            <b>Document  : 
+              <button
+              *ngFor="let doc of vintage_proof_details.VintageProofLink"
+                mat-mini-fab
+                class="btn-view"
+                matTooltip="View"
+                (click)="open_Doc_Dialog(doc)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>description</mat-icon>
+              </button> 
+            </b>
+            </div> -->
+            </div>
+         
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Firm/Partnership Details
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.partnership?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.partnership?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.partnership?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            
+            <div class="flex-box">
+              <mat-card class="example-card" *ngFor="let doc of firm_partnership_details.PartnershipLink">
+                
+                  <p>{{doc.document_name}}</p>
+                  
+                    <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                    mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+    
+                    <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                    class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                   </mat-icon>
+    
+                  <mat-card-content>
+                    <p>
+                      Uploaded By : {{doc.createdBy}}<br>
+                      Uploaded At : {{doc.createdAt | date:date_format}} 
+                    </p>
+                  </mat-card-content>
+              </mat-card>
+              </div>
+
+            <div>
+              <div>
+
+              </div>
+              <div>
+                <mat-form-field appearance="outline" *ngIf="KYCDetails && KYCDetails.partnership && KYCDetails.partnership.comment ? KYCDetails.partnership.comment : ''">
+                  <mat-label>Comment</mat-label>
+                  <textarea matInput [value]="KYCDetails.partnership.comment" readonly="true"></textarea>
+                </mat-form-field>
+              </div>
+            <div>
+            <!-- <p>Document  : 
+              <button
+              *ngFor="let doc of firm_partnership_details.PartnershipLink"
+                mat-mini-fab
+                class="btn-view"
+                matTooltip="View"
+                (click)="open_Doc_Dialog(doc)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>description</mat-icon>
+              </button> 
+            </p> -->
+            </div>
+            </div>
+         
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Banking Details
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.bankStatement?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.bankStatement?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.bankStatement?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="flex-box">
+              <mat-card class="example-card" *ngFor="let doc of banking_details.BankStatementDetailsLink">
+                <mat-card-header>
+                  <p>{{doc.document_name}}</p>
+                  </mat-card-header>
+                    <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                    mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+    
+                    <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                    class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                   </mat-icon>
+    
+                  <mat-card-content>
+                    <p>
+                      Uploaded By : {{doc.createdBy}}<br>
+                      Uploaded At : {{doc.createdAt | date:date_format}} 
+                    </p>
+                  </mat-card-content>
+              </mat-card>
+              </div>
+
+            <div>
+              <div>
+                <div  style="margin-top: 10px;">
+                  <mat-form-field appearance="outline" *ngIf="KYCDetails?.bankStatement?.comment && KYCDetails?.bankStatement?.comment!=''">
+                    <mat-label>Comment</mat-label>
+                    <textarea matInput [value]="KYCDetails?.bankStatement?.comment" readonly="true"></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div style="margin-top: 10px;">
+                <button mat-raised-button matTooltip="Analyse Bank Statement" type="button" (click)="analyseBankStatement()">
+                  ANALYSE
+                </button>
+              </div>
+              
+            <!-- <div>
+            <b>Document  :
+              <button
+              *ngFor="let doc of banking_details.BankStatementDetailsLink"
+                mat-mini-fab
+                class="btn-view"
+                matTooltip="View"
+                (click)="open_Doc_Dialog(doc)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>description</mat-icon>
+              </button> 
+            </b>
+            </div> -->
+            </div>
+         
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Financial & GST Returns (Upto 24 Months)
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="(KYCDetails?.financial?.status=='Approved') || (KYCDetails?.gst?.status=='Approved') " style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="(KYCDetails?.financial?.status=='Rejected') || (KYCDetails?.gst?.status=='Rejected') " style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="(KYCDetails?.financial?.status=='In-Progress') || (KYCDetails?.gst?.status=='In-Progress')" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div style="display: grid; grid-template-columns: 6fr 6fr;">
+              <div>
+                <h2>Financial Documents : </h2>
+              <div class="flex-box">
+                <mat-card style="margin: 10px;" class="example-card" *ngFor="let doc of Financial_and_gst_returns.FinancialDetailsLink">
+                  <mat-card-header>
+                    <p>{{doc.document_name}}</p>
+                    </mat-card-header>
+                      <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                      mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+      
+                      <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                      class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                     </mat-icon>
+      
+                    <mat-card-content>
+                      <p>
+                        Uploaded By : {{doc.createdBy}}<br>
+                        Uploaded At : {{doc.createdAt | date:date_format}} 
+                      </p>
+                    </mat-card-content>
+                </mat-card>
+              </div>
+
+                <mat-form-field style="margin-left:10px; margin-top: 10px;" appearance="outline" *ngIf="KYCDetails?.financial?.comment && KYCDetails?.financial?.comment!=''">
+                  <mat-label>Comment</mat-label>
+                  <textarea matInput [value]="KYCDetails?.financial?.comment" readonly="true"></textarea>
+                </mat-form-field>
+              
+              </div>
+
+              <div>
+                <h2>GST Documents : </h2>
+              <div class="flex-box">
+                <mat-card style="margin: 10px;" class="example-card"  *ngFor="let doc of Financial_and_gst_returns.GstDetailsLink">
+                  <mat-card-header>
+                    <p>{{doc.document_name}}</p>
+                    </mat-card-header>
+                      <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                      mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+      
+                      <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                      class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                     </mat-icon>
+      
+                    <mat-card-content>
+                      <p>
+                        Uploaded By : {{doc.uploaded_by}}<br>
+                        Uploaded At : {{doc.uploaded_at | date:date_format}} 
+                      </p>
+                    </mat-card-content>
+                </mat-card>
+              </div>
+
+                <mat-form-field style="margin-left:10px; margin-top: 10px;" appearance="outline" *ngIf="KYCDetails?.gst?.comment && KYCDetails?.gst?.comment!=''">
+                  <mat-label>Comment</mat-label>
+                  <textarea matInput [value]="KYCDetails?.gst?.comment" readonly="true"></textarea>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Store Images
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.storeImages?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.storeImages?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.storeImages?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="flex-box">
+              <mat-card  class="example-card"  *ngFor="let doc of store_images.store_imageslink">
+                
+                  <p>{{doc.document_name}}</p>
+                  
+                    <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                    mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+    
+                    <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                    class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                   </mat-icon>
+    
+                  <mat-card-content>
+                    <p>
+                      Uploaded By : {{doc.createdBy}}<br>
+                      Uploaded At : {{doc.createdAt | date:date_format}} 
+                    </p>
+                  </mat-card-content>
+              </mat-card>
+            </div>
+
+              <div>
+                <mat-form-field appearance="outline" *ngIf="KYCDetails?.storeImages?.comment && KYCDetails?.storeImages?.comment!=''">
+                  <mat-label>Comment</mat-label>
+                  <textarea matInput [value]="KYCDetails?.storeImages?.comment" readonly="true"></textarea>
+                </mat-form-field>
+              </div>
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Cheque Images
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="KYCDetails?.chequeImages?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.chequeImages?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                <mat-icon *ngIf="KYCDetails?.chequeImages?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="flex-box">
+              <mat-card  class="example-card" *ngFor="let doc of cheque_images.cheque_imageslink">
+               
+                  <p>{{doc.document_name}}</p>
+                  
+                    <img *ngIf="(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')" 
+                    mat-card-image [src]="doc.url" width="150" height="120" alt="" (click)="open_Doc_Dialog(doc.url)">
+    
+                    <mat-icon *ngIf="!(doc.document_type == 'png' || doc.document_type =='jpeg' || doc.document_type =='jpg')"
+                    class="file-icon" (click)="open_Doc_Dialog(doc.url)"> insert_drive_file
+                   </mat-icon>
+    
+                  <mat-card-content>
+                    <p>
+                      Uploaded By : {{doc.createdBy}}<br>
+                      Uploaded At : {{doc.createdAt | date:date_format}} 
+                    </p>
+                  </mat-card-content>
+              </mat-card>
+            </div>
+
+            <div>
+              <div>
+          
+              </div>
+              <div>
+                <mat-form-field appearance="outline" *ngIf="KYCDetails?.chequeImages?.comment && KYCDetails?.chequeImages?.comment!=''">
+                  <mat-label>Comment</mat-label>
+                  <textarea matInput [value]="KYCDetails?.chequeImages?.comment" readonly="true"></textarea>
+                </mat-form-field>
+              </div>
+              <!-- <div>
+                <b>Document :
+                  <button *ngFor="let doc of cheque_images.cheque_imageslink" mat-mini-fab class="btn-view" matTooltip="View"
+                    (click)="open_Doc_Dialog(doc)"
+                    aria-label="Example icon button with a delete icon">
+                    <mat-icon>description</mat-icon>
+                  </button>
+                </b>
+              </div> -->
+            </div>
+          
+          </mat-expansion-panel>
+
+          <mat-expansion-panel class="mat-elevation-z0">
+            <mat-expansion-panel-header>
+              <mat-panel-title>Personal Discussion
+              </mat-panel-title>
+              <mat-panel-description>
+                <mat-icon *ngIf="personal_discussion_flag" style="color: green;">check_circle</mat-icon>
+                <mat-icon *ngIf="!personal_discussion_flag" style="color: red;">cancel</mat-icon>
+              </mat-panel-description>
+            </mat-expansion-panel-header>
+            <div  style="text-align: right;" *ngIf="personal_discussion_flag">
+              <button mat-flat-button type="button" (click)="downloadPersonalDiscussion()">
+                <mat-icon matTooltip="Download Personal Discussion" >cloud_download</mat-icon>
+              </button>
+            </div>
+            
+
+            <div class="pd_data" *ngIf="personal_discussion_flag">             
+              <div>
+                  <b>Business Name :  </b> <span>{{personal_discussion && personal_discussion.business_name ? personal_discussion.business_name : ""}}</span>  <br>
+                  <b>Business Address : </b> <span> {{personal_discussion && personal_discussion.business_address ? personal_discussion.business_address : ""}} </span> <br>
+                  <b>Business GST :</b> <span> {{personal_discussion && personal_discussion.business_gst ? personal_discussion.business_gst : ""}} </span> <br>
+                  <b>Business Mobile : </b> <span>{{personal_discussion && personal_discussion.business_mobile ? personal_discussion.business_mobile : ""}}</span> <br>
+                  <b>Business Email : </b> <span> {{personal_discussion && personal_discussion.business_email ? personal_discussion.business_email : "" }} </span>   <br>
+                  <b>Business Owner :  </b> <span>{{personal_discussion && personal_discussion.business_owner ? personal_discussion.business_owner : ""}}</span> <br>
+                  <b>Business Vintage : </b> <span>{{personal_discussion && personal_discussion.business_vintage ? personal_discussion.business_vintage : ""}}</span> <br>
+                </div>
+              <div>
+                <b>Owner Qualification :  </b> <span>{{personal_discussion && personal_discussion.owner_qualification ? personal_discussion.owner_qualification : ""}}</span> <br>
+                <b>Family Business :  </b> <span>{{personal_discussion && personal_discussion.family_business ? personal_discussion.family_business : ""}}</span> <br>
+                <b>Business Premises :  </b> <span>{{personal_discussion && personal_discussion.business_premises ? personal_discussion.business_premises : ""}}</span> <br>
+                <b>Owner House Ownership :  </b> <span>{{personal_discussion && personal_discussion.owner_house_ownership ? personal_discussion.owner_house_ownership : ""}}</span> <br>
+                <b>Shop Space : </b> <span>{{personal_discussion && personal_discussion.shop_space ? personal_discussion.shop_space : ""}}</span> <br>
+                <b>Business Workers : </b> <span>{{personal_discussion && personal_discussion.business_worker_number ? personal_discussion.business_worker_number : "" }}</span> <br>
+                <b>Business Brand Sponsers : </b> <span> {{personal_discussion && personal_discussion.business_brand_sponsers ? personal_discussion.business_brand_sponsers : ""}}  </span><br>
+              </div>
+
+              <div>
+                <b>Average Sales : </b> <span>{{personal_discussion && personal_discussion.average_sales ? personal_discussion.average_sales : ""}}</span>  <br>        
+                <b>Brand Credit Limits : </b> <span> {{ personal_discussion && personal_discussion.brand_credit_limits ? personal_discussion.brand_credit_limits : "" }} </span> <br>
+                <b>Business Provided For :  </b> <span>{{personal_discussion && personal_discussion.business_provided_for ? personal_discussion.business_provided_for : ""}}</span> <br>
+                <b>Credit Amount To Customer :  </b> <span>{{personal_discussion && personal_discussion.credit_amount_customer ?  personal_discussion.credit_amount_customer : ""}}</span> <br>
+                <b>Credit Period Customer  :</b> <span>{{personal_discussion && personal_discussion.credit_period_customer ? personal_discussion.credit_period_customer : ""}}</span> <br>
+                <b>Business Banks :  </b>  <span>{{personal_discussion && personal_discussion.business_banks ? personal_discussion.business_banks : ""}}</span> <br>
+                <b>Business Stock Value :  </b> <span>{{personal_discussion && personal_discussion.business_stock_value ? personal_discussion.business_stock_value : ""}}</span> <br> 
+                <b>Business Monthly Expenses :  </b> <span>{{personal_discussion && personal_discussion.business_monthly_expenses ? personal_discussion.business_monthly_expenses : "" }}</span> <br>
+              </div>
+            </div>
+         
+          </mat-expansion-panel>
+        </mat-accordion>
+      </mat-accordion>
+    </div>
+  </div>

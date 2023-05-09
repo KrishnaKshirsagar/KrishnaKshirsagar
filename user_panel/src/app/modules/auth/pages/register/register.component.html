@@ -1,0 +1,327 @@
+<div id="register-page">
+  <div class="parent">
+    <div class="div1 text-center">
+      <div class="input-wrapper">
+        <img
+          src="../../../../../assets/images/xuritilogo.png"
+          alt="xuritilogo"
+          class="logo img-responsive"
+        />
+        <p class="logotext" i18n="@@LOG1">Guaranteed payment solution</p>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <div class="btm-imput">
+        <p>©Flipbill Technologies 2022</p>
+      </div>
+    </div>
+
+    <div class="div2">
+      <div class="login">
+        <div class="form">
+          <!-- SIGN UP form Start -->
+          <div id="setMobileno" *ngIf="section1">
+            <form [formGroup]="form" (ngSubmit)="onSubmit()">
+              <div>
+                <h2>SIGN UP</h2>
+                <p>Please verify it’s you!</p>
+              </div>
+              <div>
+                <div class="input-wrapper">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>First Name</mat-label>
+                    <input
+                      type="text"
+                      pattern="[a-zA-Z]+"
+                      matInput
+                      formControlName="firstName"
+                      required
+                    />
+                    <mat-error style="color: rgb(241, 14, 14)"
+                      >Please enter first name</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="input-wrapper">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>Last Name</mat-label>
+                    <input
+                      type="text"
+                      pattern="[a-zA-Z]+"
+                      matInput
+                      formControlName="lastName"
+                      required
+                    />
+                    <mat-error style="color: rgb(241, 14, 14)"
+                      >Please enter last name</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="input-wrapper">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>Mobile</mat-label>
+                    <input
+                      type="text"
+                      maxlength="10"
+                      pattern="^((\\+91-?)|0)?[0-9]{10}$"
+                      matInput
+                      formControlName="mobile"
+                      required
+                    />
+                    <mat-error style="color: rgb(241, 14, 14)"
+                      >Please enter the 10 digit mobile number</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+              
+              </div>
+              <div>
+                <button
+                  mat-button
+                  color="primary"
+                  type="submit"
+                  class="btn-primary"
+                >
+                  SEND OTP
+                </button>
+              </div>
+            </form>
+
+            <div class="input-wrapper">
+              <div class="forgot-password text-center">
+                Already a registered member?
+                <a [routerLink]="['/auth/login']"> Login Now </a>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <div class="divcontainer">
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- SIGN UP form End-->
+
+          <!-- Enter OTP form Start  -->
+          <div id="otp_verification" *ngIf="section2">
+            <form [formGroup]="form2" (ngSubmit)="onOTPVerification()">
+              <div>
+                <h2>
+                  <button
+                    (click)="gotoSection1()"
+                    class="backbtn"
+                    mat-icon-button
+                    aria-label="Example icon button with a vertical three dot icon"
+                  >
+                    <mat-icon>keyboard_backspace</mat-icon>
+                  </button>
+                  Enter OTP
+                </h2>
+                <p>We have sent an OTP on your mobile number</p>
+              </div>
+              <div>
+                <!-- <div class="input-wrapper">
+            <mat-form-field class="full-width-input" appearance="outline">
+              <mat-label>Mobile</mat-label>
+              <input matInput disabled/>
+            </mat-form-field>
+          </div> -->
+                <div class="input-wrapper">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>OTP</mat-label>
+                    <input
+                      matInput
+                      formControlName="otp"
+                      pattern="^((\\+91-?)|0)?[0-9]{4}$"
+                      required
+                    />
+                    <mat-error style="color: rgb(241, 14, 14)"
+                      >Please enter 4 digit OTP</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div>
+                <button
+                  mat-button
+                  color="primary"
+                  type="submit"
+                  class="btn-primary"
+                >
+                  VERIFY
+                </button>
+                <!-- <mat-error *ngIf="otpErrorflag">Invalid OTP, please try again</mat-error> -->
+              </div>
+            </form>
+            <div class="input-wrapper">
+              <div class="forgot-password text-center">
+                <button>
+                  <a (click)="resendOtp()"> RESEND OTP </a>
+                </button>
+              </div>
+            </div>
+
+            <div class="input-wrapper">
+              <div class="forgot-password text-center">
+                Already a registered member?
+                <a [routerLink]="['/auth/login']"> Login Now </a>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <div class="divcontainer">
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Enter OTP form End  -->
+
+          <!-- CREATE ACCOUNT form Start -->
+          <div id="registration" *ngIf="section3">
+            <form [formGroup]="form3" (ngSubmit)="onSignup()">
+              <div>
+                <h2>CREATE ACCOUNT</h2>
+                <p>Sign Up to become a member of Xuriti</p>
+              </div>
+            
+                <div class="input-wrapper">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>Email</mat-label>
+                    <input
+                      matInput
+                      formControlName="email"
+                      pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                      required
+                    />
+                    <mat-error style="color: rgb(241, 14, 14)">
+                      Please enter valid email address
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="input-wrapper">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>Create Password</mat-label>
+                    <input
+                      matInput
+                      [type]="pwdVisible ? 'text' : 'password'"
+                      formControlName="password"
+                      pattern="^(?=.{8,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).*$"
+                      required
+                    />
+                    <mat-icon
+                      matSuffix
+                      class="pass-vis"
+                      (click)="pwdVisible = !pwdVisible"
+                      >{{ pwdVisible ? "visibility_off" : "visibility" }}
+                    </mat-icon>
+                    <mat-error style="color: rgb(241, 14, 14)">
+                      Password must contain at least one capital letter, one
+                      small letter and one number and any special character like
+                      @$_# etc
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- Confirm password -->
+                <div class="input-wrapper">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>Confirm Password</mat-label>
+                    <input
+                      matInput
+                      [type]="pwdVisible ? 'text' : 'password'"
+                      formControlName="cpassword"
+                      pattern="^(?=.{8,})(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).*$"
+                      required
+                    />
+                    <mat-icon
+                      matSuffix
+                      class="pass-vis"
+                      (click)="pwdVisible = !pwdVisible"
+                      >{{ pwdVisible ? "visibility_off" : "visibility" }}
+                    </mat-icon>
+                    <mat-error style="color: rgb(241, 14, 14)">
+                      Password must contain at least one capital letter, one
+                      small letter and one number and any special character like
+                      @$_# etc
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+           
+              <div>
+                <button mat-button color="primary" class="btn-primary">
+                  CREATE
+                </button>
+                <!-- <mat-error *ngIf="regSuccessflag">Registration Successfull!</mat-error> -->
+                <!-- <mat-error *ngIf="regFailflag">Email Id already exists. Please use different email Id</mat-error> -->
+              </div>
+            </form>
+            <div class="input-wrapper">
+              <div class="divcontainer">
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+                <div class="divtext mat-typography">OR</div>
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+              </div>
+            </div>
+            <button
+              mat-flat-button
+              class="btn-secondary"
+              (click)="googleSignUp()"
+            >
+              <img
+                src="../../../../../assets/images/google.svg"
+                alt="xuritilogo"
+                class="img-responsive"
+              />
+              CONTINUE WITH GOOGLE
+            </button>
+            <div class="input-wrapper">
+              <div class="forgot-password text-center">
+                Already a registered member?
+                <a [routerLink]="['/auth/login']"> Login Now </a>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <div class="divcontainer">
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+                <div class="divline">
+                  <mat-divider></mat-divider>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- CREATE ACCOUNT form End-->
+          <div class="footer-div">
+            <div class="flex-div input-wrapper">
+              <div>
+                <img
+                  src="../../../../../assets/images/xuritilogowhite.png"
+                  alt="xuritilogo"
+                  class="img-responsive"
+                />
+              </div>
+              <div>
+                <p i18n="@@LOG13">
+                  More than 500 merchants in your area are on Xuriti.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>

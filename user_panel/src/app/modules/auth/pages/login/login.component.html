@@ -1,0 +1,177 @@
+<div id="login-page">
+  <div class="parent">
+    <div class="div1 text-center">
+      <div class="input-wrapper">
+        <img
+          src="../../../../../assets/images/xuritilogo.png"
+          alt="xuritilogo"
+          class="logo img-responsive"
+        />
+        <p class="logotext" i18n="@@LOG1">Guaranteed payment solution</p>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <div class="btm-imput">
+        <p>©Flipbill Technologies 2022</p>
+      </div>
+    </div>
+
+    <div class="div2">
+      <div class="login">
+        <div class="form">
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div>
+              <h2 i18n="@@LOG2">LOGIN</h2>
+              <p i18n="@@LOG3">Login to continue to: <b>Your Dashboard</b></p>
+            </div>
+            <div>
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG4">Email</mat-label>
+                  <input
+                    matInput
+                    type="email"
+                    formControlName="email"
+                    pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                    required
+                  />
+
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+                    Please provide a valid email address
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="input-wrapper">
+                <mat-form-field class="full-width-input" appearance="outline">
+                  <mat-label i18n="@@LOG6">Password</mat-label>
+                  <input
+                    matInput
+                    [type]="pwdVisible ? 'text' : 'password'"
+                    formControlName="password"
+                    pattern="^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).*$"
+                    required
+                  />
+                  <mat-icon
+                    matSuffix
+                    class="pass-vis"
+                    (click)="pwdVisible = !pwdVisible"
+                    >{{ pwdVisible ? "visibility_off" : "visibility" }}
+                  </mat-icon>
+
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG7">
+                    Password must contain at least one capital letter, one small
+                    letter and one number and any special character like @$_#
+                    etc
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="input-wrapper">
+              <div class="remember-me" >
+                <div>
+                  <section>
+                    <mat-checkbox [checked]="checked" (change)="changeValue($event)" color="primary">
+                      <span class="checked">
+                        Remember Me
+                      </span>
+                    </mat-checkbox>
+                  </section>
+                </div>
+                
+                <div>
+                  <a [routerLink]="['/auth/forgot-password']" i18n="@@LOG8">
+                    Forgot Password?
+                  </a>
+                </div>
+              </div>
+            </div>
+
+           
+              <!-- <re-captcha
+                style="display: flex; justify-content: center;  margin-bottom:15px;"
+                (resolved)="resolved($event)"
+                [siteKey]="recaptcha_key"
+                formControlName="recaptcha"
+              >
+            </re-captcha>
+           <p *ngIf="recaptcha == 'false'" style="color: rgb(241, 14, 14); margin-right:140px; margin-top: -10px;">
+              Please verify the capctha
+           </p> -->
+            <div>
+              <button
+                mat-button
+                type="submit"
+                color="primary"
+                class="btn-primary"
+                i18n="@@LOG9"
+              >
+                LOGIN
+              </button>
+            </div>
+          </form>
+
+          <div class="input-wrapper">
+            <div class="divcontainer">
+              <div class="divline">
+                <mat-divider></mat-divider>
+              </div>
+              <div class="divtext mat-typography" i18n="@@LOG10">OR</div>
+              <div class="divline">
+                <mat-divider></mat-divider>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button
+              mat-flat-button
+              class="btn-secondary"
+              i18n="@@LOG11"
+              (click)="onGoogleSignin()"
+            >
+              <img
+                src="../../../../../assets/images/google.svg"
+                alt="xuritilogo"
+                class="img-responsive"
+              />
+              LOGIN WITH GOOGLE
+            </button>
+          </div>
+
+          <div class="input-wrapper">
+            <div class="forgot-password text-center" i18n="@@LOG12">
+              Don’t have an account?
+              <a [routerLink]="['/auth/register']"> Sign Up </a>
+            </div>
+            <div class="divcontainer">
+              <div class="divline">
+                <mat-divider></mat-divider>
+              </div>
+              <div class="divline">
+                <mat-divider></mat-divider>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-div">
+            <div class="flex-div input-wrapper">
+              <div>
+                <img
+                  src="../../../../../assets/images/xuritilogowhite.png"
+                  alt="xuritilogo"
+                  class="img-responsive"
+                />
+              </div>
+              <div>
+                <p i18n="@@LOG13">
+                  More than 500 merchants in your area are on Xuriti.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

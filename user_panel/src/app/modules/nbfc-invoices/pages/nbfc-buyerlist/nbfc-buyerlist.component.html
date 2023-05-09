@@ -1,0 +1,329 @@
+<div id="nbfc-mapping-page">
+  <div class="main-wrapper">
+    <div>
+      <h2>Mapped Businesses</h2>
+    </div>
+      <h3>
+        NBFC Name : <b>{{ nbfc_name }}</b>
+      </h3>
+      <div class="transheader">
+        <!-- <div>
+          <mat-form-field appearance="outline" class="right-box">
+            <mat-select [(value)]="selection" (selectionChange)="selectUser()">
+              <mat-option value="" selected>Select User Type</mat-option>
+              <mat-option value="buyer">Retailer</mat-option>
+              <mat-option value="seller">Seller</mat-option>
+              <mat-option value="nbfc">NBFC</mat-option>
+            </mat-select>
+          </mat-form-field>
+    
+          <mat-form-field appearance="outline" class="left-box">
+            <input
+              type="text"
+              placeholder="Select Company"
+              matInput
+              [formControl]="companySelect"
+              [matAutocomplete]="auto"
+              (input)="companySuggetion($event)"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              (optionSelected)="getPosts($event.option.value)"
+            >
+              <mat-option *ngFor="let company of company_Name" [value]="company">
+                {{ company.company_name }}
+              </mat-option>
+            </mat-autocomplete>
+            <button
+              type="button"
+              mat-button
+              (click)="company_name_clear(companySelect)"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div> -->
+         
+        <mat-form-field appearance="outline">
+          <mat-label>Search by Retailer Name</mat-label>
+          <input
+            matInput
+            [formControl]="buyerNameControl"
+            (keyup)="filterCompanyName($event)"
+            placeholder="Search by Retailer Name"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="clear(buyerNameControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date range based on the registration</mat-label>
+          <mat-date-range-input
+            [rangePicker]="rangePicker"
+            [formGroup]="dateRange"
+            [max]="maxDate"
+          >
+            <input
+              matStartDate
+              placeholder="Start date"
+              formControlName="start"
+              readonly
+            />
+            <input
+              matEndDate
+              placeholder="End date"
+              formControlName="end"
+              readonly
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="rangePicker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #rangePicker>
+            <mat-date-range-picker-actions>
+              <button mat-button matDateRangePickerCancel>Cancel</button>
+              <button
+                mat-raised-button
+                color="primary"
+                matDateRangePickerApply
+                (click)="datefilter()"
+              >
+                Apply
+              </button>
+            </mat-date-range-picker-actions>
+          </mat-date-range-picker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Credit Limit Range</mat-label>
+          <mat-select (selectionChange)="creditlimit_range($event.value)">
+            <mat-option value="" selected> Select Credit Limit Range</mat-option>
+            <mat-option value="0_to_1L" selected>0 to 1 Lakh</mat-option>
+            <mat-option value="2L_to_5L"> 2 Lakh to 5 Lakh </mat-option>
+            <mat-option value="5L_to_25L"> 5 Lakh to 25 Lakh </mat-option>
+            <mat-option value="above_25L"> Above 25 Lakh </mat-option> 
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <mat-form-field appearance="outline">
+          <mat-label>KYC Status</mat-label>
+          <mat-select (selectionChange)="kycStatus($event.value)">
+            <mat-option value="0_to_1L" selected>0 to 1 Lakh</mat-option>
+            <mat-option value="2L_to_5L"> 2 Lakh to 5 Lakh </mat-option>
+            <mat-option value="5L_to_25L"> 5 Lakh to 25 Lakh </mat-option>
+            <mat-option value="above_25L"> Above 25 Lakh </mat-option> 
+          </mat-select>
+        </mat-form-field> -->
+          
+      </div>
+    <div>
+      <!-- <button
+        mat-icon-button
+        (click)="
+          exporter.exportTable('xlsx', {
+            fileName: 'Mapped Buyers',
+            sheet: 'Mapped_Buyers',
+            Props: { Author: 'Xuriti' }
+          })
+        "
+        1
+        matTooltip="Export Excel"
+        matTooltipPosition="below"
+        class="exel-icon"
+        aria-label="Example icon button with a menu icon"
+      >
+        <mat-icon>assignment_returned</mat-icon>
+      </button> -->
+    </div>
+
+    <div class="mat-elevation-z2">
+      <table
+        mat-table
+        matTableExporter
+        #exporter="matTableExporter"
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+      >
+       
+        <!-- <ng-container matColumnDef="seller">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by company_name"
+          >
+            Seller
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element && element.seller_id && element.seller_id.company_name
+                ? element.seller_id.company_name
+                : ""
+            }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="seller_gstin">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by gstin"
+          >
+            Seller GST No
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element && element.seller_id && element.seller_id.gstin
+                ? element.seller_id.gstin
+                : ""
+            }}
+          </td>
+        </ng-container> -->
+
+        <!-- buyer company_name Column -->
+        <ng-container matColumnDef="buyer">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by company_name"
+          >
+          Retailer
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element && element.buyer_id && element.buyer_id.company_name
+                ? element.buyer_id.company_name
+                : ""
+            }}
+          </td>
+        </ng-container>
+
+        <!-- buyer gstin Column -->
+        <ng-container matColumnDef="buyer_gstin">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by gstin"
+          >
+          Retailer's GST Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element && element.buyer_id && element.buyer_id.gstin
+                ? element.buyer_id.gstin
+                : ""
+            }}
+          </td>
+        </ng-container>
+
+        <!-- creditLimit Column -->
+        <ng-container matColumnDef="creditLimit">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by creditLimit"
+          >
+          Retailer's Credit Limit
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.buyer_id && element.buyer_id.creditLimit
+                ? element.buyer_id.creditLimit
+                : 0) | currency : currency_Format
+            }}
+          </td>
+        </ng-container>
+
+        <!-- created_at Column -->
+        <ng-container matColumnDef="created_at">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by created_at"
+          >
+            Added On
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.created_at ? element.created_at : "")
+                | date: Date_Format
+            }}
+          </td>
+        </ng-container>
+
+        <!-- KYC Verified column -->
+        <ng-container matColumnDef="kyc_document_upload">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            class="actioncol"
+          >
+            KYC Status
+          </th>
+          <td mat-cell *matCellDef="let element" class="actioncol">
+            <mat-icon *ngIf="element && element.buyer_id && element.buyer_id.kyc == true" style="color: green;" (click)="companyKycDetails(element)">check</mat-icon>
+            <mat-icon *ngIf="element && element.buyer_id && element.buyer_id.kyc == false" style="color: rgb(235, 12, 12);">close</mat-icon>
+          </td>
+        </ng-container>
+        
+        <!-- action Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+          <td mat-cell *matCellDef="let element">
+
+            <button
+              mat-mini-fab
+              class="btn-view"
+              matTooltip="Details"
+              aria-label="Example icon button with a delete icon"
+              (click)="openCompanyDetailsPage(element)"
+              *ngIf="(userRole == 'nbfcUser')"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              *ngIf="(element && element.buyer_id && element.buyer_id.kyc_document_upload == true ) && (userRole == 'nbfcUser')"
+              mat-mini-fab
+              class="btn-view"
+              matTooltip="KYC"
+              aria-label="Example icon button with a delete icon"
+              (click)="companyKycDetails(element)"
+            >
+              <mat-icon>folder_shared</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[10, 15, 20]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</div>

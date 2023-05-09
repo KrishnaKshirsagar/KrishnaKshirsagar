@@ -1,0 +1,220 @@
+#nbfcerror-page {
+  .bottom-logo {
+    max-height: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .bottom-text {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .logo {
+    max-height: 65px;
+  }
+  .image-responsive {
+    max-width: 100%;
+    height: auto;
+  }
+  .logotext {
+    font: normal normal normal 16px/26px Lato;
+  }
+  .margin-top {
+    margin-top: 2rem;
+  }
+  .bg-white {
+    background: white;
+  }
+  .margin-bottom {
+    margin-bottom: 2rem;
+  }
+  .btn-primary {
+    background: #f79e1b 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    color: white;
+    padding: 6px;
+  }
+  .btn-add {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    color: black;
+    padding: 6px;
+    border: 1px solid black;
+  }
+  .btn-remove {
+    box-shadow: none;
+    background: #e40000;
+    color: white;
+  }
+  .btn-secondary {
+    background: #f6f2e9 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    padding: 6px;
+  }
+  .btn-secondary img {
+    vertical-align: middle;
+    margin: 0px 5px 4px 5px;
+    width: 23px;
+  }
+  .input-wrapper {
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  .mat-form-field {
+    display: block;
+  }
+
+  ::ng-deep {
+    .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+      color: #000000;
+    }
+    .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+      color: #c4c4c4;
+    }
+    .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid
+      .mat-form-field-outline-thick {
+      color: #c4c4c4;
+    }
+
+    .mat-form-field.mat-form-field-invalid .mat-form-field-label.mat-accent,
+    .mat-form-field.mat-form-field-invalid
+      .mat-form-field-label
+      .mat-form-field-required-marker {
+      color: #c4c4c4;
+    }
+    .mat-horizontal-stepper-header {
+      height: 44px;
+      padding: 0 22px;
+    }
+    .mat-horizontal-content-container {
+      padding: 0 5px 24px 5px;
+    }
+    .mat-form-field-wrapper {
+      padding-bottom: 0.5em;
+    }
+    .mat-form-field-infix {
+      border-top: 0.6em solid transparent;
+    }
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 0.6em 0 1em 0;
+    }
+    .mat-step-header .mat-step-icon {
+      background-color: #cccccc;
+    }
+    .mat-step-header .mat-step-icon-state-done {
+      background-color: #cccccc;
+    }
+    .mat-step-header .mat-step-icon-state-edit {
+      background-color: #cccccc;
+    }
+    .mat-step-header .mat-step-icon-selected {
+      background-color: #000000;
+    }
+    .mat-step-header .mat-step-label.mat-step-label-active {
+      color: #000000;
+    }
+  }
+
+  .text-right {
+    text-align: right;
+  }
+  .loginform {
+    padding: 0px 100px;
+
+    .forgot-password a {
+      color: black;
+    }
+    h2 {
+      text-align: left;
+      font: normal normal bold 36px/26px Lato;
+      letter-spacing: 0.36px;
+      color: #000000;
+    }
+    p {
+      text-align: left;
+      font: normal 16px/26px Lato;
+      letter-spacing: 0.16px;
+      color: #000000;
+    }
+  }
+  .no-shadow {
+    box-shadow: none;
+    border: 1px solid #f1f1f1;
+    margin-bottom: 15px;
+  }
+  .flex-div {
+    display: flex;
+    flex-direction: row;
+    .btn-primary {
+      margin: 5px;
+    }
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+  }
+
+  .flex-item-left {
+    padding-right: 5px;
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    padding-left: 5px;
+    flex: 50%;
+  }
+
+  .divcontainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .divline {
+    flex: 1;
+  }
+
+  .divtext {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+    .margin-bottom {
+      margin-bottom: 1rem;
+    }
+    .margin-top {
+      margin-top: 1rem;
+    }
+    .loginform {
+      padding: 0px 30px;
+    }
+    .flex-div {
+      display: block;
+      text-align: center;
+    }
+    .flex-div p {
+      text-align: center;
+    }
+    .loginform h2,
+    .loginform p {
+      text-align: center;
+    }
+  }
+}

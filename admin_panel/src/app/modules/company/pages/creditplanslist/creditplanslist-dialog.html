@@ -1,0 +1,27 @@
+<div id="creditplanslist-dialog">
+  <mat-dialog-content>
+    <h1 class="text-center">Delete Plan</h1>
+    <h2 class="text-center">Confirm ?</h2>
+
+    <form class="example-form">
+      <div class="input-wrapper text-center">
+        <button
+          mat-flat-button
+          class="btn-dark"
+          (click)="deletePlan()"
+          style="margin: 5px"
+        >
+          SUBMIT
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="btn-dark"
+          (click)="cancel()"
+        >
+          CANCEL
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

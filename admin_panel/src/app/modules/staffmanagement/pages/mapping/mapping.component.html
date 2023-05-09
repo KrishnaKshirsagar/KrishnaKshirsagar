@@ -1,0 +1,93 @@
+<app-layout>
+  <div id="mapping-page">
+    <div class="main-wrapper backdiv">
+      <button
+        mat-mini-fab
+        color="primary"
+        onclick="history.go(-1); return false;"
+        class="back"
+        aria-label="back button"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2>Mapped Businesses</h2>
+    </div>
+
+    <div class="main-wrapper">
+      <div class="flexhead">
+        <button
+          mat-flat-button
+          style="margin: 5px"
+          (click)="openStaffMappingDialogue()"
+          class="btn-export"
+        >
+          MAP COMPANY
+        </button>
+      </div>
+
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2"
+      >
+        <!-- Company Name Column -->
+        <ng-container matColumnDef="companyName">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by companyName"
+          >
+            Company Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element && element.company && element.company.company_name
+                ? element.company.company_name
+                : ""
+            }}
+          </td>
+        </ng-container>
+
+        <!-- Company GST Column -->
+        <ng-container matColumnDef="gstin">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by gstin"
+            *matHeaderCellDef
+          >
+            GST Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              element && element.company && element.company.gstin
+                ? element.company.gstin
+                : ""
+            }}
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-mini-fab
+              class="btn-delete"
+              matTooltip="Delete Plan"
+              (click)="unMappingDialogue(element)"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</app-layout>

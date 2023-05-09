@@ -1,0 +1,215 @@
+<div id="invoicelist-page">
+  <div class="header-table">
+    <span>Invoice List</span>
+  </div>
+
+  <table>
+    <thead >
+      <tr >
+       
+       
+          <th class="row-wrapper">Invoice No</th>
+     
+        
+      </tr>
+
+      <tr  rowspan="100" >
+        
+          <th >Seller Name</th>
+       
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-3"> -->
+          <th>Invoice Date</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-4"> -->
+          <th>Invoice Amount</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-5"> -->
+          <th>GST Amount</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-6"> -->
+          <th>Outstanding Amount</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-7"> -->
+          <th>Saving</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-8"> -->
+          <th>Losses</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-9"> -->
+          <th>Payable Amount</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-10"> -->
+          <th>Invoice Due Date</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr style="width:60px,padding-left:8px;">
+        <!-- <mat-card class="second-card-header-11"> -->
+          <th >Status</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-12"> -->
+          <th>Date Created At</th>
+        <!-- </mat-card> -->
+      </tr>
+
+      <tr>
+        <!-- <mat-card class="second-card-header-13"> -->
+          <th>Actions</th>
+        <!-- </mat-card> -->
+      </tr>
+    </thead>
+
+    <tbody style="margin-bottom: 5px;" >
+      <tr *ngFor="let element of this.data">
+        <td  class="invoice-no">
+          {{ element && element.invoice_number ? element.invoice_number : "" }}
+        </td>
+        <td class="uploded-by"  style="max-width=10px,width=20px,">
+          {{
+            element && element.seller && element.seller.company_name
+              ? element.seller.company_name
+              : ""
+          }}
+        </td>
+        <td class="total-amount">
+          {{
+            (element && element.invoice_amount ? element.invoice_amount : "")
+              | currency: currency_Format
+          }}
+        </td>
+        <td class="Gst-invoice-amount">
+          {{
+            (element &&
+            element.bill_details &&
+            element.bill_details.gst_summary &&
+            element.bill_details.gst_summary.total_tax
+              ? element.bill_details.gst_summary.total_tax
+              : 0
+            ) | currency: currency_Format
+          }}
+        </td>
+        <td class="Gst-Date" style="padding-left:12px,">
+          {{
+            (element && element.invoice_date ? element.invoice_date : "")
+              | date: Date_Format
+          }}
+        </td>
+
+        <td class="outstanding-amount">
+          {{
+            (element && element.outstanding_amount
+              ? element.outstanding_amount
+              : 0
+            ) | currency: currency_Format
+          }}
+        </td>
+
+        <td class="gst-saving" style="color: green">
+          {{
+            (element && element.discount ? element.discount : 0)
+              | currency: currency_Format
+          }}
+        </td>
+
+        <td class="gst-loss" style="color: red">
+          {{
+            (element && element.interest ? element.interest : 0)
+              | currency: currency_Format
+          }}
+        </td>
+
+        <td class="payable-amount">
+          {{ getPayableAmount(element) | currency: currency_Format }}
+        </td>
+
+        <td class="Invoice-due-date">
+          {{
+            (element && element.invoice_due_date
+              ? element.invoice_due_date
+              : ""
+            ) | date: Date_Format
+          }}
+        </td>
+
+        <td class="status">
+          <!-- <mat-card class="status-background"> -->
+            <img
+              class="status-img"
+              src="../../../../../assets/images/pogo.svg"
+            />
+            {{
+              getstatus(element && element.invoice_status)
+                ? getstatus(element.invoice_status)
+                : ""
+            }}
+          <!-- </mat-card> -->
+        </td>
+
+        <td class="created-at">
+          {{
+            (element && element.createdAt ? element.createdAt : "")
+              | date: Date_Format
+          }}
+        </td>
+        <td class="action">
+          <button
+            mat-icon-button
+            [matMenuTriggerFor]="menu"
+            aria-label="Example icon-button with a menu"
+          >
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item>
+              <mat-icon>dialpad</mat-icon>
+              <span>dialpad</span>
+            </button>
+            <button mat-menu-item disabled>
+              <mat-icon>voicemail</mat-icon>
+              <span>Check voice mail</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>notifications_off</mat-icon>
+              <span>Disable alerts</span>
+            </button>
+          </mat-menu>
+        </td>
+      </tr>
+  </tbody>
+  </table>
+  <mat-paginator
+    class="paginator"
+    [length]="100"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25, 100]"
+    aria-label="Select page"
+  >
+  </mat-paginator> 
+</div>

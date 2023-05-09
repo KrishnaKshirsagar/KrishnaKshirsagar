@@ -1,0 +1,1058 @@
+<app-layout>
+  <div id="companydetails-page">
+    <div class="main-wrapper">
+      <mat-card>
+        <div class="backdiv">
+          <button
+            mat-mini-fab
+            (click)="backpage()"
+            class="back-btn"
+            aria-label="back button"
+          >
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <mat-card-title>
+            <h2>Business Details - {{ companyName }}</h2>
+          </mat-card-title>
+        </div>
+
+        <mat-card-subtitle
+          style="display: flex; justify-content: space-between"
+        >
+          <button
+            mat-raised-button
+            (click)="openEsignPage()"
+            class="btn-approve"
+          >
+            E-Sign
+          </button>
+          <button mat-raised-button (click)="updateGST()" class="btn-approve">
+            Update GST
+          </button>
+        </mat-card-subtitle>
+        <mat-card-content>
+          <div class="details">
+            <form
+              class="example-form"
+              [formGroup]="companyDetail_form"
+              (ngSubmit)="updateCompanyDetail()"
+            >
+              <mat-card>
+                <mat-card-content>
+                  <div class="flex-container">
+                    <!-- Left side div starts from here -->
+                    <div class="flex-item-left">
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>GST Number</mat-label>
+                        <input
+                          [ngModel]="inputvalue"
+                          (ngModelChange)="inputvalue = $event.toUpperCase()"
+                          matInput
+                          formControlName="gstin"
+                          type="text"
+                          pattern="^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$"
+                          (input)="onchange()"
+                          (change)="gstinchange()"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter correct GST number
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Business Name</mat-label>
+                        <input
+                          type="text"
+                          matInput
+                          formControlName="company_name"
+                          required
+                          (input)="onchange()"
+                          (change)="companychange()"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter business name</mat-error
+                        >
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Business Mobile Number</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="company_mobileNumber"
+                          (input)="onchange()"
+                          pattern="^[1-9][0-9]*$"
+                          minlength="10"
+                          maxlength="10"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid mobile number
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Business Email Address</mat-label>
+                        <input
+                          matInput
+                          formControlName="company_email"
+                          (input)="onchange()"
+                          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid email</mat-error
+                        >
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Admin Name</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="admin_name"
+                          required
+                          (input)="onchange()"
+                          pattern="^[ a-zA-Z]*$"
+                          readonly
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter admin name</mat-error
+                        >
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Admin Mobile Number</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="admin_mobile"
+                          maxlength="10"
+                          minlength="10"
+                          (input)="onchange()"
+                          pattern="^[1-9][0-9]*$"
+                          readonly
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid mobile number
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Business PAN</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="pan"
+                          (input)="onchange()"
+                          (change)="panchange()"
+                          pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
+                          minlength="10"
+                          maxlength="10"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid pan number
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <!-- pattern="^[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}" -->
+                        <mat-label>CIN</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="cin"
+                          (input)="onchange()"
+                          (change)="cinchange()"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid cin number
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Business Annual Turnover</mat-label>
+                        <input
+                          matInput
+                          formControlName="annual_turnover"
+                          pattern="^[0-9]*$"
+                          (input)="onchange()"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter correct annual turnover
+                        </mat-error>
+                      </mat-form-field>
+
+                      <!-- Xuriti Credit Score -->
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Xuriti Score</mat-label>
+                        <input
+                          matInput
+                          formControlName="xuriti_score"
+                          pattern="^[0-9]*$"
+                          (input)="onchange()"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter correct xuriti score
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+
+                    <!-- Right side div starts from here -->
+                    <div class="flex-item-right">
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Business Status</mat-label>
+                        <mat-select
+                          formControlName="status"
+                          (selectionChange)="onchange()"
+                        >
+                          <mat-option value="In-Progress">
+                            In-Progress
+                          </mat-option>
+                          <mat-option value="Approved"> Approved </mat-option>
+                          <mat-option value="Rejected"> Rejected </mat-option>
+                          <mat-option value="Hold"> Hold </mat-option>
+                          <mat-option value="Inactive"> Inactive </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                        style="width: 70%"
+                      >
+                        <mat-label>Credit Limit</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          pattern="^[0-9]*$"
+                          formControlName="creditLimit"
+                          (input)="onchange()"
+                          (change)="creditlimichange()"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid credit limit</mat-error
+                        >
+                      </mat-form-field>
+                      <button
+                        mat-raised-button
+                        (click)="openFetchDialog()"
+                        class="btn-approve"
+                        style="width: 26.5%; height: 5%"
+                      >
+                        Fetch
+                      </button>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>State</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="state"
+                          (input)="onchange()"
+                          pattern="^[ a-zA-Z,]*$"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter state name</mat-error
+                        >
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Pincode</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          (input)="onchange()"
+                          formControlName="pinCode"
+                          pattern="^[0-9]*$"
+                          minlength="6"
+                          maxlength="6"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter correct PinCode</mat-error
+                        >
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Admin Email Address</mat-label>
+                        <input
+                          matInput
+                          formControlName="admin_email"
+                          type="text"
+                          pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                          (input)="onchange()"
+                          readonly
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid email address
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Type of Business</mat-label>
+                        <input
+                          matInput
+                          formControlName="industry_type"
+                          (input)="onchange()"
+                          pattern="^[ a-zA-Z]*$"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter type of business
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <!-- pattern="[A-Z]{4}[0-9]{5}[A-Z]{1}" -->
+                        <mat-label>TAN</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="tan"
+                          (input)="onchange()"
+                          (change)="tanchange()"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid tan number
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>District</mat-label>
+                        <input
+                          matInput
+                          type="text"
+                          formControlName="district"
+                          (input)="onchange()"
+                          pattern="^[ a-zA-Z]*$"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter district name</mat-error
+                        >
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Annual Interest %</mat-label>
+                        <input
+                          matInput
+                          formControlName="interest"
+                          (input)="onchange()"
+                          type="text"
+                          minlength="0"
+                          maxlength="4"
+                          pattern="[0-9]{1,2}\.?\d*$"
+                        />
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid interest %
+                        </mat-error>
+                      </mat-form-field>
+
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Address</mat-label>
+                        <textarea
+                          (input)="onchange()"
+                          matInput
+                          placeholder="Address"
+                          formControlName="address"
+                          cdkTextareaAutosize
+                          cdkAutosizeMinRows="2"
+                          cdkAutosizeMaxRows="5"
+                        >
+                        </textarea>
+                        <mat-error
+                          style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >
+                          Please enter business address.
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div class="flex-container" *ngIf="associated_seller">
+                    <div class="flex-item-left">
+                      <mat-label
+                        ><b
+                          >Associated Supplier/Distributor: &nbsp;</b
+                        ></mat-label
+                      >
+                      <span *ngIf="!add_associated_seller_flag">
+                        {{ associated_seller?.seller_name }}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    mat-button
+                    matTooltip="Add Associated Seller"
+                    matTooltipPosition="above"
+                    type="button"
+                    (click)="getSellerList()"
+                  >
+                    <!-- <mat-icon>person_add</mat-icon> -->
+                    <mat-icon>add_box</mat-icon>
+                  </button>
+                  <div class="flex-container">
+                    <div
+                      class="flex-item-left"
+                      *ngIf="add_associated_seller_flag"
+                    >
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                      >
+                        <mat-label>Associated Seller</mat-label>
+                        <mat-select
+                          formControlName="associated_seller"
+                          (selectionChange)="selectedSeller($event)"
+                          [disabled]="!!seller_flag"
+                        >
+                          <mat-option value="" selected>
+                            Select Associated Seller
+                          </mat-option>
+                          <mat-option
+                            *ngFor="let seller of companyList"
+                            [value]="seller._id"
+                          >
+                            {{ seller.seller_name }}
+                          </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="flex-item-right"></div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="nbfc_mapped" *ngIf="nbfc_data.length !== 0">
+                <mat-card-content><h2>NBFC Mapped</h2></mat-card-content>
+                <table>
+                  <tbody class="tbody">
+                    <tr>
+                      <th>NBFC Name</th>
+                      <th>Seller Name</th>
+                    </tr>
+                    <tr *ngFor="let nbfc of nbfc_data">
+                      <td>{{ nbfc.nbfc_name }}</td>
+                      <td>{{ nbfc.seller }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </mat-card>
+              <mat-card style="margin-top:10px" *ngIf="seller_flag==false">
+                <form
+                [formGroup]="companyMap_form"
+                class="example-form"
+                (ngSubmit)="onMapCompanies()"
+              >
+              <mat-card-content><b>Single Seller Mapping</b></mat-card-content>
+              <div class="wrapper1" >
+                <mat-form-field class="example-full-width"  appearance="outline">
+                  <mat-label>Seller</mat-label>
+                  <mat-select formControlName="associated_sellers"  (selectionChange)="onSelected($event)">
+                    <mat-option value="" selected>
+                      Select Seller
+                    </mat-option>
+                    <mat-option
+                      *ngFor="let seller of seller_list"
+                      [value]="seller._id"
+                    >
+                      {{ seller.seller_name }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                  style="color: rgb(241, 14, 14); margin-top: 7px"
+                >
+                  Please Select Seller.
+                </mat-error>
+                </mat-form-field>
+            
+                  <mat-form-field class="example-full-width"  appearance="outline">
+                    <mat-label>Associated Seller Plan</mat-label>
+                    <mat-select formControlName="associated_sellers_plan" (selectionChange)="on_plan_Selected($event)">
+                      <mat-option value="" selected>
+                        Select Associated Seller Credit Plan
+                      </mat-option>
+                      <mat-option
+                        *ngFor="let credit of creditplnlist"
+                        [value]="credit._id"
+                      >
+                        {{ credit.plan_name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error
+                    style="color: rgb(241, 14, 14); margin-top: 7px"
+                  >
+                    Please Select Seller Credit Plan.
+                  </mat-error>
+                  </mat-form-field>
+               
+                  <mat-form-field class="example-full-width"  appearance="outline">
+                    <mat-label>NBFC Names</mat-label>
+                    <mat-select formControlName="associated_nbfc"  (selectionChange)="on_NBFC_Selected($event)">
+                      <mat-option value="" selected>
+                        Select NBFC
+                      </mat-option>
+                      <mat-option
+                        *ngFor="let NBFC of active_nbfc_list"
+                        [value]="NBFC._id"
+                      >
+                        {{ NBFC.nbfc_name }}
+                      </mat-option>
+                    </mat-select>
+                    <mat-error style="color: rgb(241, 14, 14);margin-top: 7px" i18n="@@ABA11">
+                      Please select NBFC
+                     </mat-error>
+                  </mat-form-field>
+               
+                  <mat-form-field  appearance="outline">
+                  <mat-label>Credit Limit</mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    pattern="^[0-9]*$"
+                    formControlName="creditLimit"
+                    (input)="onchange()"
+                    (change)="creditlimichange()"
+                  />
+                  <mat-error
+                    style="color: rgb(241, 14, 14); margin-top: 7px"
+                    >Please enter valid credit limit</mat-error
+                  >
+                </mat-form-field>
+               
+                <button mat-raised-button type="submit">Click to Map</button>
+                
+              </div>
+              </form>
+              </mat-card>
+              <mat-card class="nbfc_mapped_div" *ngIf="display_table_flag" style="margin-top:10px">
+                <mat-card-content><b>NBFC Mapped Details</b></mat-card-content>
+                <table mat-table [dataSource]="dataSource"
+                class="mat-elevation-z2">
+        
+                <ng-container matColumnDef="seller_name" >
+                  <th mat-header-cell *matHeaderCellDef >
+                   Seller Name
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element && element.seller_name ? element.seller_name : "" }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="credit_plan_name" >
+                  <th mat-header-cell *matHeaderCellDef >
+                   Credit Plan Name
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element && element.credit_plan_name ? element.credit_plan_name : "" }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="nbfc" >
+                  <th mat-header-cell *matHeaderCellDef >
+                   NBFC Name
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element && element.nbfc ? element.nbfc : "" }}
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="credit_limit" >
+                  <th mat-header-cell *matHeaderCellDef >Credit Limit
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element && element.credit_limit ? element.credit_limit : "" }}
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="text-center">Result Not Found</td>
+                </tr>
+              </table>
+              </mat-card>
+
+              <!-- Documents -->
+              <mat-card style="margin-top: 10px">
+                <mat-card-content>
+                  <div
+                    class="flex-container"
+                    style="margin: -10px 0px -10px 0px"
+                  >
+                    <div class="flex-item-left">
+                      <p
+                        class="upload-button-placeholder"
+                        *ngIf="this.cibilFile.length == 0; else finTag"
+                      >
+                        <!-- Document Names -->
+                      </p>
+                      <ng-template #finTag>
+                        <div *ngFor="let item of cibilFile">
+                          <p style="margin: 0px 0px -15px 0px">
+                            {{ item.name }}
+                            <button
+                              mat-icon-button
+                              color="primary"
+                              (click)="clearCIBIL_Doc()"
+                              style="color: red"
+                              type="button"
+                              class="upload-btn"
+                            >
+                              <mat-icon>close</mat-icon>
+                            </button>
+                          </p>
+                        </div>
+                      </ng-template>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        type="button"
+                        class="upload-btn"
+                        (click)="cibilfileUpload.click()"
+                      >
+                        <mat-icon>backup</mat-icon>
+                        <u>Select CIBIL Document</u>
+                      </button>
+                      <p style="color: gray; margin-top: -10px">
+                        (All File Types)
+                      </p>
+                      <input
+                        formControlName="documentList"
+                        type="file"
+                        id="cibil"
+                        class="file-input"
+                        (change)="changeEvent($event)"
+                        #cibilfileUpload
+                        style="display: none"
+                      />
+                    </div>
+                    <div
+                      class="flex-item-right"
+                      *ngIf="cibil_doc && cibil_doc.length > 0"
+                    >
+                      <b
+                        >CIBIL Document :
+                        <a
+                          *ngFor="let doc of cibil_doc"
+                          [href]="doc"
+                          target="_blank"
+                          class="file-icon"
+                        >
+                          <mat-icon style="color: red"
+                            >insert_drive_file</mat-icon
+                          ></a
+                        >
+                      </b>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card style="margin-top: 10px">
+                <mat-card-content>
+                  <div
+                    class="flex-container"
+                    style="margin: -10px 0px -15px 0px"
+                  >
+                    <div class="flex-item-left">
+                      <p
+                        class="upload-button-placeholder"
+                        *ngIf="this.discussionFile.length == 0; else disTag"
+                      >
+                        <!-- Document Names -->
+                      </p>
+                      <ng-template #disTag>
+                        <div *ngFor="let item of discussionFile">
+                          <p style="margin: 0px 0px -15px 0px">
+                            {{ item.name }}
+                            <button
+                              mat-icon-button
+                              color="primary"
+                              (click)="clearPersonal_Doc()"
+                              style="color: red"
+                              type="button"
+                              class="upload-btn"
+                            >
+                              <mat-icon>close</mat-icon>
+                            </button>
+                          </p>
+                        </div>
+                      </ng-template>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        type="button"
+                        class="upload-btn"
+                        (click)="discussionfileUpload.click()"
+                      >
+                        <mat-icon>backup</mat-icon>
+                        <u> Select Personal Discussion Document </u>
+                      </button>
+                      <p style="color: gray; margin-top: -10px">
+                        (Audio/Video)
+                      </p>
+                      <input
+                        formControlName="documentList"
+                        type="file"
+                        id="discussion"
+                        class="file-input"
+                        (change)="changeEvent($event)"
+                        #discussionfileUpload
+                        style="display: none"
+                        accept="video/*,audio/*"
+                      />
+                    </div>
+                    <div
+                      class="flex-item-right"
+                      *ngIf="discussion_doc && discussion_doc.length > 0"
+                    >
+                      <b
+                        >Personal Discussion Document :
+                        <a
+                          *ngFor="let doc of discussion_doc"
+                          [href]="doc"
+                          target="_blank"
+                          class="file-icon"
+                        >
+                          <mat-icon style="color: red">
+                            insert_drive_file</mat-icon
+                          >
+                        </a>
+                      </b>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card style="margin-top: 10px">
+                <mat-card-content>
+                  <div
+                    class="flex-container"
+                    style="margin: -10px 0px -10px 0px"
+                  >
+                    <div class="flex-item-left">
+                      <p
+                        class="upload-button-placeholder"
+                        *ngIf="this.experianFile.length == 0; else expTag"
+                      >
+                        <!-- Document Names -->
+                      </p>
+                      <ng-template #expTag>
+                        <div *ngFor="let item of experianFile">
+                          <p style="margin: 0px 0px -15px 0px">
+                            {{ item.name }}
+                            <button
+                              mat-icon-button
+                              color="primary"
+                              (click)="clearExperian_Doc()"
+                              style="color: red"
+                              type="button"
+                              class="upload-btn"
+                            >
+                              <mat-icon>close</mat-icon>
+                            </button>
+                          </p>
+                        </div>
+                      </ng-template>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        type="button"
+                        class="upload-btn"
+                        (click)="experianfileUpload.click()"
+                      >
+                        <mat-icon>backup</mat-icon>
+                        <u> Select Experian Document </u>
+                      </button>
+                      <p style="color: gray; margin-top: -10px">
+                        (All File Types)
+                      </p>
+                      <input
+                        formControlName="documentList"
+                        type="file"
+                        id="experian"
+                        class="file-input"
+                        (change)="changeEvent($event)"
+                        #experianfileUpload
+                        style="display: none"
+                      />
+                    </div>
+                    <div
+                      class="flex-item-right"
+                      *ngIf="experian_doc && experian_doc.length > 0"
+                    >
+                      <b
+                        >Experian Document :
+                        <a
+                          *ngFor="let doc of experian_doc"
+                          [href]="doc"
+                          target="_blank"
+                          class="file-icon"
+                        >
+                          <mat-icon style="color: red">
+                            insert_drive_file</mat-icon
+                          >
+                        </a></b
+                      >
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card style="margin-top: 10px">
+                <mat-card-content>
+                  <div
+                    class="flex-container"
+                    style="margin: -10px 0px -10px 0px"
+                  >
+                    <div class="flex-item-left">
+                      <div *ngFor="let item of agreementFile">
+                        <p style="margin: 0px 0px -15px 0px">
+                          {{ item.name }}
+                          <button
+                            mat-icon-button
+                            color="primary"
+                            (click)="clearAgreement_Doc()"
+                            style="color: red"
+                            type="button"
+                            class="upload-btn"
+                          >
+                            <mat-icon>close</mat-icon>
+                          </button>
+                        </p>
+                      </div>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        type="button"
+                        class="upload-btn"
+                        (click)="agreementfileUpload.click()"
+                      >
+                        <mat-icon>backup</mat-icon>
+                        <u> Select Agreement Document </u>
+                      </button>
+                      <p style="color: gray; margin-top: -10px">
+                        (All File Types)
+                      </p>
+                      <input
+                        formControlName="documentList"
+                        type="file"
+                        id="agreement"
+                        class="file-input"
+                        (change)="changeEvent($event)"
+                        #agreementfileUpload
+                        style="display: none"
+                      />
+                    </div>
+                    <div
+                      class="flex-item-right"
+                      *ngIf="agreement_doc && agreement_doc.length > 0"
+                    >
+                      <b
+                        >Agreement Document :
+                        <a
+                          *ngFor="let doc of agreement_doc"
+                          [href]="doc"
+                          target="_blank"
+                          class="file-icon"
+                        >
+                          <mat-icon style="color: red">
+                            insert_drive_file</mat-icon
+                          >
+                        </a></b
+                      >
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card style="margin-top: 10px">
+                <mat-card-content style="margin: -10px 0px -10px 0px">
+                  <div class="flex-container">
+                    <div class="flex-item-left">
+                      <div *ngFor="let item of otherFile">
+                        <p style="margin: 0px 0px -15px 0px">
+                          {{ item.name }}
+                          <button
+                            mat-icon-button
+                            color="primary"
+                            (click)="clearOther_Doc()"
+                            style="color: red"
+                            type="button"
+                            class="upload-btn"
+                          >
+                            <mat-icon>close</mat-icon>
+                          </button>
+                        </p>
+                      </div>
+                      <button
+                        mat-icon-button
+                        color="primary"
+                        type="button"
+                        class="upload-btn"
+                        (click)="otherfileUpload.click()"
+                      >
+                        <mat-icon>backup</mat-icon>
+                        <u>Select Any Other Document</u>
+                      </button>
+                      <p style="color: gray; margin-top: -10px">
+                        (All File Types)
+                      </p>
+                      <input
+                        formControlName="documentList"
+                        type="file"
+                        id="other"
+                        class="file-input"
+                        (change)="changeEvent($event)"
+                        #otherfileUpload
+                        style="display: none"
+                      />
+                    </div>
+                    <div
+                      class="flex-item-right"
+                      *ngIf="other_doc && other_doc.length > 0"
+                    >
+                      <b
+                        >Other Document :
+                        <a
+                          *ngFor="let doc of other_doc"
+                          [href]="doc"
+                          target="_blank"
+                          class="file-icon"
+                        >
+                          <mat-icon style="color: red">
+                            insert_drive_file</mat-icon
+                          >
+                        </a>
+                      </b>
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card style="margin-top: 10px">
+                <mat-card-content>
+                  <section class="example-section" style="margin-top: 10px">
+                    <mat-checkbox
+                      formControlName="seller_flag"
+                      (change)="sellerFlagCheack($event)"
+                      color="primary"
+                    >
+                    </mat-checkbox>
+                    <span> Registered as Seller </span>
+                  </section>
+                  <section class="example-section">
+                    <mat-checkbox
+                      formControlName="eNachMandate"
+                      class="example-margin"
+                      (input)="onchange()"
+                      >eNACH Mandate</mat-checkbox
+                    >
+                  </section>
+
+                  <div class="comments">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Comments</mat-label>
+                      <textarea
+                        matInput
+                        formControlName="comment"
+                        (input)="onchange()"
+                        pattern="^[ a-zA-Z]*$"
+                      ></textarea>
+                      <mat-error
+                        style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >
+                        Please enter valid comments.
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <div class="input-wrapper text-center">
+                <button mat-button class="btn-dark" type="submit">
+                  VERIFY AND APPROVE
+                </button>
+                <button
+                  mat-button
+                  class="btn-dark"
+                  (click)="cancel()"
+                  type="button"
+                >
+                  CANCEL
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</app-layout>

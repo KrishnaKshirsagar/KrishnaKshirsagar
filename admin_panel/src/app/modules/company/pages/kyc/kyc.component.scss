@@ -1,0 +1,269 @@
+#credit-page {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  .margin-top {
+    margin-top: 1rem;
+  }
+
+  .head {
+    display: grid;
+    grid-template-columns: 10fr 2fr;
+  }
+
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+   .backdiv {
+    display: grid;
+    grid-template-columns: 0.4fr 11.6fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0px 0px;
+    gap: 0px 0px;
+
+    
+
+    .back-btn {
+       align-self: center;
+       box-shadow: none;
+       line-height: 17px;
+       background: black;
+    }
+    h1{ 
+      letter-spacing: normal;
+      padding-bottom: 0px;
+    }
+    h2 {
+      margin: 0 0 0px;
+      align-self: center;
+    }
+    ::ng-deep {
+      .back .mat-button-wrapper {
+        padding: 0px 0;
+        line-height: 17px;
+      }
+    }
+  }
+
+  .inputfile+label {
+    border: 1px solid #f79e1b;
+    color: black;
+    box-shadow: none;
+    vertical-align: 2px;
+    border-radius: 7px;
+    display: inline-block;
+    min-width: 100px;
+    max-width: 100%;
+    font-size: 15px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 8px 1.5rem;
+    margin-top: 3px;
+  }
+
+  .btn-view
+  {
+      color: #fff;
+      background: #000;
+      margin: 2px;
+  }
+
+  .aadhaar_captured,
+  .verify_aadhaar,
+  .pansection,
+  .mobilesection,
+  .ckycSection,
+  .business_proof_section,
+  .ownershipProof_section,
+  .vintageProof_section,
+  .firm_partnershipDetails_section,
+  .bankingDetails_section,
+  .financial_gst_section,
+  .shop_img_section {
+    display: grid;
+    grid-template-columns: 6fr 6fr;
+    column-gap: 30px;
+    .text-center {
+      text-align: center;
+    }
+
+    .innerdiv {
+      display: grid;
+      grid-template-columns: 6fr 6fr;
+      column-gap: 20px;
+    }
+  }
+  .ckyc-wrapper{
+    .ckycSection{
+      width:70%;display:flex; justify-content: space-between;
+    }
+    .ckyc-button{
+      width:65%;display:flex; align-items: center;
+      .btn-link{
+        margin-left:175px;
+        mat-form-field{
+          font-size: 13px; 
+          input{
+            color:blue;
+          }
+        }
+        button{
+          border:1px rgb(0, 0, 255) solid; background-color: rgba(0, 0, 255, 0.705);  margin-left: 6px; 
+        }
+      }
+    }
+  }
+  .mat-raised-button {
+    background: #f79e1b;
+    color: #fff;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+
+  .psum {
+    cursor: pointer;
+  }
+
+  ::ng-deep .mat-horizontal-stepper-header {
+    pointer-events: none !important;
+  }
+
+  .div-indicator {
+    margin-top: 20px;
+    text-align: right;
+    .mat-icon {
+      vertical-align: middle;
+    }
+
+    .mat-label {
+      vertical-align: middle;
+    }
+  }
+
+  .verification-icon {
+    justify-content: right;
+  }
+
+  .margin-bottom {
+    margin-bottom: 1rem;
+  }
+
+  .loginform {
+    padding: 0px 25px;
+
+    .h2-heading {
+      h2 {
+        margin: 0 0 0px;
+        align-self: center;
+      }
+    }
+  }
+
+  .file-icon {
+    color: red;
+    font-size: 50px;
+  }
+
+  .CustStep mat-expansion-panel {
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+
+  .CustStep .mat-elevation-z1 {
+    box-shadow: 0px 0px 2px 1px rgb(0 0 0 / 20%), 0px 0px 2px 1px rgb(0 0 0 / 14%), 0px 0px 2px 1px rgb(0 0 0 / 12%);
+  }
+  .CustStep .mat-expansion-panel-header.mat-expanded {
+    height: 48px;
+  }
+
+  .CustStep .mat-expansion-panel-header-title {
+    color: rgb(0 0 0);
+    font-weight: bold;
+  }
+
+  .CustStep .mat-form-field {
+    font-size: 12px;
+  }
+
+  .CustStep h4 {
+    font-weight: bold;
+  }
+
+  .InnerBody {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .panbutton p {
+    font-size: 17px;
+  }
+
+  .panbutton button {
+    font-size: 17px;
+    border: 1px solid lightgray;
+    width: 100%;
+    border-radius: inherit;
+    padding: 8px 5px;
+    line-height: 0px;
+  }
+
+  .InnerBody .panDet p {
+    margin-top: 15px;
+    font-size: 17px;
+  }
+
+  .capgroup {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 10px;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .capgroup .capbox {
+    padding: 9px 5px;
+    border: 1px solid lightgray;
+    line-height: 0;
+    width: 200px;
+    background: #d7d7d7;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .capgroup .capbox p {
+    margin: 12px 0 12px;
+  }
+
+  .otpgroup {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  .otpgroup button {
+    height: 41px;
+  }
+
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 16px 20px 16px;
+  }
+
+  ::ng-deep .mat-stepper-label-position-bottom .mat-horizontal-stepper-header {
+    padding: 24px 0px;
+  }
+
+  ::ng-deep .mat-horizontal-content-container {
+    padding: 10px 0px;
+  }
+}

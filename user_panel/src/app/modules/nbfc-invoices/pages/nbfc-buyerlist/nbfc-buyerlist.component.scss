@@ -1,0 +1,245 @@
+#nbfc-mapping-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  .backdiv {
+    display: grid;
+    grid-template-columns: 0.1fr 1.9fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0px 0px;
+    gap: 0px 0px;
+    margin-bottom: 15px;
+
+    button {
+      align-self: center;
+      box-shadow: none;
+      height: 33px;
+      width: 33px;
+      line-height: 17px;
+      background: black;
+    }
+    h2 {
+      margin: 0 0 0px;
+      align-self: center;
+    }
+    ::ng-deep {
+      .back .mat-button-wrapper {
+        padding: 0px 0;
+        line-height: 17px;
+      }
+    }
+  }
+  .transheader {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+    margin-bottom: 15px;
+    h2 {
+      margin: 0px;
+    }
+    .spacer {
+      flex: 1 1 auto;
+    }
+  }
+  .btn-cust {
+    background: #f79e1b;
+    color: white;
+    margin-right: 15px;
+  }
+  .exel-icon {
+    border: 1px solid green;
+    color: green;
+    line-height: 22px;
+    vertical-align: middle;
+    margin-right: 15px;
+    margin-bottom: 5px;
+  }
+
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: black;
+    color: white;
+  }
+  .mat-form-field {
+    margin-right: 15px;
+    font-size: 13px;
+    max-width: 230px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+
+  .mat-column-action {
+    text-align: center;
+  }
+
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-upload {
+    background: #f79e1b;
+    color: white;
+    margin-left: 5px;
+    margin-right: 15px;
+    box-shadow: none;
+    padding: 10px 30px;
+    vertical-align: 1px;
+    border-radius: 7px;
+    line-height: 16px;
+  }
+  .text-right {
+    text-align: right;
+  }
+
+  .merged {
+    display: inline-block;
+  }
+  .left {
+    margin-right: 0px;
+  }
+
+  ::ng-deep {
+    .merged {
+      .left .mat-form-field-outline-end {
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+        border-right: none;
+      }
+
+      .right .mat-form-field-outline-start {
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-left: none;
+      }
+    }
+  }
+  .ml-15 {
+    margin-left: 15px;
+  }
+  @media only screen and (max-width: 767px) {
+    .exel-icon {
+      margin-right: auto;
+
+      margin-left: auto;
+      display: block;
+    }
+    .transheader {
+      display: block;
+      .ml-15 {
+        margin-left: 0px;
+      }
+    }
+    .btn-upload {
+      display: block;
+
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px 0px;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+}
+
+#nbfc-mapping-dialog {
+  mat-dialog-content {
+    width: 500px;
+  }
+
+  h1 {
+    margin: 0 0 15px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: #f79e1b;
+    color: white;
+    margin: 5px;
+  }
+
+  @media only screen and (max-width: 767px) {
+    mat-dialog-content {
+      width: auto;
+    }
+  }
+}
+
+#nbfc-mapping-dialog {
+  .flex {
+    display: flex;
+  }
+
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .example-full-width {
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .flex {
+      display: block;
+    }
+  }
+}

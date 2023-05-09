@@ -1,0 +1,35 @@
+@import "@angular/material/theming";
+// @import "../../../../theme";
+
+.page-header {
+  align-items: center;
+  background: white;
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.logo-link {
+  display: flex;
+  align-items: center;
+}
+img.logo {
+  height: 32px;
+  margin-left: 24px;
+  cursor: pointer;
+}
+.login-btn {
+  margin-right: 16px;
+}
+// .text-primary {
+// color: mat-color($theming-material-components-primary);
+// }
+
+.profile-name {
+  margin-left: 6px;
+}
+
+@media only screen and (max-width: 600px) {
+  .profile-name {
+    display: none;
+  }
+}

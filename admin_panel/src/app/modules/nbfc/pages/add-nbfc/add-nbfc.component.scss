@@ -1,0 +1,179 @@
+#add-nbfc-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+
+  .action {
+    width: 55%;
+    align-items: center;
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+
+  .formgrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 15px;
+    grid-row-gap: 0px;
+  }
+  h3 {
+    font-weight: 500;
+  }
+
+  .mat-form-field {
+    margin-right: 15px;
+    font-size: 13px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+
+  .btn-save {
+    background: #f79e1b;
+    color: white;
+    width: min-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-upload {
+    background: #f79e1b;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+    padding: 5px 31px;
+    vertical-align: 2px;
+    font-size: 18px;
+    border-radius: 7px;
+  }
+  .text-right {
+    text-align: right;
+  }
+  .input-wrapper button {
+    margin: 5px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .formgrid {
+      display: block;
+    }
+    .mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+#add-nbfc-dialog {
+  mat-dialog-content {
+    width: 500px;
+  }
+
+  h1 {
+    margin: 0 0 15px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  @media only screen and (max-width: 767px) {
+    mat-dialog-content {
+      width: auto;
+    }
+  }
+}
+
+#add-edit-staff-dialog {
+  .flex {
+    display: flex;
+  }
+
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .example-full-width {
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .flex {
+      display: block;
+    }
+  }
+}

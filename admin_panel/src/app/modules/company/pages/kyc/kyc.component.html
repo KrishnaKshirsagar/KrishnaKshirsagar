@@ -1,0 +1,858 @@
+<app-layout>
+  <div id="credit-page">
+    <div class="margin-top margin-bottom">
+      <div class="loginform">
+        <div class="backdiv">
+          <button mat-mini-fab (click)="backpage()" class="back-btn" aria-label="back button">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <h1 class="heading">Upload Business KYC</h1>
+        </div>
+        <h3> <b> Business Name :</b>  {{company_data.company_name}} <br> <b>GST Number :</b>  {{company_data.gst_number}}  </h3>
+        <div class="div-indicator">
+          <mat-icon style="color: green;">check_circle</mat-icon>
+          <label> : Approved | </label>
+          <mat-icon style="color: #ffa500;">watch_later</mat-icon>
+          <label> : Processing | </label>
+          <mat-icon style="color: red;">cancel</mat-icon>
+          <label> : Rejected </label>
+        </div>
+        <mat-stepper [linear]="isLinear" labelPosition="bottom" #stepper class="CustStep">
+
+          <mat-step [stepControl]="verify_form">
+            <form [formGroup]="verify_form">
+              <ng-template matStepLabel disabled>STEP 1</ng-template>
+              <div>
+                <mat-accordion>
+
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>* PAN Verification </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon matTooltip="Signzy " *ngIf="KYCDetails?.pan?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+              <mat-icon matTooltip="Signzy " *ngIf="KYCDetails?.pan?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+              <mat-icon matTooltip="Signzy " *ngIf="KYCDetails?.pan?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+              <mat-icon matTooltip="Agent  " *ngIf="KYCDetails?.pan?.signzyStatus=='Approved'" style="color: green;">check_circle</mat-icon>
+              <mat-icon matTooltip="Agent  " *ngIf="KYCDetails?.pan?.signzyStatus=='Rejected'" style="color: red;">cancel</mat-icon>
+              <mat-icon matTooltip="Agent  " *ngIf="KYCDetails?.pan?.signzyStatus=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div formGroupName="panDetails">
+                      <div class="pansection">
+                        <div>
+                          <div class="innerdiv">
+                            <div>
+                              <mat-form-field class="mat-form-field" appearance="outline">
+                                <mat-label>PAN Number</mat-label>
+                                <input matInput formControlName="panNumber" type="text" placeholder="PAN Number"
+                                  pattern="^[A-Z]{5}[0-9]{4}[A-Z]$" required />
+                                <mat-error style="color: rgb(241, 14, 14);">Please enter the valid PAN number
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+  
+                            <div>
+                              <div>
+                                <div *ngFor="let item of panFile">
+                                  <p>{{ item.name }}</p>
+                                </div>
+                                <input type="file" id="panInput" formControlName="documentList"
+                                  accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                                  (change)="changeEvent($event)">
+                                <label for="panInput">
+                                  <span> <mat-icon>cloud_upload</mat-icon> Select PAN Card</span>
+                                </label>
+                              </div>
+  
+                              <div>
+                                <div
+                                  *ngIf="panFile && panFile[0] && (panFile[0].type == 'image/jpeg' || panFile[0].type =='image/png' || panFile[0].type =='image/jpg')">
+                                  <img *ngFor="let url of panUrl" [src]="url" width="250">
+                                </div>
+                                <div
+                                  *ngIf="panFile && panFile[0] &&  !(panFile[0].type =='image/jpeg' || panFile[0].type =='image/png' || panFile[0].type =='image/jpg')">
+                                  <mat-icon class="file-icon"> insert_drive_file</mat-icon>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+  
+                          <div>
+                            <button mat-raised-button type="button" i18n="@@ABA12" (click)="verifypan()">VERIFY PAN
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                            <p>
+                              <b>Verification Status :</b> {{ pan_verified_flag == true ? 'Verified' : 'Not Verified'}}
+                            </p>
+                        </div>
+  
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel>
+                  <mat-expansion-panel-header class="mat-elevation-z1">
+                    <mat-panel-title>* AADHAAR Verification
+                    </mat-panel-title>
+                    <mat-panel-description class="verification-icon">
+                      <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                      <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                      <mat-icon matTooltip="Signzy" *ngIf=" KYCDetails?.aadhar?.signzyStatus=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='Approved'" style="color: #008000;">check_circle</mat-icon>
+                      <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='Rejected'" style="color: #ff0000;">cancel</mat-icon>
+                      <mat-icon matTooltip="Agent " *ngIf=" KYCDetails?.aadhar?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div formGroupName="AddressProof">
+
+                    <mat-card>
+                      <mat-card-title>Aadhaar Captured</mat-card-title>
+                      <div class="aadhaar_captured">
+                        <div>
+                          <div class="innerdiv">
+                            <div>
+                              <div>
+                                <div *ngFor="let item of adharFrontFile">
+                                  <p>{{ item.name }}</p>
+                                </div>
+                                <input type="file" id="adharFront" formControlName="adharFrontFile"
+                                  accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                                  (change)="changeEvent($event)">
+                                <label for="adharFront" mat-button>
+                                  <span> <mat-icon>cloud_upload</mat-icon> Select AADHAAR Front Side Image</span>
+                                </label>
+                              </div>
+
+                              <div>
+                                <div
+                                  *ngIf="adharFrontFile && adharFrontFile[0] && (adharFrontFile[0].type == 'image/jpeg' || adharFrontFile[0].type =='image/png' || adharFrontFile[0].type =='image/jpg')">
+                                  <img *ngFor="let url of adharFrontUrl" [src]="url" width="250">
+                                </div>
+                                <mat-icon
+                                  *ngIf="adharFrontFile && adharFrontFile[0] && !(adharFrontFile[0].type == 'image/jpeg' || adharFrontFile[0].type =='image/png' || adharFrontFile[0].type =='image/jpg')"
+                                  class="file-icon"> insert_drive_file</mat-icon>
+                              </div>
+                            </div>
+
+                            <div>
+                              <div>
+                                <div *ngFor="let item of adharBackFile">
+                                  <p>{{ item.name }}</p>
+                                </div>
+                                <input type="file" id="adharBack" formControlName="adharBackFile"
+                                  accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                                  (change)="changeEvent($event)">
+                                <label for="adharBack" mat-button>
+                                  <span> <mat-icon>cloud_upload</mat-icon> Select AADHAAR Back Side Image</span>
+                                </label>
+                              </div>
+
+                              <div>
+                                <div
+                                  *ngIf="adharBackFile && adharBackFile[0] && (adharBackFile[0].type == 'image/jpeg' || adharBackFile[0].type =='image/png' || adharBackFile[0].type =='image/jpg')">
+                                  <img *ngFor="let url of adharBackUrl" [src]="url" width="250">
+                                </div>
+                                <mat-icon
+                                  *ngIf="adharBackFile && adharBackFile[0] && !(adharBackFile[0].type == 'image/jpeg' || adharBackFile[0].type =='image/png' || adharBackFile[0].type =='image/jpg')"
+                                  class="file-icon"> insert_drive_file</mat-icon>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <button mat-raised-button type="button" i18n="@@ABA12" (click)="AadharCaptured_data()">
+                              CAPTURED
+                            </button>
+                          </div>
+                        </div>
+
+                        <div>
+                          <p style="margin-top: 10px;">
+                            <b>Captured Status:</b> {{ aadhar_captured_flag == true ? 'Captured' : 'Not Captured' }}
+                          </p>
+
+                          <div *ngIf="aadhar_captured_flag">
+                            <b>Aadhaar Number: </b> {{Aadhar_details.number}} <br><br>
+                            <b>Name: </b> {{Aadhar_details.holder}}<br> <br>
+                            <b>Gender: </b> {{Aadhar_details.gender}}<br> <br>
+                            <b>DOB: </b> {{Aadhar_details.dob}} <br> <br>
+                            <b>Address: </b> {{Aadhar_details.address}} <br>
+                          </div>
+                        </div>
+                      </div>
+                    </mat-card>
+
+                    <mat-card style="margin-top: 20px;">
+                      <mat-card-title>Aadhaar Verification</mat-card-title>
+                      <div class="verify_aadhaar">
+                        <div>
+                          <mat-form-field class="mat-form-field" appearance="outline">
+                            <mat-label>UID Number</mat-label>
+                            <input matInput formControlName="addressDocNumber" type="text" part="UID Number"
+                              minlength="12" maxlength="12" pattern="^[0-9]*$" required />
+                            <mat-error style="color: rgb(241, 14, 14);">Please enter UID number
+                            </mat-error>
+                          </mat-form-field>
+
+                          <div class="capgroup">
+                            <div class="capbox">
+                              <img [src]="aadhar_captcha" width="100%" height="30">
+                            </div>
+                            <a class="psum" matTooltip="Refresh Captcha" (click)="refreshCaptcha()">
+                              <mat-icon>refresh</mat-icon>
+                            </a>
+                          </div>
+                          <div>
+                            <mat-form-field class="mat-form-field" appearance="outline">
+                              <mat-label>Enter Captcha</mat-label>
+                              <input matInput formControlName="captcha" placeholder="Enter Captcha">
+                            </mat-form-field>
+                          </div>
+                          <button mat-raised-button type="button" (click)="generateAadharOTP()">GENERATE
+                            OTP
+                          </button>
+
+                          <div *ngIf="otp_flag">
+                            <div>
+                              <mat-form-field class="mat-form-field" appearance="outline">
+                                <mat-label>Enter OTP</mat-label>
+                                <input placeholder="Enter OTP" matInput  pattern="^[0-9]*$"
+                                  formControlName="aadhar_otp" placeholder="Enter OTP">
+                              </mat-form-field>
+                            </div>
+
+                            <div>
+                              <button mat-raised-button type="button"  (click)="verifyAadharOTP()">VERIFY
+                                OTP</button>
+                            </div>
+                          </div>
+
+
+                        </div>
+
+                        <div>
+                          <p>
+                            <b>Verification Status:</b> {{ aadhar_verified_flag == true ? 'Verified' : 'Not Verified' }}
+                          </p>
+                        </div>
+                      </div>
+                    </mat-card>
+
+
+                  </div>
+                </mat-expansion-panel>
+
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header class="mat-elevation-z1">
+                    <mat-panel-title>* Mobile Verification </mat-panel-title>
+                    <mat-panel-description class="verification-icon">
+                      <mat-icon matTooltip="Signzy " *ngIf=" KYCDetails?.mobile?.signzyStatus=='Approved'" style="color: green;">check_circle</mat-icon>
+                      <mat-icon matTooltip="Signzy " *ngIf=" KYCDetails?.mobile?.signzyStatus=='Rejected'" style="color: red;" >cancel</mat-icon>
+                      <mat-icon matTooltip="Signzy " *ngIf=" KYCDetails?.mobile?.signzyStatus=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      <mat-icon matTooltip="Agent  " *ngIf=" KYCDetails?.mobile?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                      <mat-icon matTooltip="Agent  " *ngIf=" KYCDetails?.mobile?.status=='Rejected'" style="color: red;" >cancel</mat-icon>
+                      <mat-icon matTooltip="Agent  " *ngIf=" KYCDetails?.mobile?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                    </mat-panel-description>
+                  </mat-expansion-panel-header>
+                  <div formGroupName="mobileVerify">
+                    <div class="mobilesection">
+                        <div>
+                          <div
+                            style="display: grid; grid-template-columns: 6fr 6fr; column-gap: 20px; margin-top: 10px;">
+                            <div>
+                              <mat-form-field class="mat-form-field" appearance="outline">
+                                <mat-label>Enter Mobile Number</mat-label>
+                                <input matInput formControlName="mobile_number" type="text" (input)="onChange($event)"
+                                  minlength="10" maxlength="10" pattern="^[0-9]*$" placeholder="Enter Mobile Number" />
+                                <mat-error style="color: rgb(241, 14, 14); margin-top: 7px">Please enter valid mobile number
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+
+                            <div>
+                              <mat-form-field class="mat-form-field" appearance="outline">
+                                <mat-label>Enter OTP</mat-label>
+                                <input matInput formControlName="mobile_verification_otp" minlength="4" maxlength="6"
+                                  placeholder="Enter OTP" pattern="^[0-9]*$" (input)="onMobileOTPChange($event)">
+                                <mat-error style="color: rgb(241, 14, 14);">Please enter valid OTP
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+
+                          <div class="innerdiv">
+                            <div>
+                              <button mat-raised-button type="button" [disabled]="!input_check_flag"
+                                (click)="generateOTP()">GENERATE OTP
+                              </button>
+                            </div>
+
+                            <div>
+                              <button mat-raised-button type="button"
+                                [disabled]="!(mobile_otp_flag && input_check_flag)"
+                                (click)="verifyMobileNumber()">Verify
+                                OTP
+                              </button>
+                            </div>
+
+                        </div>
+                        <div>
+                          <p *ngIf="mobile_verified_flag == true">
+                            <b>Verification Status:</b> {{ mobile_verified_flag == true ? 'Verified' : 'Not Verified' }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </mat-expansion-panel>
+                  <mat-expansion-panel >
+                    <mat-expansion-panel-header class="mat-elevation-z1" >
+                      <mat-panel-title>* CKYC Details </mat-panel-title>
+                    </mat-expansion-panel-header>
+                     <div class="ckyc-wrapper" formGroupName="ckycVerify">
+                        <div class="ckycSection">
+                          <mat-form-field class="mat-form-field" appearance="outline">
+                            <mat-label>GSTIN Number</mat-label>
+                            <input matInput formControlName="gstin_Number" type="text" placeholder="Enter GSTIN Number" required />
+                            <mat-error style="color: rgb(241, 14, 14);">Please enter the valid GSTIN number
+                            </mat-error>
+                          </mat-form-field>
+                  
+                          <mat-form-field class="mat-form-field" appearance="outline">
+                            <mat-label>Company Name</mat-label>
+                            <input matInput formControlName="company_name" type="text" placeholder="Enter Company"
+                              required />
+                            <mat-error style="color: rgb(241, 14, 14);">Please enter the Company name
+                            </mat-error>
+                          </mat-form-field>
+                          <mat-form-field class="mat-form-field" appearance="outline">
+                            <mat-label>Enter Mobile Number</mat-label>
+                            <input matInput formControlName="mobile_number" type="text" (input)="onChange($event)" minlength="10"
+                              maxlength="10" pattern="^[0-9]*$" required placeholder="Enter Mobile Number" />
+                            <mat-error style="color: rgb(241, 14, 14);">Please enter mobile number
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                        <div class='ckyc-button'>
+                          <button mat-raised-button (click)="generateUrl();"> GENERATE URL</button>
+                          <div class="btn-link" *ngIf="ckyc_link_flag">
+                            <mat-form-field appearance="fill">
+                              <input matInput formControlName ="ckyc_link" #txtConfigFile readonly /> 
+                            </mat-form-field>
+                            <button mat-mini-fab (click)="copyckycLink()"> <mat-icon>link</mat-icon></button>
+                          </div>
+                        </div>
+                      </div>
+                  </mat-expansion-panel>
+                </mat-accordion>
+                <button mat-raised-button color="primary" matStepperNext>NEXT STEP</button>
+              </div>
+            </form>
+          </mat-step>
+
+          <mat-step [stepControl]="document_form">
+            <form [formGroup]="document_form">
+              <ng-template matStepLabel>STEP 2</ng-template>
+              <div>
+                <mat-accordion>
+                  <mat-expansion-panel formGroupName="businessProof">
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>
+                        * Business Proof (Any one of the following)
+                      </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon *ngIf="KYCDetails?.business?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.business?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.business?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+  
+  
+                    <div class="business_proof_section">
+                      <div>
+                        <div class="innerdiv">
+                          <div>
+                            <mat-form-field class="mat-form-field" appearance="outline">
+                              <mat-label>Document Type</mat-label>
+                              <mat-select formControlName="businessDocType">
+                                <mat-option value="GSTN Certificate">GSTN Certificate</mat-option>
+                                <mat-option value="Utility bill for current business address">Utility bill for current
+                                  business address</mat-option>
+                                <mat-option value="Shop Act">Shop Act</mat-option>
+                                <mat-option value="Firm PAN">Firm PAN</mat-option>
+                                <mat-option value="Letter of signatory authorization (for
+                                  partnership)">Letter of signatory authorization (For
+                                  Partnership)
+                                </mat-option>
+                                <mat-option value="Udyog Aadhar">Udyog Aadhar</mat-option>
+                                <mat-option value="Board Resolution (for companies)">Board Resolution (for
+                                  companies)</mat-option>
+                              </mat-select>
+                              <mat-error style="color: rgb(241, 14, 14); margin-top: 7px">Please select document
+                                type</mat-error>
+                            </mat-form-field>
+                          </div>
+  
+                          <div>
+                            <mat-form-field class="mat-form-field" appearance="outline">
+                              <mat-label>Document Number</mat-label>
+                              <input matInput formControlName="businessDocNumber" type="text" required
+                                placeholder="Document Number" pattern="^[a-zA-Z0-9_-]*$" />
+                              <mat-error style="color: rgb(241, 14, 14); margin-top: 3px">Please enter valid document
+                                number
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+  
+                        <div>
+                          <div>
+                            <div *ngFor="let item of businessfile">
+                              <p>{{ item.name }}</p>
+                            </div>
+                            <input type="file" id="business" formControlName="documentList"
+                              accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                              (change)="changeEvent($event)">
+                            <label for="business" mat-button>
+                              <span> <mat-icon>cloud_upload</mat-icon> Select Documents </span>
+                            </label>
+                          </div>
+  
+                          <div style="margin-top: 10px;">
+                            <div
+                              *ngIf="businessfile && businessfile[0] && (businessfile[0].type == 'image/jpeg' || businessfile[0].type == 'image/png' || businessfile[0].type =='image/jpg')">
+                              <img *ngFor="let url of businessUrl" [src]="url" width="250">
+                            </div>
+                            <mat-icon
+                              *ngIf="businessfile && businessfile[0] && !(businessfile[0].type == 'image/jpeg' || businessfile[0].type == 'image/png' || businessfile[0].type =='image/jpg')"
+                              class="file-icon"> insert_drive_file</mat-icon>
+                          </div>
+                        </div> 
+                        <div>
+                          <button mat-raised-button type="button" color="primary"
+                            (click)="uploadBusinessDoc()">UPLOAD</button>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel formGroupName="ownershipProof">
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>* Ownership Proof (Business/Residence) (Any one of the following)
+                      </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon *ngIf="KYCDetails?.ownership?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.ownership?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.ownership?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+  
+                    <div class="ownershipProof_section">
+                      <div>
+                        <div class="innerdiv">
+                          <div>
+                            <mat-form-field class="mat-form-field" appearance="outline">
+                              <mat-label>Document Type</mat-label>
+                              <mat-select formControlName="ownershipDocType">
+                                <mat-option value="Property Ownership Document">Property Ownership Document</mat-option>
+                                <mat-option value="Electricity Bill">Electricity Bill</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+  
+                          <div>
+                            <mat-form-field class="mat-form-field" appearance="outline">
+                              <mat-label>Document Number</mat-label>
+                              <input matInput formControlName="ownershipDocNumber" type="text"
+                                placeholder="Document Number" pattern="^[a-zA-Z0-9_-]*$" />
+                              <mat-error style="color: rgb(241, 14, 14); margin-top: 3px">Please enter valid document
+                                number
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+  
+                        <div>
+                          <div>
+                            <div *ngFor="let item of ownershipFile">
+                              <p>{{ item.name }}</p>
+                            </div>
+                            <input formControlName="documentList" type="file" id="ownership"
+                              accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                              (change)="changeEvent($event)">
+                            <label for="ownership" mat-button>
+                              <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                            </label>
+                          </div>
+  
+                          <div style="margin-top: 10px;">
+                            <div
+                              *ngIf="ownershipFile && ownershipFile[0] && (ownershipFile[0].type == 'image/jpeg' || ownershipFile[0].type == 'image/png' || ownershipFile[0].type == 'image/jpg')">
+                              <img *ngFor="let url of ownershipUrl" [src]="url" width="250">
+                            </div>
+                            <mat-icon
+                              *ngIf="ownershipFile && ownershipFile[0] && !(ownershipFile[0].type == 'image/jpeg' || ownershipFile[0].type == 'image/png' || ownershipFile[0].type == 'image/jpg')"
+                              class="file-icon"> insert_drive_file</mat-icon>
+                          </div>
+                        </div>
+  
+                        <div>
+                          <button mat-raised-button type="button" color="primary"
+                            (click)="uploadOwnershipDoc()">UPLOAD</button>
+                        </div>
+                      </div>
+  
+  
+                    </div>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel formGroupName="vintageProof">
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>* Vintage Proof </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon *ngIf="KYCDetails?.vintage?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.vintage?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.vintage?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+  
+                    <div class="vintageProof_section">
+                      <div>
+                        <div>
+                          <mat-form-field class="mat-form-field" appearance="outline">
+                            <mat-label>Document Type</mat-label>
+                            <mat-select formControlName="businessvintageProof">
+                              <mat-option value="businessVinatgeProof">Business Vintage Proof</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+                        </div>
+  
+                        <div>
+                          <p>
+                            If business & residence is rented then any business proof
+                            showing existence of business for 3 years
+                          </p>
+                        </div>
+  
+  
+                        <div>
+                          <div>
+                            <div *ngFor="let item of vintageFile">
+                              <p>{{ item.name }}</p>
+                            </div>
+                            <input formControlName="documentList" type="file" id="vintage"
+                              accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                              (change)="changeEvent($event)">
+                            <label for="vintage" mat-button>
+                              <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                            </label>
+                          </div>
+  
+                          <div>
+                            <div
+                              *ngIf="vintageFile && vintageFile[0] && (vintageFile[0].type == 'image/jpeg' || vintageFile[0].type =='image/png' || vintageFile[0].type =='image/jpg')">
+                              <img *ngFor="let url of vintageUrl" [src]="url" width="250">
+                            </div>
+                            <mat-icon
+                              *ngIf="vintageFile && vintageFile[0] && !(vintageFile[0].type == 'image/jpeg' || vintageFile[0].type =='image/png' || vintageFile[0].type =='image/jpg')"
+                              class="file-icon"> insert_drive_file</mat-icon>
+                          </div>
+  
+                          <div>
+                            <button mat-raised-button type="button" color="primary"
+                              (click)="uploadVintageDoc()">UPLOAD</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel formGroupName="partnershipDetails">
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>* Firm/Partnership Details </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon *ngIf="KYCDetails?.partnership?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.partnership?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.partnership?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+  
+                    <div class="firm_partnershipDetails_section">
+                      <div>
+                        <p>
+                          Partnership Deed / MOA and AOA, List of shareholders and
+                          directors (Including their PAN) as applicable
+                        </p>
+  
+                        <div>
+                          <div *ngFor="let item of partnershipFile">
+                            <p>{{ item.name }}</p>
+                          </div>
+                          <input formControlName="documentList" type="file" id="partner"
+                            accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                            (change)="changeEvent($event)">
+                          <label for="partner" mat-button>
+                            <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                          </label>
+                        </div>
+  
+                        <div>
+                          <div
+                            *ngIf="partnershipFile && partnershipFile[0] && (partnershipFile[0].type == 'image/jpeg' || partnershipFile[0].type == 'image/png' || partnershipFile[0].type == 'image/jpg')">
+                            <img *ngFor="let url of partnershipUrl" [src]="url" width="250">
+                          </div>
+                          <mat-icon
+                            *ngIf="partnershipFile && partnershipFile[0] && !(partnershipFile[0].type == 'image/jpeg' || partnershipFile[0].type == 'image/png' || partnershipFile[0].type == 'image/jpg')"
+                            class="file-icon"> insert_drive_file</mat-icon>
+                        </div>
+                        <div>
+                          <button mat-raised-button type="button" color="primary"
+                            (click)="uploadfFirmPartnershipDoc()">UPLOAD</button>
+                        </div>
+                      </div>
+                    </div>
+  
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel formGroupName="bankingDetails">
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>* Banking Details (Last 6 Month's Bank Statement) </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon *ngIf="KYCDetails?.bankStatement?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.bankStatement?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.bankStatement?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+  
+                    <div class="bankingDetails_section">
+                      <div>
+                        <div>
+                          <div *ngFor="let item of bankingFile">
+                            <p>{{ item.name }}</p>
+                          </div>
+                          <input id="banking" formControlName="documentList" type="file"
+                            accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                            (change)="changeEvent($event)" multiple>
+                          <label for="banking" mat-button>
+                            <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                          </label>
+                        </div>
+  
+                        
+                          <div>
+                            <mat-icon *ngFor="let doc of bankingFile" style="margin: 10px;" class="file-icon">
+                              insert_drive_file</mat-icon>
+                          </div>
+                        
+  
+                        <div>
+                          <mat-form-field class="mat-form-field" appearance="outline">
+                            <mat-label>Password</mat-label>
+                            <input matInput formControlName="bankstatementPassword" pattern="" type="text"
+                              placeholder="Bank Statement Password" />
+                            <mat-error style="color: rgb(241, 14, 14); margin-top: 3px">Please enter valid password
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+  
+                      </div>
+                    </div>
+  
+                    <div>
+                      <button mat-raised-button type="button" color="primary" (click)="uploadBankingDoc()">UPLOAD</button>
+                    </div>
+  
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel formGroupName="financialDetails">
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>* Financial & GST Returns (Upto 24 Months)
+                      </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <span>
+                          <mat-icon *ngIf="KYCDetails?.financial?.status=='Approved' " style="color: green;">check_circle</mat-icon>
+                          <mat-icon *ngIf="KYCDetails?.financial?.status=='Rejected' " style="color: red;">cancel</mat-icon>
+                          <mat-icon *ngIf="KYCDetails?.financial?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </span>
+                        <span>
+                          <mat-icon *ngIf="KYCDetails?.gst?.status=='Approved' " style="color: green;">check_circle</mat-icon>
+                          <mat-icon *ngIf="KYCDetails?.gst?.status=='Rejected' " style="color: red;">cancel</mat-icon>
+                          <mat-icon *ngIf="KYCDetails?.gst?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </span>    
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+  
+                    <div class="financial_gst_section">
+  
+                      <div>
+                        <h4>Financial Details</h4>
+                        <p>
+                          Financial Files
+                        </p>
+  
+                        <div>
+                          <div *ngFor="let item of financialUrl">
+                            <p>{{ item.name }}</p>
+                          </div>
+                          <input formControlName="financialDocList" type="file" id="financial_file"
+                            accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                            (change)="changeEvent($event)" multiple>
+                          <label for="financial_file" mat-button>
+                            <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                          </label>
+                        </div>
+  
+                        <div>
+                          <div>
+                            <mat-icon *ngFor="let doc of financialUrls" style="margin: 10px;" class="file-icon">
+                              insert_drive_file</mat-icon>
+                          </div>
+                        </div>
+                      </div>
+  
+                      <div>
+                        <h4>GST Details</h4>
+  
+                        <p>
+                          GST Return Files
+                        </p>
+  
+                        <div>
+                          <div *ngFor="let item of gstUrl">
+                            <p>{{ item.name }}</p>
+                          </div>
+                          <input formControlName="gstDocList" type="file" id="gst_file"
+                            accept=".pdf,image/png,image/jpg,image/jpeg" class="inputfile inputfile-1"
+                            (change)="changeEvent($event)" multiple>
+                          <label for="gst_file" mat-button>
+                            <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                          </label>
+                        </div>
+  
+                        <div>
+                          <div>
+                            <mat-icon *ngFor="let doc of gsturls" style="margin: 10px;" class="file-icon">
+                              insert_drive_file</mat-icon>
+                          </div>
+                        </div>
+  
+  
+                      </div>
+                    </div>
+  
+                    <div style="margin-top: 30px;">
+                      <button mat-raised-button type="button" color="primary"
+                        (click)="uploadFinancialGstDoc()">UPLOAD</button>
+                    </div>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>
+                        * Upload Store Images
+                      </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon *ngIf="KYCDetails?.storeImages?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.storeImages?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.storeImages?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="shop_img_section">
+                      <div>
+                        <div>
+                          <img *ngFor="let url of urls" [src]="url" width="250" style="margin-right: 15px;">
+                        </div>
+                        <div>
+                          <input formControlName="shop_img" type="file" #imageInput multiple id="imageInput"
+                            (change)="changeEvent($event)" accept=".pdf,image/png,image/jpg,image/jpeg"
+                            class="inputfile inputfile-1" multiple>
+                          <label for="imageInput" mat-button>
+                            <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                          </label>
+                        </div>
+  
+                        <label>NOTE: Please upload three images of the shop</label>
+                        <p>
+                          1 - Store front photo along with store name from outside of the premises.<br>
+                          2 - Selfie of the registered owner along with inside area of the shop.<br>
+                          3 - Photo of current stock/inventory of inside the shop. <br>
+                        </p>
+                      </div>
+                    </div>
+  
+                    <button mat-raised-button type="button" color="primary" (click)="uploadStoreImg()">UPLOAD
+                    </button>
+                  </mat-expansion-panel>
+
+                  <mat-expansion-panel>
+                    <mat-expansion-panel-header class="mat-elevation-z1">
+                      <mat-panel-title>
+                        * Customer Cheque Images
+                      </mat-panel-title>
+                      <mat-panel-description class="verification-icon">
+                        <mat-icon *ngIf="KYCDetails?.chequeImages?.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.chequeImages?.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                        <mat-icon *ngIf="KYCDetails?.chequeImages?.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                      </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="cheque_image_section">
+                      <div>
+                        <div>
+                          <img *ngFor="let url of cheque_url" [src]="url" width="250" style="margin-right: 15px;">
+                        </div>
+                        <div>
+                          <input formControlName="cheque_img" type="file" #chequeInput multiple id="chequeInput"
+                            (change)="changeEvent($event)" accept=".pdf,image/png,image/jpg,image/jpeg"
+                            class="inputfile inputfile-1" multiple>
+                          <label for="chequeInput" mat-button>
+                            <span> <mat-icon>cloud_upload</mat-icon> Select Documents</span>
+                          </label>
+                        </div>
+                        <label>NOTE: Please provide security cheque where account number should be clearly visible</label>
+                      </div>
+                      <!-- <div *ngIf="chequeDetails.images">
+                        <b>Document : 
+                            <button *ngFor="let doc of chequeDetails.images" mat-mini-fab
+                                class="btn-view" matTooltip="View" (click)="open_Doc_Dialog(doc)"
+                                aria-label="Example icon button with a delete icon">
+                                <mat-icon>description</mat-icon>
+                              </button>
+                          </b>
+                      </div> -->
+                      
+                    </div>
+  
+                    <button mat-raised-button type="button" color="primary" (click)="uploadChequeImage()">UPLOAD
+                    </button>
+                  </mat-expansion-panel>
+
+                </mat-accordion>
+
+                <button mat-raised-button type="button" color="primary" matStepperPrevious
+                  style="margin-right: 15px;">PREVIOUS STEP</button>
+
+                <button mat-raised-button type="button" color="primary" (click)="goForward(stepper)">
+                  NEXT STEP
+                </button>
+              </div>
+            </form>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+
+            <div style="text-align: center;">
+
+              <h4 style="font-size: 50px;">You are now done.</h4>
+
+              <mat-icon style=" font-size: 100px; color: green;">thumb_up</mat-icon>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </div>
+    </div>
+  </div>
+</app-layout>

@@ -1,0 +1,209 @@
+#verify-user-page {
+  width: 100%;
+  background: url("../../../../../assets/images/loginbg.jpg") no-repeat center;
+  background-size: 50% 100%;
+  background-position: left center;
+  height: 100vh;
+
+  .parent {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    padding-top: 10px;
+    height: 100%;
+  }
+  .backbtn {
+    background: #f6f2e9 0% 0% no-repeat padding-box;
+    margin-left: -5rem;
+    margin-right: 1.8rem;
+  }
+  .btm-imput {
+    bottom: 0;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
+  .div1 {
+    // margin-top: 40%;
+    align-self: center;
+  }
+  .div2 {
+    grid-area: 1 / 2 / 2 / 3;
+    align-self: center;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+  .logo {
+    max-height: 50px;
+  }
+  .image-responsive {
+    max-width: 100%;
+    height: auto;
+  }
+
+  h2 {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 20px;
+    color: #000;
+    margin: 0 0 30px;
+  }
+
+  .login {
+    display: grid;
+    grid-template-columns: 0.1fr 2.8fr 0.1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas: ". form .";
+  }
+
+  .form {
+    grid-area: form;
+    text-align: center;
+    background: white;
+    padding-top: 15px;
+  }
+
+  .mat-form-field {
+    font-size: 13px;
+    max-width: 400px;
+    width: 100%;
+  }
+  .btn-primary {
+    background: #f79e1b 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 400px;
+    color: white;
+    padding: 4px;
+  }
+
+  .btn-secondary {
+    background: #f6f2e9 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    max-width: 400px;
+    padding: 4px;
+  }
+  .input-wrapper {
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+  .text-right {
+    text-align: right;
+  }
+  .forgot-password {
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .forgot-password a {
+    color: #b2002d;
+    text-decoration: none;
+    transition: 2s;
+    font-weight: 600;
+  }
+  .forgot-password a:hover {
+    text-decoration: underline;
+    transition: 2s;
+  }
+
+  .divcontainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .divline {
+    flex: 1;
+  }
+
+  .divtext {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .footer-div {
+    img {
+      max-height: 38px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+    p {
+      text-align: left;
+    }
+
+    .flex-div {
+      justify-content: center;
+      display: flex;
+      flex-direction: row;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 0px;
+      margin-top: 40px;
+    }
+  }
+
+  @media only screen and (max-width: 600px) {
+    .btm-imput {
+      bottom: 10px;
+      width: 100%;
+    }
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 800px) {
+    .form {
+      padding: 15px;
+    }
+    .parent {
+      display: block;
+    }
+    .flex-item-left,
+    .flex-item-right {
+      flex: inherit;
+    }
+    background-size: cover;
+    background-position: center center;
+
+    .flex-container {
+      flex-direction: column;
+    }
+
+    .parent {
+      padding-top: 26px;
+      padding-bottom: 26px;
+    }
+    .margin-bottom {
+      margin-bottom: 1rem;
+    }
+    .margin-top {
+      margin-top: 1rem;
+    }
+    .loginform {
+      padding: 0px 30px;
+    }
+    .flex-div {
+      margin-top: 30px !important;
+      text-align: center;
+    }
+
+    .loginform h2,
+    .loginform p {
+      text-align: center;
+    }
+  }
+}

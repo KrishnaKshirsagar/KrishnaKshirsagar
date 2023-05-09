@@ -1,0 +1,17 @@
+::ng-deep .mat-dialog-container {
+    width: 100rem;
+    height: 35rem;
+    background-color: rgb(239, 239, 239);
+    color: black;
+    font: Roboto, "Helvetica Neue", sans-serif;
+    overflow-x: hidden;
+
+}
+.btn-cancel{
+    display:flex;
+    justify-content: end;
+    padding-bottom: 10px;
+    .mat-mini-fab.mat-accent{
+        background-color:black;
+    }
+}

@@ -1,0 +1,398 @@
+<div id="nbfc-invoicelist-page">
+    <div class="flex-container">
+        <div class="flex-item-left bg-white">
+          <div class="margin-top margin-bottom">
+            <div class="loginform">
+              <div class="tableheader">
+                <h2 i18n="@@BA1">Invoices</h2>
+                <div class="expitem">
+                  <button mat-icon-button color="accent" matTooltip="Export Excel" matTooltipPosition="above"
+                    class="exel-icon" (click)="
+                      exporter.exportTable('xlsx', {
+                        fileName: 'Invoices',
+                        sheet: 'sheet_name',
+                        Props: { Author: 'Xuriti' }
+                      })
+                    " aria-label="Example icon button with a menu icon">
+                    <mat-icon>assignment_returned</mat-icon>
+                  </button>
+                </div>
+              </div>
+            
+              <div class="boxes">
+                <div>
+                  <b>Invoice Number :</b>
+                  <div>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Invoice Number</mat-label>
+                      <input
+                        matInput
+                        (keyup)="applyFilterInvoiceNo($event)"
+                        matInput
+                        placeholder="Search by Invoice Number"
+                        [formControl]="invoiceNumberControl"
+                      />
+                      <button
+                        type="button"
+                        mat-button
+                        (click)="invoice_clear(invoiceNumberControl)"
+                        matSuffix
+                        mat-icon-button
+                        aria-label="Clear"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <!-- gst filter -->
+
+                <div>
+                  <b>Select GST :</b>
+                  <div style="display:flex ; grid-gap: 10px;">
+                    <mat-form-field appearance="outline" >
+                      <mat-select [(value)]="gstuserselect" (selectionChange)="GstUserType()">
+                        <mat-option value="" selected>Select User Type</mat-option>
+                        <mat-option value="buyer">Buyer</mat-option>
+                        <mat-option value="seller">Seller</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="autosuggetion ">
+                      <mat-label>Search by GST Number</mat-label>
+                      <input
+                        matInput
+                        (keyup)="getGstNo($event)"
+                        placeholder="Search by GST Number"
+                        [formControl]="gstControl"
+                      />
+                      <button
+                        type="button"
+                        mat-button
+                        (click)="gst_clear(gstControl)"
+                        matSuffix
+                        mat-icon-button
+                        aria-label="Clear"
+                      >
+                        <mat-icon>close</mat-icon>
+                      </button>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div>
+                  <b>Invoice Status :</b>
+                  <div>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Invoice Status</mat-label>
+                      <mat-select [(value)]="invoiceStatusSelection" (selectionChange)="invoiceStatus($event.value)">
+                        <mat-option selected value="">
+                          Select Invoice Status
+                        </mat-option>
+                        <mat-option value="Not paid"> Not paid </mat-option>
+                        <mat-option value="Repaid"> Repaid </mat-option>
+                        <!-- <mat-option value="Rejected"> Rejected </mat-option>
+                        <mat-option value="Paid"> Paid </mat-option>
+                        <mat-option value="Partpay"> Part Pay </mat-option> -->
+        
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div>
+                  <b>Invoice Date Range :</b>
+                  <div>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Invoice Date Range</mat-label>
+                      <mat-date-range-input
+                        [rangePicker]="rangePicker"
+                        [formGroup]="dateRange"
+                        [max]="maxDate"
+                      >
+                        <input
+                          matStartDate
+                          placeholder="Start date"
+                          formControlName="start"
+                          readonly
+                        />
+                        <input
+                          matEndDate
+                          placeholder="End date"
+                          formControlName="end"
+                          readonly
+                        />
+                      </mat-date-range-input>
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="rangePicker"
+                      ></mat-datepicker-toggle>
+                      <mat-date-range-picker #rangePicker>
+                        <mat-date-range-picker-actions>
+                          <button mat-button matDateRangePickerCancel>Cancel</button>
+                          <button
+                            mat-raised-button
+                            color="primary"
+                            matDateRangePickerApply
+                            (click)="datefilter()"
+                          >
+                            Apply
+                          </button>
+                        </mat-date-range-picker-actions>
+                      </mat-date-range-picker>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div>
+                  <b>Invoice Amount :</b>
+                  <div>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Invoice Amount Range</mat-label>
+                      <mat-select (selectionChange)="invoices_amount_range($event.value)">
+                        <mat-option value="0_to_1L" selected>0 to 1 Lakh</mat-option>
+                        <mat-option value="2L_to_5L"> 2 Lakh to 5 Lakh </mat-option>
+                        <mat-option value="5L_to_25L"> 5 Lakh to 25 Lakh </mat-option>
+                        <mat-option value="above_25L"> Above 25 Lakh </mat-option> 
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                
+              </div>
+
+              <table mat-table matTableExporter class="tspace" [hiddenColumns]="[11]" #exporter="matTableExporter" [dataSource]="dataSource"
+                matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z0">
+                <!-- Invoice No. Column -->
+                <ng-container matColumnDef="invoice_no">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by invoice_no"
+                    i18n="@@BA7">
+                    Invoice No
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA8">
+                    {{ element && element.invoice_number ? element.invoice_number : '' }}
+                  </td>
+                </ng-container>
+    
+                <!-- Seller Name Column -->
+                <ng-container matColumnDef="seller_company_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by company_name"
+                    i18n="@@BA3">
+                    Seller Name
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA4">
+                    {{
+                    element && element.seller_name
+                    ? element.seller_name
+                    : ""
+                    }}
+                  </td>
+                </ng-container>
+
+                 <!-- Seller GST Column -->
+                 <ng-container matColumnDef="seller_gstin">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gstin"
+                      i18n="@@BA3">
+                      Seller GST
+                    </th>
+                    <td mat-cell *matCellDef="let element" i18n="@@BA4">
+                      {{
+                      element && element.seller_gst
+                      ? element.seller_gst
+                      : ""
+                      }}
+                    </td>
+                  </ng-container>
+
+                   <!-- Buyer Name Column -->
+                <ng-container matColumnDef="buyer_company_name">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by company_name"
+                      i18n="@@BA3">
+                      Buyer Name
+                    </th>
+                    <td mat-cell *matCellDef="let element" i18n="@@BA4">
+                      {{
+                      element && element.buyer_name 
+                      ? element.buyer_name
+                      : ""
+                      }}
+                    </td>
+                  </ng-container>
+
+                   <!-- Buyer GST Column -->
+                <ng-container matColumnDef="buyer_gstin">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gstin"
+                      i18n="@@BA3">
+                      Buyer GST
+                    </th>
+                    <td mat-cell *matCellDef="let element" i18n="@@BA4">
+                      {{
+                      element && element.buyer_gst 
+                      ?  element.buyer_gst 
+                      : ""
+                      }}
+                    </td>
+                  </ng-container>
+    
+                <!-- Invoice Amount Column -->
+                <ng-container matColumnDef="invoice_amount">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by invoice_amount"
+                    i18n="@@BA5">
+                    Invoice Amount
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA6">
+                    <!-- {{
+                     ( element && element.invoice_amount ? element.invoice_amount : 0 ) 
+                      | currency : currency_Format }} -->
+
+                      {{
+                        (element && element.invoice_amount 
+                        ? element.invoice_amount
+                        : 0) 
+                        | currency : currency_Format
+                        }}
+                  </td>
+                </ng-container>
+
+                 <!-- amount_to_be_disbursed Column -->
+                 <ng-container matColumnDef="amount_to_be_disbursed">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by amount_to_be_disbursed"
+                    i18n="@@BA13">
+                     Disbursable Amount
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA4">
+                    {{
+                    (element && element.nbfc_payable 
+                    ? element.nbfc_payable
+                    : 0) 
+                    | currency : currency_Format
+                    }}
+                  </td>
+                </ng-container>
+    
+                <!-- GST Amt Column -->
+                <ng-container matColumnDef="total_tax">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by total_tax"
+                    i18n="@@BA9">
+                    GST Amount
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                    {{
+                    ( element && element.bill_details && element.bill_details.gst_summary && element.bill_details.gst_summary.total_tax
+                    ? element.bill_details.gst_summary.total_tax
+                    : 0
+                    ) | currency: currency_Format
+                    }}
+                  </td>
+                </ng-container>
+    
+                 <!-- Invoice Date Column -->
+                 <ng-container matColumnDef="invoice_date">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by invoice_date"
+                    i18n="@@BA5">
+                    Invoice Date
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA6">
+                    {{ (element && element.invoice_date ? element.invoice_date : '') | date: Date_Format }}
+                  </td>
+                </ng-container>
+    
+                <!-- Total Amount(Inv+gst) Column -->
+                <ng-container matColumnDef="total_amount">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by outstanding_amount"
+                    i18n="@@BA9">
+                    Total Invoice Amount
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                    {{ (element && element.total_invoice_amount ? element.total_invoice_amount : 0) | currency: currency_Format }}
+                  </td>
+                </ng-container>
+    
+                <!-- Repaid Amount Column -->
+                <ng-container matColumnDef="repaid_amount">
+                  <th mat-header-cell *matHeaderCellDef sortActionDescription="Sort by repaid_amount" class="statuscol"
+                    mat-sort-header i18n="@@BA9">
+                    Repaid Amount
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                    {{ (element && element.outstanding_amount ? element.outstanding_amount : 0) | currency: currency_Format}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="invoice_status">
+                  <th mat-header-cell *matHeaderCellDef sortActionDescription="Sort by invoice_status" class="statuscol"
+                    mat-sort-header i18n="@@BA9">
+                    Status
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                    {{ getstatus(element && element.invoice_status ) ? getstatus(element.invoice_status) : ''}}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="disburse_status">
+                  <th mat-header-cell *matHeaderCellDef sortActionDescription="Sort by disburse_status" class="statuscol"
+                    mat-sort-header i18n="@@BA9">
+                    Disbursement Status
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                    {{ element && element.disbursed_status ? element.disbursed_status : ""}}
+                  </td>
+                </ng-container>
+
+                <!-- Consent msg Column -->
+                <ng-container matColumnDef="user_consent_message">
+                  <th mat-header-cell *matHeaderCellDef class="statuscol"
+                    mat-sort-header i18n="@@BA9">
+                    Consent Message
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                    <button mat-icon-button matTooltip="Consent Message" *ngIf="element.user_consent_message" aria-label="Consent"
+                      (click)="showUserConsentMsg(element)">
+                      <mat-icon class="pdfdown">comment</mat-icon>
+                    </button>
+                  </td>
+                  
+                </ng-container>
+    
+                <!-- uploaded at Column -->
+                <ng-container matColumnDef="createdAt">
+                  <th mat-header-cell *matHeaderCellDef sortActionDescription="Sort by createdAt" mat-sort-header
+                    i18n="@@BA9">
+                    Uploaded At
+                  </th>
+                  <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                    {{ (element && element.createdAt ? element.createdAt : '') | date: Date_Format }}
+                  </td>
+                </ng-container>
+    
+                <!--  Actions Column -->
+    
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef class="actioncol" i18n="@@BA11">
+                    Actions
+                  </th>
+                  <td mat-cell *matCellDef="let row">
+                    <button mat-icon-button matTooltip="Audit-Trail" aria-label="Audit-Trail"
+                      (click)="openAuditTrail(row)">
+                      <mat-icon class="pdfdown">search</mat-icon>
+                    </button>
+                  </td>
+                </ng-container>
+    
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="text-center">
+                    No Invoice Found
+                  </td>
+                </tr>
+              </table>
+              <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+                aria-label="Select page of periodic elements">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>

@@ -1,0 +1,298 @@
+<div id="buyer-page">
+  <div class="container">
+    <div class="row">
+      <div class="col-100">
+        <div>
+          <h2>Retailer's Business Registration Form</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col50">
+        <form [formGroup]="gst_form" (ngSubmit)="getCompanyDetailsByGST()">
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label>Enter GST Number</mat-label>
+                <input
+                  matInput
+                  placeholder="Enter GST Number"
+                  formControlName="gstin"
+                  [ngModel]="inputvalue"
+                  (ngModelChange)="inputvalue = $event.toUpperCase()"
+                  type="text"
+                  pattern="^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$"
+                  required
+                />
+                <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                  >Please enter correct GST number</mat-error
+                >
+              </mat-form-field>
+
+              <!-- <h3>Please enter captcha for verification</h3>
+              <div style="display: flex; justify-content: center">
+                <img
+                  [src]="captcha_img"
+                  style="margin-right: 10px; margin-top: 4px; max-height: 42px"
+                />
+
+                <mat-form-field appearance="outline">
+                  <input matInput formControlName="captcha" />
+                  <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                    >Please enter captcha</mat-error
+                  >
+                </mat-form-field>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="input-wrapper flex-div" *ngIf="!manualMode">
+            <div class="flex-item-left">
+              <button
+                mat-stroked-button
+                type="submit"
+                [ngClass]="
+                  consentflag
+                    ? 'btn-primary-outline'
+                    : 'disable-btn-primary-outline'
+                "
+                [disabled]="!consentflag"
+              >
+                GET GST DETAILS
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <form [formGroup]="companyDetail_form" (ngSubmit)="onSubmit()">
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label>TAN</mat-label>
+                <input
+                  matInput
+                  pattern="^[A-Z]{4}[0-9]{5}[A-Z]{1}"
+                  formControlName="tan"
+                  type="text"
+                />
+                <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                  >Please enter correct TAN number</mat-error
+                >
+              </mat-form-field>
+
+              <!-- Associated company -->
+              <mat-form-field appearance="outline">
+                <mat-label>Associated Seller</mat-label>
+                <mat-select
+                  formControlName="associated_seller"
+                  (selectionChange)="selectedSeller($event)"
+                  [disabled]="!!seller_flag"
+                >
+                  <mat-option value="" selected>
+                    Select Associated Seller
+                  </mat-option>
+                  <mat-option
+                    *ngFor="let seller of companyList"
+                    [value]="seller._id"
+                  >
+                    {{ seller.seller_name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+            <div class="flex-item-right">
+              <div class="flex-div">
+                <div class="flex-item-left">
+                  <mat-form-field class="full-width-input" appearance="outline">
+                    <mat-label>CIN</mat-label>
+                    <input
+                      matInput
+                      pattern="^[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}"
+                      formControlName="cin"
+                      type="text"
+                    />
+                    <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >Please enter correct CIN number
+                    </mat-error>
+                  </mat-form-field>
+
+                  <mat-form-field class="full-width-input" appearance="outline" *ngIf="manualMode">
+                    <mat-label>Company Name</mat-label>
+                    <input
+                      matInput
+                      required
+                      pattern=".*"
+                      formControlName="company_name"
+                      type="text"
+                    />
+                    <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >Please enter company name
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label>Admin Mobile No</mat-label>
+                <input
+                  matInput
+                  pattern="^((\\+91-?)|0)?[0-9]{10}$"
+                  formControlName="admin_mobile"
+                  type="text"
+                  minlength="10"
+                  maxlength="10"
+                  required
+                  readonly
+                />
+                <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                  >Please enter valid mobile number</mat-error
+                >
+              </mat-form-field>
+            </div>
+            <div class="flex-item-right">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label>Admin Email</mat-label>
+                <input
+                  matInput
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                  formControlName="admin_email"
+                  type="text"
+                  readonly
+                />
+                <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                  >Please enter valid email address</mat-error
+                >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Seller flag -->
+          <section class="example-section" style="margin-bottom: 10px">
+            <mat-checkbox (change)="sellerFlagCheack($event)" color="primary">
+            </mat-checkbox>
+            <span> Register as Supplier/Distributor </span>
+          </section>
+
+          <div>
+            <section class="example-section" style="margin-top: 10px">
+              <mat-checkbox
+                formControlName="consent"
+                (change)="consent_cheack($event)"
+                color="primary"
+              >
+              </mat-checkbox>
+              <span *ngIf="consentflag">
+                I agree to the
+                <a class="psum" (click)="openTermsCondition()"
+                  >Terms & Conditions</a
+                >
+              </span>
+              <span
+                style="color: rgb(241, 14, 14); margin-top: 7px"
+                *ngIf="!consentflag"
+              >
+                I agree to the
+                <a href="{{ BaseUrl }}user/termscondition"
+                  >Terms & Conditions</a
+                >
+              </span>
+            </section>
+          </div>
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <div>
+                <button
+                  mat-button
+                  [disabled]="!consentflag"
+                  color="primary"
+                  type="submit"
+                  [ngClass]="consentflag ? 'btn-primary' : 'disable-btn'"
+                >
+                  CREATE
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="col50 marlabel" *ngIf="companyflag">
+        <mat-card>
+          <div>
+            <h2>Company Details</h2>
+          </div>
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <label> <b>Company Name: </b> {{ companyname }} </label>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <label> <b>Address Line: </b> {{ address }} </label>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <label> <b>PAN No: </b> {{ pan }} </label>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <label> <b>District: </b> {{ district }} </label>
+            </div>
+
+            <div class="flex-item-right">
+              <label> <b>State: </b> {{ state }} </label>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <label> <b>Pincode: </b> {{ pinCode }} </label>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <div class="input-wrapper flex-div">
+            <div class="flex-item-left">
+              <label> <b>Type of Business: </b> {{ industry_type }} </label>
+            </div>
+            <!-- <div class="flex-item-right">
+         
+
+          <label> <b>Annual Turnover:</b> {{ companyDetails.address }} </label> 
+
+        </div> -->
+          </div>
+          <!-- <mat-divider></mat-divider> -->
+          <!-- <div class="input-wrapper flex-div">
+        <div class="flex-item-left">        
+
+          <label> <b>Company Mobile:</b> Dummy Company Mobile </label> 
+
+        </div>
+        <div class="flex-item-right">
+         
+          <label> <b>Company Email:</b> Dummy Company Email </label> 
+        </div>
+      </div> -->
+          <!-- <mat-divider></mat-divider> -->
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

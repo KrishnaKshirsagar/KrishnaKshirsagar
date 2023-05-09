@@ -1,0 +1,223 @@
+<app-layout>
+  <div id="offlinepayment-page">
+    <div class="main-wrapper">
+      <div class="transheader">
+        <h2>Offline Payment</h2>
+      </div>
+      <form
+        [formGroup]="offlinepayment_form"
+        class="example-form"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="gridLayout">
+          <div class="Left">
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Retailer Name</mat-label>
+                <input
+                  type="text"
+                  placeholder="Please Select Buyer"
+                  aria-label="Number"
+                  matInput
+                  [formControl]="companySelect"
+                  [matAutocomplete]="buyer_auto"
+                  (input)="companySuggetion($event)"
+                  required
+                />
+                <mat-autocomplete
+                  [displayWith]="displayBuyerFn"
+                  (optionSelected)="getBuyerId($event.option.value)"
+                  #buyer_auto="matAutocomplete"
+                >
+                  <mat-option *ngFor="let option of company_Name" [value]="option">
+                    {{option.company_name}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="company_name_clear()"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="Right">
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Seller Name</mat-label>
+                <input
+                  type="text"
+                  placeholder="Please Select Seller"
+                  aria-label="Number"
+                  matInput
+                  [formControl]="myControl"
+                  [matAutocomplete]="auto"
+                  required
+                />
+                <mat-autocomplete
+                  [displayWith]="displayFn"
+                  (optionSelected)="onChange($event.option.value)"
+                  #auto="matAutocomplete"
+                >
+                  <mat-option *ngFor="let option of sellerlist" [value]="option">
+                    {{option.company_name}}
+                  </mat-option>
+                </mat-autocomplete>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="clearSellerName(myControl)"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="gridLayout">
+          <div class="Left">
+            <div class="labeldiv">
+              <mat-label>Outstanding Amount: </mat-label>
+              <span>
+                {{ (total_outstanding_amount ? total_outstanding_amount : 0) | currency : currency_format }}
+              </span>
+            </div>
+          </div>
+          <div class="Right">
+            <div class="labeldiv">
+              <mat-label>Total Discount Applicable: </mat-label>
+              <span> {{ (total_discount ? total_discount : 0) | currency : currency_format }} </span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="gridLayout">
+          <div class="Left">
+            <div class="labeldiv">
+              <mat-label>Total Interest Applicable: </mat-label>
+              <span> {{ (total_interest ? total_interest : 0) | currency : currency_format }} </span>
+            </div>
+          </div>
+          <div class="Right">
+            <div class="labeldiv">
+              <mat-label>Total Payable Amount: </mat-label>
+              <span> {{ (total_amount ? total_amount : 0) | currency : currency_format }} </span>
+            </div>
+          </div>
+        </div>
+  
+        <div class="gridLayout">
+          <div class="Left">
+            <mat-form-field appearance="outline">
+              <mat-label>Amount Paid </mat-label>
+              <input
+                matInput
+                type="text"
+                pattern="^\d*(\.\d{0,2})?$"
+                formControlName="paid_amount"
+                (focusout)="partpayemetAmount($event)"
+                placeholder="Enter Amount Paid"
+              />
+            </mat-form-field>
+            <span
+              *ngIf="error_flag == true"
+              style="
+                color: rgb(241, 14, 14);
+                font-size: 10px;
+                float: right;
+                margin-top: -20px;
+                margin-right: 62px;
+              "
+              i18n="@@ABA3"
+              pattern="^[0-9]{0,10}+[0-9]\.?\d*$"
+            >
+              Please enter a valid amount
+            </span>
+            <mat-form-field appearance="outline">
+              <mat-label> Transaction ID</mat-label>
+              <input
+                matInput
+                formControlName="transactionid"
+                placeholder="Enter Transaction Id"
+              />
+              <mat-error>Please enter valid transaction id</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Select Payment Mode</mat-label>
+              <mat-select formControlName="payment_mode">
+                <mat-option value="DD">Demand Draft</mat-option>
+                <mat-option value="Cheque">Cheque</mat-option>
+                <mat-option value="Cash">Cash</mat-option>
+                <mat-option value="Online">Online Transfer</mat-option>
+                <mat-option value="Other">Other</mat-option>
+              </mat-select>
+              <mat-error>Please select mode of payment</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="Right">
+            <div>
+              <mat-label>Amount Paid (In words): </mat-label>
+              <span> {{ amount_inWords }} </span>
+            </div>
+
+            <div>
+              <mat-form-field appearance="outline">
+                <mat-label>Payment Date:</mat-label>
+                <input matInput [max]="max_date" formControlName="payment_date" [matDatepicker]="datepicker" readonly>      
+                <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+                <mat-datepicker #datepicker>
+                  <mat-datepicker-actions>
+                    <button mat-button matDatepickerCancel>Cancel</button>
+                    <button mat-raised-button (focusout)="partpayemetAmountWithDate($event)" color="primary" matDatepickerApply>Apply</button>
+                  </mat-datepicker-actions>
+                </mat-datepicker>
+                <mat-error>Please select payment date</mat-error>
+              </mat-form-field>     
+            </div>
+          </div>
+        </div>
+
+        <div class="labeldiv">
+          <h4 (click)="openpaymentSummery()" class="psum" style="color: blue;">Payment Summary</h4>
+        </div>
+  
+        <div>
+          <mat-form-field class="mat-form-field-1" appearance="outline">
+            <mat-label>Comments</mat-label>
+            <textarea
+              matInput
+              formControlName="comment"
+              placeholder="Leave a comment"
+            ></textarea>
+            <mat-error>Please enter comment</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <div class="labeldiv">
+            <mat-label> Upload Receipt </mat-label>
+            <input
+              id="pay_slip"
+              type="file"
+              accept=".pdf, image/png, image/jpeg"
+              (change)="onFileChange($event)"
+              placeholder="Upload Receipt"
+            />
+          </div>
+          <div class="input-wrapper text-center mat-form-field-1">
+            <button type="submit" mat-flat-button class="btn-dark">PAY</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</app-layout>

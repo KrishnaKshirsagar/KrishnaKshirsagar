@@ -1,0 +1,359 @@
+::ng-deep #kyc-document {
+  .header {
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      // align-items: bottom;
+      margin: 15px;
+      padding: 0%;
+      .left-header{
+display: flex;
+      }
+      h1 {
+        font-weight: 700;
+        margin-left: 10px;
+        margin-top: 5px
+      }
+
+      .mat-mini-fab.mat-accent {
+        background-color: #000;
+
+      }
+
+      .download-btn {
+        display: flex;
+        justify-content: end;
+        .mat-raised-button {
+          height: 40px;
+          background: #000;
+          color: white;
+          margin-left: 5px;
+          margin-right: 5px;
+          box-shadow: none;
+          font-weight: 600;
+          border-radius: 10px;
+        }
+      }
+
+    }
+  }
+
+  .main-wrapper {
+    padding: 15px;
+  }
+
+  .div-indicator {
+    text-align: right;
+
+    .mat-icon {
+      vertical-align: middle;
+    }
+
+    .mat-label {
+      vertical-align: middle;
+    }
+  }
+
+  .CustEx {
+    .mat-expansion-panel {
+      margin-bottom: 10px;
+    }
+
+    .mat-expansion-panel-header {
+      font-weight: 600;
+    }
+
+    .panelbody {
+      place-content: space-between;
+      margin-left: 20px;
+      margin-right: 20px;
+    }
+  }
+
+  .mat-expansion-panel-header {
+    padding: 0 12px;
+    background: whitesmoke;
+    height: 46px;
+    border-radius: 23px;
+    border: 1px solid #c5c5c5;
+
+    .mat-icon {
+      color: #000;
+    }
+  }
+
+
+
+  .CustEx .mat-expansion-panel-header-description {
+    justify-content: end;
+    align-items: center;
+  }
+
+  .CustEx .mat-expansion-panel-body {
+    // padding: 16px 12px 0px;
+    margin: 0px;
+    padding: 16px 0px;
+  }
+
+  .panelbody {
+
+    .cards-wrapper {
+      display: flex;
+      justify-content: space-between;
+
+      mat-card {
+        margin: 0px 0px 20px 0px;
+        display: flex;
+        align-items: center;
+        width: fit-content;
+        max-width: 80%;
+        flex-flow: wrap;
+        padding: 0px 10px 0px 0px;
+
+        mat-form-field {
+          font-size: 10.5px;
+          width: 130px;
+          margin: 0px 0px 0px 10px;
+
+        }
+
+        textarea {
+          height: 1em;
+        }
+
+        .mat-form-field-wrapper {
+          padding-bottom: 1.34375em;
+          padding-top: 1.34375em;
+        }
+      }
+      .flex-box {
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 20px;
+        width: 100%;
+  
+        h3 {
+          margin-left: 15px;
+          
+        }
+  
+      }
+
+      .operation {
+        text-align: center;
+
+        button {
+          transform: scale(0.8);
+          margin-bottom: 0px;
+        }
+
+        .mat-form-field-wrapper {
+          padding: 0px;
+          margin-bottom: 20px;
+          margin-top: -10px
+        }
+      }
+    }
+
+    .carousel-container {
+      display: inline-block;
+      position: relative;
+      top: 0px;
+      text-align: center;
+      min-width: 100%;
+      height: 0px;
+      border-radius: 10px;
+      box-shadow: 0 6px 12px #dce1e1;
+    }
+
+
+
+
+
+    
+
+    .example-card {
+      width: 230px;
+      height: 200px;
+      box-shadow: 1px 3px 1px 3px rgb(0 0 0 / 20%);
+      margin-bottom: 30px;
+      overflow: hidden;
+
+      p {
+        width: 200px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 10px;
+        margin-bottom: 5px;
+        font-weight: 500;
+      }
+    }
+
+
+    .mat-mdc-mini-fab {
+      background-color: #000;
+
+    }
+
+
+
+
+
+    table {
+      width: 100%;
+    }
+
+    td {
+      width: 30%;
+    }
+
+
+    .green {
+      background-color: green;
+    }
+
+    .red {
+      background-color: rgb(255, 0, 0);
+    }
+
+    .black {
+      background-color: rgb(0, 0, 0);
+    }
+
+
+
+
+
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+      padding: 8px 0px;
+      font-size: 14px;
+      height: 14px;
+      // line-height: 10px;
+    }
+
+    .mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+      font-size: 14px;
+    }
+
+    .mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+      font-size: 18px;
+      margin-top: 5px;
+    }
+
+    .mdc-floating-label {
+      font-size: 18px;
+      padding-bottom: 10px;
+    }
+
+    mat-label {
+      color: rgb(96, 96, 96);
+    }
+  }
+
+  .btn-view {
+    margin-top: 20px;
+    margin-left: 2px;
+
+    .btn-dark {
+      background: rgba(255, 157, 0, 0.862);
+      color: rgb(255, 255, 255);
+      font-weight: 500;
+      transition: 0.3s;
+      margin-right: 33%;
+      width: 110px;
+      font-size:12px;
+    }
+
+    .btn-dark:hover {
+      background: rgb(255, 145, 0);
+      color: rgb(255, 255, 255);
+      letter-spacing: 1px;
+      transition: 0.3s;
+
+    }
+
+    .sub-dark {
+      background: rgba(67, 159, 28, 0.862);
+      color: rgb(255, 255, 255);
+      font-weight: 500;
+      transition: 0.3s;
+      width: 110px;
+      font-size:13px;
+    }
+
+    .sub-dark:hover {
+      background: rgba(58, 136, 25, 0.862);
+      color: rgb(255, 255, 255);
+      letter-spacing: 1px;
+      transition: 0.3s;
+
+    }
+
+  }
+
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    margin: 1%;
+
+    .mat-mdc-mini-fab {
+      background-color: #000;
+
+    }
+  }
+
+
+
+  .company-details {
+
+    margin-left: 18px;
+
+  }
+
+  .requiredColor {
+    color: red;
+  }
+
+  .notRequiredColor {
+    color: rgb(96, 96, 96);
+  }
+}
+
+.display-status {
+  display: flex;
+}
+
+
+
+::ng-deep {
+  .mdc-dialog__surface {
+    overflow: hidden;
+  }
+
+  iframe {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    // padding-left: 100px;
+    // padding-top: 100px;
+  }
+}
+
+::ng-deep .redClass {
+
+  .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: red !important;
+    // opacity: 1!important;
+  }
+}
+
+::ng-deep .mat-tooltip {
+  font-size: 15px;
+  white-space: pre-wrap;
+  background-color: gray !important;
+  color: rgba(255, 255, 255, .9);
+  border: 1px solid gray;
+  max-width: unset !important;
+}

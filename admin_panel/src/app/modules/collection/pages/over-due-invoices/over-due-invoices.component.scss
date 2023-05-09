@@ -1,0 +1,115 @@
+#over-due-invoices-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+
+  td.mat-cell,th.mat-header-cell{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  
+  .mat-form-field {
+    margin-right: 15px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-upload {
+    background: #f79e1b;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+    padding: 5px 31px;
+    vertical-align: 2px;
+    font-size: 18px;
+    border-radius: 7px;
+  }
+  .text-right {
+    text-align: right;
+  }
+}
+
+#comments-history-dialog {
+ 
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+
+  td.mat-cell,th.mat-header-cell{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .add-dailog{
+    display: flex;
+    justify-content: space-between;
+
+    .mat-icon-button {
+      padding: 0;
+      min-width: 0;
+      width: 25px;
+      height: 25px;
+      flex-shrink: 0;
+      line-height: 25px;
+      border-radius: 50%;
+    }
+
+    .mat-icon {
+      font-size: 15px;
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    .transheader {
+      display: block;
+
+      .mat-form-field {
+        width: 100%;
+        max-width: none;
+      }
+    }
+  }
+}

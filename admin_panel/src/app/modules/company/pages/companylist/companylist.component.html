@@ -1,0 +1,456 @@
+<app-layout>
+  <div id="companylist-page">
+    <div class="main-wrapper">
+      <h2>Manage Businesses</h2>
+
+      <div class="transheader">
+        <button
+          mat-icon-button
+          (click)="
+            exporter.exportTable('xlsx', {
+              fileName: 'Businesses',
+              sheet: 'Businesses',
+              Props: { Author: 'Xuriti' }
+            })
+          "
+          matTooltip="Export Excel"
+          matTooltipPosition="below"
+          class="exel-icon"
+          aria-label="Example icon button with a menu icon"
+        >
+          <mat-icon>assignment_returned</mat-icon>
+        </button>
+
+        <!-- company name -->
+
+        <mat-form-field appearance="outline">
+          <mat-label>Search by Business Name</mat-label>
+          <input
+            matInput
+            [formControl]="companyNameControl"
+            (keyup)="filterCompanyName($event)"
+            placeholder="Search by Company Name"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="clear(companyNameControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Search by Business GST Number</mat-label>
+          <input
+            matInput
+            [formControl]="gstControl"
+            (keyup)="filterbygstno($event)"
+            placeholder="Search by GST Number"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="gstclear(gstControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Search by Admin Email</mat-label>
+          <input
+            matInput
+            [formControl]="emailControl"
+            (keyup)="filterByAdminEmail($event)"
+            placeholder="Search by Admin Email"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="email_clear(emailControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Search by Admin Mobile</mat-label>
+          <input
+            matInput
+            [formControl]="mobileControl"
+            (keyup)="filterByAdminMobile($event)"
+            placeholder="Search by Admin Mobile"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="mobile_clear(mobileControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Business Status</mat-label>
+          <mat-select (selectionChange)="companiesByStatus($event.value)">
+            <mat-option value="" selected> Select Business Status </mat-option>
+            <mat-option value="Inactive"> Inactive </mat-option>
+            <mat-option value="Hold"> Hold </mat-option>
+            <mat-option value="Approved"> Approved </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Date range based on the registration</mat-label>
+          <mat-date-range-input
+            [rangePicker]="rangePicker"
+            [formGroup]="dateRange"
+            [max]="maxDate"
+          >
+            <input
+              matStartDate
+              placeholder="Start date"
+              formControlName="start"
+              readonly
+            />
+            <input
+              matEndDate
+              placeholder="End date"
+              formControlName="end"
+              readonly
+            />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="rangePicker"
+          ></mat-datepicker-toggle>
+          <mat-date-range-picker #rangePicker>
+            <mat-date-range-picker-actions>
+              <button
+                mat-button
+                matDateRangePickerCancel
+                (click)="date_cancle('date_range')"
+              >
+                Cancel
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
+                matDateRangePickerApply
+                (click)="datefilter()"
+              >
+                Apply
+              </button>
+            </mat-date-range-picker-actions>
+          </mat-date-range-picker>
+        </mat-form-field>
+        <!-- <button mat-flat-button *ngIf="creatidlimitflag == true" (click)="openCreditApprovalPage()" class="btn-export">Approve Credit Limit</button> -->
+      </div>
+      <table
+        mat-table
+        matTableExporter
+        [hiddenColumns]="[5, 8]"
+        #exporter="matTableExporter"
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2"
+      >
+        <!-- Company Name Column -->
+        <ng-container matColumnDef="company_name">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by company_name"
+          >
+            Business Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <b>
+              {{ element && element.company_name ? element.company_name : "" }}
+            </b>
+          </td>
+        </ng-container>
+
+        <!-- Company Address Column -->
+        <ng-container matColumnDef="companyaddress">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by companyaddress"
+            *matHeaderCellDef
+          >
+            Business Address
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.district ? element.district : "" }},
+            {{ element && element.state ? element.state : "" }},
+            {{ element && element.pincode ? element.pincode : "" }}
+          </td>
+        </ng-container>
+
+        <!-- GST Number Column -->
+        <ng-container matColumnDef="gstin">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by gstin"
+            *matHeaderCellDef
+          >
+            GST Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.gstin ? element.gstin : "" }}
+          </td>
+        </ng-container>
+
+        <!-- Admin email Column -->
+        <ng-container matColumnDef="admin_email">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by admin_email"
+            *matHeaderCellDef
+          >
+            Admin Email
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.admin_email ? element.admin_email : "" }}
+          </td>
+        </ng-container>
+
+        <!-- Admin mobile Column -->
+        <ng-container matColumnDef="admin_mobile">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by admin_mobile"
+            *matHeaderCellDef
+          >
+            Admin Mobile
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.admin_mobile ? element.admin_mobile : "" }}
+          </td>
+        </ng-container>
+
+        <!-- Credit limit Column -->
+        <ng-container matColumnDef="creditLimit">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by creditLimit"
+            *matHeaderCellDef
+          >
+            Credit Limit
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.creditLimit ? element.creditLimit : 0)
+                | currency : Currency_Format
+            }}
+          </td>
+        </ng-container>
+
+        <!-- Credit Available Column -->
+        <ng-container matColumnDef="avail_credit">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by avail_credit"
+            *matHeaderCellDef
+          >
+            Credit Available
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.avail_credit ? element.avail_credit : 0)
+                | currency : Currency_Format
+            }}
+          </td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by status"
+            *matHeaderCellDef
+          >
+            Business Status
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <b>
+              {{ element && element.status ? element.status : "" }}
+            </b>
+          </td>
+        </ng-container>
+
+        <!-- KYC Status Column -->
+        <ng-container matColumnDef="kyc_document_upload">
+          <th mat-header-cell *matHeaderCellDef>KYC Status</th>
+          <td mat-cell *matCellDef="let element" style="text-align: center">
+            <!-- <mat-icon *ngIf="element.kyc == true" style="color: green;" (click)="companyKycDetails(element)">check</mat-icon>
+            <mat-icon *ngIf="element.kyc == false" style="color: rgb(235, 12, 12);">close</mat-icon> -->
+            {{ element && element.kyc_count ? element.kyc_count : "0/0" }}
+          </td>
+        </ng-container>
+
+        <!-- Company Registered Column -->
+        <ng-container matColumnDef="createdAt">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by createdAt"
+            *matHeaderCellDef
+          >
+            Registered At
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.createdAt ? element.createdAt : "")
+                | date : Date_Format
+            }}
+          </td>
+        </ng-container>
+        <!-- Action Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-list-item routerLinkActive="active" [matMenuTriggerFor]="menu">
+              <mat-icon>list</mat-icon>
+            </mat-list-item>
+
+            <mat-menu #menu="matMenu" yPosition="below">
+              <button
+                mat-menu-item
+                routerLinkActive="active"
+                class="btn-view"
+                matTooltip="Edit Company"
+                aria-label="Example icon button with a delete icon"
+                (click)="editCompany(element)"
+                *ngIf="userRole == 'xuritiAdmin'"
+              >
+                <mat-icon>edit</mat-icon>
+                Edit Company
+              </button>
+
+              <button
+                mat-menu-item
+                routerLinkActive="active"
+                class="btn-view"
+                matTooltip="Credit Plan"
+                aria-label="Example icon button with a delete icon"
+                (click)="companyCreditPlan(element)"
+                *ngIf="userRole != 'xuritiStaff'"
+              >
+                <mat-icon>account_balance_wallet</mat-icon>
+                Credit Plan
+              </button>
+
+              <button
+                mat-menu-item
+                routerLinkActive="active"
+                class="btn-view"
+                matTooltip="KYC"
+                aria-label="Example icon button with a delete icon"
+                (click)="companyKycDetails(element)"
+                *ngIf="
+                  userRole == 'xuritiAdmin' ||
+                  userRole == 'xuritiStaff' ||
+                  userRole == 'xuritiCreditMgr'
+                "
+              >
+                <mat-icon>folder_shared</mat-icon>
+                KYC
+              </button>
+
+              <button
+                mat-menu-item
+                routerLinkActive="active"
+                class="btn-view"
+                matTooltip="GST Details"
+                aria-label="Example icon button with a delete icon"
+                (click)="companyGSTDetails(element)"
+                *ngIf="userRole == 'xuritiAdmin' || userRole == 'xuritiStaff'"
+              >
+                <mat-icon>donut_large</mat-icon>
+                GST Details
+              </button>
+
+              <button
+                type="button"
+                mat-menu-item
+                routerLinkActive="active"
+                class="btn-view"
+                matTooltip="Comments"
+                (click)="openCommentsDialog(element)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>comment</mat-icon>
+                Comments
+              </button>
+
+              <button
+                type="button"
+                mat-menu-item
+                routerLinkActive="active"
+                class="btn-view"
+                matTooltip="Invoices"
+                (click)="openInvoicePage(element)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>receipt</mat-icon>
+                Invoices
+              </button>
+
+              <button
+                type="button"
+                mat-menu-item
+                routerLinkActive="active"
+                class="btn-view"
+                matTooltip=" Payment History"
+                (click)="open_payment_history(element)"
+                aria-label="Example icon button with a delete icon"
+              >
+                <mat-icon>money</mat-icon>
+                Payment History
+              </button>
+              
+            </mat-menu>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">No Entity Found</td>
+        </tr>
+
+        <!-- <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr> -->
+      </table>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 50]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</app-layout>

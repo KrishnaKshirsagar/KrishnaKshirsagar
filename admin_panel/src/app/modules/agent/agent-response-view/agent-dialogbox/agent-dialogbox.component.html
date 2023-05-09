@@ -1,0 +1,136 @@
+<div class="centerItems">
+    <div class="dialog-headers">
+        <h1>Captured Details</h1>
+
+        <mat-icon [mat-dialog-close]="true">cancel</mat-icon>
+    </div>
+    <div class="table-wrapper">
+        <table>
+            <tr>
+                <td>
+                    <h2>Agent Name:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.createdBy}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Owner Name:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.business_owner_name}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Shop Name:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.shop_name}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Mobile Number:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.mobile_number}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Category <br>Of Business:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.category_of_business}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Brands <br>Deals In:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.dealers_brand}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Level of Interest:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.level_of_interest_shown}}</h2><br>
+                </td>
+            </tr>
+
+            <tr>
+
+                <td>
+                    <h2>Email:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.email}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+
+            <tr>
+
+                <td>
+                    <h2>GST Number</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.gstin}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <h2>Location:</h2>
+                </td>
+                <td>
+
+                    <h3 class="header" style="margin-bottom: 5px; ">{{agent_data.geolocation}}</h3>
+                    <a class="header" style="margin-top:1px ;"
+                        href="https://www.google.co.in/maps/place/{{agent_data.geolocation}}" target="_blank">
+                        <button mat-button> View on Map</button>
+                    </a>
+                    <br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Visit Date:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.createdAt}}</h2><br>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h2>Next Visit Date:</h2>
+                </td>
+                <td>
+                    <h2 class="header">{{agent_data.next_visit_date}}</h2><br>
+                </td>
+            </tr>
+        </table>
+
+
+
+        <div *ngIf=" agent_data.photos && (agent_data.photos).length > 0" class="carousel-container">
+            <img *ngFor="let image of agent_data.photos; let i=index" src={{agent_data.photos[i]}}
+                [ngClass]="{'image-active': selectedIndex === i}">
+            <div *ngIf="indicators" class="carousel-dot-container">
+                <span *ngFor="let dot of agent_data.photos let i=index" class="dot"
+                    [ngClass]="{'active':selectedIndex === i}" (click)="selectImage(i)">
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

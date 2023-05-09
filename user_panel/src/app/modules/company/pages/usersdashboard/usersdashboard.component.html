@@ -1,0 +1,359 @@
+<div id="usersdashboard-page">
+  <div class="margin-top margin-bottom">
+    <div class="loginform">
+      <div class="tableheader w-100" *ngIf="user_role != 'nbfcUser'">
+        <div class="w-100 text-left flex-div">
+          <h2>Business Dashboard</h2>
+          <!-- <div class="sortbutton">
+            <mat-radio-group (change)="selectDashboard()" [(ngModel)]="dash">
+            <mat-radio-button value="buyer" color="primary">Purchases Dashboard</mat-radio-button>
+            <mat-radio-button value="seller" color="primary">Sales Dashboard</mat-radio-button>
+            </mat-radio-group>
+          </div> -->
+        </div>
+      </div>
+
+      <!-- For NBFC -->
+      <div class="tableheader w-100" *ngIf="user_role == 'nbfcUser'">
+        <div class="w-100 text-left flex-div">
+          <h2>NBFCs Dashboard</h2>
+        </div>
+      </div>
+
+      <!-- ------------- User Dashboard --------------- -->
+      <div class="cardgrid" *ngIf="user_role != 'nbfcUser'">
+        <mat-card
+          class="example-card invoices psum"
+          (click)="gotoInvoicePage()"
+        >
+          <div class="mathead">
+            <div>
+              <mat-icon>filter_none</mat-icon>
+            </div>
+            <div>
+              <h4>Invoices</h4>
+              <h3>{{ totalInvoiceConfirmed }}/{{ totalInvoiceUploaded }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer>
+            <!-- <mat-icon>calendar_today</mat-icon>
+            <h4>Last 24 Hours</h4> -->
+          </mat-card-footer>
+        </mat-card>
+        <mat-card
+          class="example-card purchases psum"
+          (click)="gotoInvoicePage()"
+        >
+          <div class="mathead">
+            <div>
+              <mat-icon>store</mat-icon>
+            </div>
+            <div>
+              <h4>
+                {{
+                  user_role == "HO_user" || seller_flag == "true"
+                    ? "Sales"
+                    : "Purchases"
+                }}
+              </h4>
+              <h3>{{ totalPendingAmt }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer>
+            <!-- <mat-icon>calendar_today</mat-icon>
+            <h4>Last 24 Hours</h4> -->
+          </mat-card-footer>
+        </mat-card>
+
+        <mat-card
+          class="example-card discount psum"
+          (click)="gotoBulkPayPage()"
+          *ngIf="user_role != 'HO_user'"
+        >
+          <div class="mathead">
+            <div>
+              <mat-icon>percentage</mat-icon>
+            </div>
+            <div>
+              <h4>Today Applicable Discount</h4>
+              <h3>{{ totalDiscountAmt ? totalDiscountAmt : 0 }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer>
+            <!-- <mat-icon>calendar_today</mat-icon>
+            <h4>Last 24 Hours</h4> -->
+          </mat-card-footer>
+        </mat-card>
+
+        <mat-card
+          class="example-card invoicesoverdue psum"
+          (click)="gotoInvoicePage()"
+        >
+          <div class="mathead">
+            <div>
+              <mat-icon>payment</mat-icon>
+            </div>
+            <div>
+              <h4>Overdue Invoices</h4>
+              <h3>{{ totalInvoiceOverdue }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer>
+            <!-- <mat-icon>style</mat-icon>
+            <h4>Tracked</h4> -->
+          </mat-card-footer>
+        </mat-card>
+        <mat-card
+          class="example-card cashinhand"
+          *ngIf="user_role != 'HO_user'"
+        >
+          <div class="mathead">
+            <div>
+              <mat-icon>account_balance_wallet</mat-icon>
+            </div>
+            <div>
+              <h4>Cash In Hand (CIH)</h4>
+              <h3>{{ cash_in_hand | currency : Currency_Format }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer> </mat-card-footer>
+        </mat-card>
+      </div>
+
+      <!-- Tile for NBFC Dashboard -->
+      <div class="cardgrid" *ngIf="user_role == 'nbfcUser'">
+        <mat-card class="example-card invoices">
+          <div class="mathead">
+            <div>
+              <mat-icon>filter_none</mat-icon>
+            </div>
+            <div>
+              <h4>Total Invoices</h4>
+              <h3>{{ total_nbfc_invoice }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer>
+            <!-- <mat-icon>calendar_today</mat-icon>
+            <h4>Last 24 Hours</h4> -->
+          </mat-card-footer>
+        </mat-card>
+        <mat-card class="example-card purchases">
+          <div class="mathead">
+            <div>
+              <mat-icon>store</mat-icon>
+            </div>
+            <div>
+              <h4>Total Pending Payment</h4>
+              <h3>{{ total_nbfc_pending_payment }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer>
+            <!-- <mat-icon>calendar_today</mat-icon>
+            <h4>Last 24 Hours</h4> -->
+          </mat-card-footer>
+        </mat-card>
+        <mat-card class="example-card invoicesoverdue">
+          <div class="mathead">
+            <div>
+              <mat-icon>payment</mat-icon>
+            </div>
+            <div>
+              <h4>Total Pending Receivable Amount</h4>
+              <h3>{{ total_nbfc_pending_receivable_amount }}</h3>
+            </div>
+          </div>
+          <mat-card-content> </mat-card-content>
+          <mat-divider inset></mat-divider>
+          <mat-card-footer>
+            <!-- <mat-icon>style</mat-icon>
+            <h4>Tracked</h4> -->
+          </mat-card-footer>
+        </mat-card>
+      </div>
+      <!-- -------------------------- -->
+
+      <div
+        class="datagrid"
+        [ngClass]="{ datagridd: isCardExpanded }"
+        *ngIf="dash == 'buyer' && user_role != 'nbfcUser'"
+      >
+        <div
+          class="charts"
+          *ngIf="dash == 'buyer' && user_role != 'nbfcUser'"
+          style="
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            max-width: 350px;
+            position: relative;
+          "
+        >
+          <canvas id="myGaugeChart"></canvas>
+          <span id="chartValue">638</span>
+          <span class="chartText">Xuriti Score</span>
+        </div>
+        <!-- Calendar view -->
+        <div
+          class="charts"
+          style="
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+          "
+        >
+          <canvas id="myChart" *ngIf="dash == 'buyer'"></canvas>
+        </div>
+      </div>
+
+      <div class="datagrid" *ngIf="user_role != 'nbfcUser'">
+        <!-- Barchart -->
+        <div
+          class="datas"
+          style="align-self: start"
+          *ngIf="user_role != 'nbfcUser'"
+        >
+          <div class="grup">
+            <div class="dat">
+              <mat-icon>cloud_upload</mat-icon>
+              <h3>Invoice Uploaded</h3>
+              <span class="spacer"></span>
+              <h3>{{ totalInvoiceUploaded }}</h3>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              value="{{ totalInvoiceUploaded }}"
+            ></mat-progress-bar>
+          </div>
+          <div class="grup">
+            <div class="dat">
+              <mat-icon>beenhere</mat-icon>
+              <h3>Invoice Confirmed</h3>
+              <span class="spacer"></span>
+              <h3>{{ totalInvoiceConfirmed }}</h3>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              value="{{ totalInvoiceConfirmed }}"
+            ></mat-progress-bar>
+          </div>
+          <div class="grup">
+            <div class="dat">
+              <mat-icon>transit_enterexit</mat-icon>
+              <h3>Invoices Pending</h3>
+              <span class="spacer"></span>
+              <h3>{{ totalInvoicePending }}</h3>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              value="{{ totalInvoicePending }}"
+            ></mat-progress-bar>
+          </div>
+          <div class="grup">
+            <div class="dat">
+              <mat-icon>filter_center_focus</mat-icon>
+              <h3>Invoices Overdue</h3>
+              <span class="spacer"></span>
+              <h3>{{ totalInvoiceOverdue }}</h3>
+            </div>
+            <mat-progress-bar
+              mode="determinate"
+              value="{{ totalInvoiceOverdue }}"
+            ></mat-progress-bar>
+          </div>
+        </div>
+
+        <div
+          class="charts"
+          style="width: 100%; max-width: 500px; margin-right: auto"
+        >
+          <canvas id="mybarChart" *ngIf="dash == 'buyer'"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  style="border: 1px solid; margin: 20px; padding: 10px; border-radius: 5px"
+  *ngIf="dash == 'seller' || user_role == 'nbfcUser'"
+>
+  <div class="row text-center">
+    <div class="col-md-4">
+      <div class="btn-group">
+        <div
+          class="btn btn-primary"
+          mwlCalendarPreviousView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+        >
+          Previous
+        </div>
+        <div
+          class="btn btn-outline-secondary"
+          mwlCalendarToday
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+        >
+          Today
+        </div>
+        <div
+          class="btn btn-primary"
+          mwlCalendarNextView
+          [view]="view"
+          [(viewDate)]="viewDate"
+          (viewDateChange)="closeOpenMonthViewDay()"
+        >
+          Next
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h1>{{ viewDate | calendarDate : view + "ViewTitle" : "en" }}</h1>
+    </div>
+  </div>
+  <br />
+
+  <ng-template #customCellTemplate let-day="day" let-locale="locale">
+    <div class="cal-cell-top">
+      <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
+        day.badgeTotal
+      }}</span>
+      <span class="cal-day-number">{{
+        day.date | calendarDate : "monthViewDayNumber" : locale
+      }}</span>
+    </div>
+    <div *ngIf="day.badgeTotal > 0">
+      <h3 style="margin: 5px">₹ {{ getTotalAmount(day.events) }}</h3>
+    </div>
+  </ng-template>
+
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view
+      *ngSwitchCase="CalendarView.Month"
+      [viewDate]="viewDate"
+      [tooltipPlacement]="'right'"
+      [events]="events"
+      [refresh]="refresh"
+      [activeDayIsOpen]="activeDayIsOpen"
+      (dayClicked)="dayClicked($event.day)"
+      [cellTemplate]="customCellTemplate"
+    >
+    </mwl-calendar-month-view>
+  </div>
+</div>

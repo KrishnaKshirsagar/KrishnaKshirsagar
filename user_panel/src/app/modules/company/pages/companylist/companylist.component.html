@@ -1,0 +1,97 @@
+<div id="companylist-page">
+  <div class="margin-top margin-bottom">
+    <div class="loginform">
+      <div class="tableheader w-100">
+        <div class="w-60 text-left"><h2 i18n="@@CL1">Businesses</h2></div>
+        <div class="w-40 text-right">
+          <h4>
+            <span>Last Login Date & Time : </span
+            >{{ userLastLoginTime}}
+          </h4>
+          <div><span>IP Address: </span>{{ ipAddress }}</div>
+        </div>
+      </div>
+      <div class="div-indicator">
+        <mat-icon style="color: green">check_circle</mat-icon>
+        <label> : Approved | </label>
+        <mat-icon style="color: orange">watch_later</mat-icon>
+        <label> : Hold | </label>
+        <mat-icon style="color: red">remove_circle</mat-icon>
+        <label> : Inactive </label>
+      </div>
+      <div class="cardrow psum">
+        <!-- For HO User -->
+        <mat-card class="cardflex" *ngIf="ho_user_flag === true">
+          <div (click)="selectCompany('All')">
+            <mat-card-header>
+              <mat-card-title i18n="@@CL3"> ALL </mat-card-title>
+            </mat-card-header>
+            <mat-card-footer>
+              <p i18n="@@CL6" style="padding: 13px"></p>
+            </mat-card-footer>
+          </div>
+        </mat-card>
+        <!-- For Normal User  -->
+
+        <mat-card class="cardflex" *ngFor="let company of companyDetails">
+          <div (click)="selectCompany(company)">
+            <mat-card-header>
+              <mat-card-title i18n="@@CL3">
+                {{
+                  company && company.company && company.company.company_name
+                    ? company.company.company_name
+                    : ""
+                }}
+              </mat-card-title>
+              <div>
+                <mat-icon
+                  *ngIf="
+                    company &&
+                    company.company &&
+                    company.company.status == 'Approved'
+                  "
+                  style="color: green"
+                  >check_circle</mat-icon
+                >
+                <mat-icon
+                  *ngIf="
+                    company &&
+                    company.company &&
+                    company.company.status == 'Inactive'
+                  "
+                  style="color: red"
+                  >remove_circle</mat-icon
+                >
+                <mat-icon
+                  *ngIf="
+                    company &&
+                    company.company &&
+                    company.company.status == 'Hold'
+                  "
+                  style="color: orange"
+                  >watch_later</mat-icon
+                >
+              </div>
+            </mat-card-header>
+            <mat-card-footer>
+              <p i18n="@@CL6">
+                GST:
+                {{
+                  company && company.company && company.company.gstin
+                    ? company.company.gstin
+                    : ""
+                }}
+              </p>
+            </mat-card-footer>
+            <img
+              *ngIf="company.userRole == 'HO_user'"
+              matTooltip="Head Office User Access"
+              style="width: 10%; margin-left: 345px"
+              src="../../../../../assets/images/image.png"
+            />
+          </div>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>

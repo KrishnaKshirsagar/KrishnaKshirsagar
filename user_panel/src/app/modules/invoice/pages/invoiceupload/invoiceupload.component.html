@@ -1,0 +1,92 @@
+<div id="invoiceupload-page">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <div class="loginform">
+          <h2>If you don't have the invoice format, download from here: </h2>
+          <a style="text-decoration: none;" href="https://s3.ap-south-1.amazonaws.com/xuriti.public.document/Invoice.xls" target="_blank">
+          <button mat-button class="uptbtn">
+          <mat-icon>cloud_download</mat-icon>
+          DOWNLOAD INVOICE FORMAT
+        </button>
+        </a>
+
+        <button style="margin-left: 10px;"
+              mat-button
+              color="primary"
+              class="uptbtn"
+              i18n="@@ABA12"
+              (click)="show_uploaded_history()"
+            >
+              SHOW UPLOAD HISTORY 
+            </button>
+
+            <mat-divider style="margin-top: 10px; margin-bottom: 10px;"></mat-divider> 
+        
+        
+          <mat-radio-group (change)="selectFileType()" [(ngModel)]="filetype_flag">
+            <mat-radio-button value="excel" color="primary">Excel Upload</mat-radio-button>
+            <mat-radio-button value="invoice" color="primary">Invoice Upload</mat-radio-button>
+            </mat-radio-group>
+          <div class="tableheader w-100">
+            <div class="w-20 text-left"><h2 i18n="@@BA1">Attachments</h2></div>            
+          </div>
+          <div class="w-100 multifile" *ngIf="filetype_flag == 'invoice'">
+            <input
+              id="invoice"
+              type="file"
+              accept=".pdf, image/png, image/jpeg"
+              multiple
+              [fileUploadInputFor]="invoices" class="inputfiles" />
+            <br/>
+            <div id="drop_zone" [fileUploadInputFor]="invoices">
+              Drag one or more files to this drop zone ...
+            </div>
+          </div>
+
+          <!-- To upload excel file -->
+          <div class="w-100 multifile" *ngIf="filetype_flag != 'invoice'">
+            <input id="excel_file" 
+              type="file"
+              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
+              (change)="onFileChange($event)"
+              placeholder="Upload Excel">
+          </div>
+
+          <!-- Invoice file upload -->
+          <div>
+            <mat-file-upload-queue         
+              #invoices
+              [fileAlias]="'invoice'"
+              [httpUrl]="'https://dev.xuriti.app/api/invoice/upload-invoice'"
+              [httpRequestHeaders]="httpRequestHeaders"
+              [httpRequestParams]="httpRequestParams" multiple>
+              <mat-file-upload
+                [file]="file"
+                [fileAlias]="'invoice'"
+                [id]="i"
+                *ngFor="let file of invoices.files; let i = index"
+                (onUpload)="uploadEvent($event)"
+                [httpUrl]="'https://dev.xuriti.app/api/invoice/upload-invoice'"
+                [httpRequestHeaders]="httpRequestHeaders"
+                [httpRequestParams]="httpRequestParams"
+              ></mat-file-upload>
+            </mat-file-upload-queue>
+          </div>
+
+          
+            <button
+              mat-button
+              color="primary"
+              class="btn-primary"
+              i18n="@@ABA12"
+              onclick="history.go(-1)"
+            >
+              GO BACK
+            </button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

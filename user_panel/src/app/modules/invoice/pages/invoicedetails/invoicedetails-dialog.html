@@ -1,0 +1,118 @@
+<div id="invoicedetails-dialog">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <form>
+          <div class="invoice-dialog">
+            <h2 i18n="@@ABA1">Add New Bank</h2>
+            <button
+              mat-icon-button
+              class="close-button"
+              [mat-dialog-close]="true"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+          <div>
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA2">Bank Name</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="email"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA3">
+                  Please provide a valid email address
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA4">Account No</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="email"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA5">
+                  Please provide a valid Account No
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA6">Account Name</mat-label>
+                <input
+                  matInput
+                  type="email"
+                  formControlName="email"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA7">
+                  Please provide a valid Account Name
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA8">Branch</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="email"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA9">
+                  Please provide a valid Branch address
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA10">IFSC Code</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="email"
+                  pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                  Please provide a valid IFSC Code
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div>
+            <button
+              mat-button
+              type="submit"
+              color="primary"
+              class="btn-primary"
+              i18n="@@ABA12"
+            >
+              SAVE
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

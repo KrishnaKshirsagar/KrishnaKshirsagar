@@ -1,0 +1,31 @@
+<div id="paymenthistory-dialog">
+  <mat-dialog-content class="mat-typography">
+    <h1 class="text-center">Update Payment Status</h1>
+    <form
+      [formGroup]="transactionStatus_Form"
+      (ngSubmit)="onSubmit()"
+      class="example-form"
+    >
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Change Payment Status</mat-label>
+        <mat-select
+          formControlName="order_status"
+          required
+          (selectionChange)="status_change()"
+        >
+          <mat-option value="Pending">Pending</mat-option>
+          <mat-option value="Paid">Paid</mat-option>
+          <mat-option value="Failure">Failure</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="input-wrapper text-center">
+        <button type="submit" mat-button color="primary" cdkFocusInitial>
+          SUBMIT
+        </button>
+        <button mat-button color="warn" [mat-dialog-close]="true">
+          CANCEL
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,207 @@
+<app-layout>
+    <div id="transactionledger-page">
+        <div class="margin-top margin-bottom">
+          <div class="loginform">
+            <div class="tableheader ">
+              <div class="text-left">
+                <h2 i18n="@@BA1">Transaction Ledger</h2>
+              </div>
+              <div>
+                <button mat-icon-button color="accent" matTooltip="Export Excel" matTooltipPosition="above"
+                  class="exel-icon" (click)="
+                  exporter.exportTable('xlsx', {
+                    fileName: 'transaction-ledger',
+                    sheet: 'transaction-ledger',
+                    Props: { Author: 'Xuriti' }
+                  })
+                " aria-label="Example icon button with a menu icon">
+                  <mat-icon>assignment_returned</mat-icon>
+                </button>
+              </div>
+
+              <mat-form-field appearance="outline" class="right-box">
+                <mat-select [(value)]="selection" (selectionChange)="selectUser()">
+                  <mat-option value="" selected>Select Partner Type</mat-option>
+                  <mat-option value="nbfc">NBFC</mat-option>
+                  <mat-option value="seller">Seller</mat-option>
+                  <mat-option value="buyer">Buyer</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="autosuggetion left-box">
+                <mat-label>Select Partner</mat-label>
+                <input
+                  type="text"
+                  placeholder="Select Partner"
+                  matInput
+                  [formControl]="anchorSelect"
+                  [matAutocomplete]="auto_1"
+                  (input)="companySuggetion($event)"
+                />
+                <mat-autocomplete
+                  #auto_1="matAutocomplete"
+                  [displayWith]="displayFn"
+                  (optionSelected)="getAnchorId($event.option.value)"
+                >
+                <div *ngIf="user_type == 'nbfc'">
+                  <mat-option *ngFor="let company of company_Name" [value]="company">
+                    {{ company.nbfc_name }}
+                  </mat-option>
+                </div>
+                
+                <div *ngIf="user_type !== 'nbfc'">
+                  <mat-option *ngFor="let company of company_Name" [value]="company">
+                    {{ company.company_name }}
+                  </mat-option>
+                </div>
+                  
+                </mat-autocomplete>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="anchor_clear()"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>As On</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="datepicker"
+                  [max]="maxDate"
+                  [(ngModel)]="as_no_date"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="datepicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #datepicker>
+                  <mat-datepicker-actions>
+                    <button mat-button matDatepickerCancel (click)="date_cancle('as_on_date')" >Cancel</button>
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="as_On_Date()"
+                      matDatepickerApply
+                    >
+                      Apply
+                    </button>
+                  </mat-datepicker-actions>
+                </mat-datepicker>
+              </mat-form-field>
+            </div>
+    
+            <table mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource"
+              matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z0">
+    
+              <!-- Dealer Name -->
+              <ng-container matColumnDef="account">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by account"
+                  i18n="@@BA7">
+                  Account Name
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA8">
+                 <b>
+                  {{element && element.account ? element.account : ""}}
+                 </b>
+                </td>
+              </ng-container>
+    
+              <!-- counter_party Column -->
+              <ng-container matColumnDef="counter_party">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by counter_party"
+                  i18n="@@BA3">
+                  Counter Party
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA4">  
+                  {{ (element && element.counter_party ? element.counter_party : '') }}
+                </td>
+              </ng-container>
+    
+              <!-- record_type Column -->
+              <ng-container matColumnDef="record_type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header
+                  i18n="@@BA9">
+                  Transaction Type
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ getTransactionType(element) }}
+                </td>
+              </ng-container>
+
+              <!-- invoice_id Column -->
+              <ng-container matColumnDef="invoice_id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by invoice_id"
+                  i18n="@@BA9">
+                  Invoice Id
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ (element && element.invoice_id ? element.invoice_id : '' ) }}
+                </td>
+              </ng-container>
+
+               <!-- Transaction date Column -->
+               <ng-container matColumnDef="createdAt">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by createdAt"
+                  i18n="@@BA9">
+                  Transaction Date
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ (element && element.createdAt ? element.createdAt : '' ) | date: date_format }}
+                </td>
+              </ng-container>
+    
+              <!-- transaction_type Column -->
+              <ng-container matColumnDef="transaction_type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by transaction_type"
+                  i18n="@@BA9">
+                  Debit/Credit
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ (element && element.transaction_type ? element.transaction_type : '') }}
+                </td>
+              </ng-container>
+
+              <!-- transaction_amount Column -->
+              <ng-container matColumnDef="transaction_amount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by transaction_amount"
+                  i18n="@@BA9">
+                  Amount
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ (element && element.transaction_amount ? element.transaction_amount : 0 ) | currency: currency_format }}
+                </td>
+              </ng-container>
+              
+              <!-- 30 to 60 Column -->
+              <ng-container matColumnDef="balance">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by balance"
+                  i18n="@@BA9">
+                  Balance
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{ (element && element.balance ? element.balance : 0) | currency: currency_format}}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="text-center">
+                    No Record Found
+                  </td>
+                </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+              aria-label="Select page of periodic elements">
+            </mat-paginator>
+          </div>
+        </div>
+    </div>
+</app-layout>

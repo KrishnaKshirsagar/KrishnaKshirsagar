@@ -1,0 +1,472 @@
+<div id="companydetails-page">
+    <div class="main-wrapper">
+      <mat-card>
+        <div class="backdiv">
+          <button mat-mini-fab (click)="cancel()" class="back-btn" aria-label="back button">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <mat-card-title>
+          <h2>
+            Company Details - {{companyName}}
+          </h2>
+        </mat-card-title>
+
+        </div>
+
+        <mat-card>
+          <mat-card-content>
+            <div class="details">
+              <form
+                class="example-form"
+                [formGroup]="companyDetail_form"
+                (ngSubmit)="updateCompanyDetail()"
+              >
+                <div class="flex-container">
+                  <div class="flex-item-left">
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>GST Number</mat-label>
+                      <input
+                        [ngModel]="inputvalue" 
+                        (ngModelChange)="inputvalue = $event.toUpperCase()"
+                        matInput
+                        formControlName="gstin"
+                        type="text"
+                        pattern="^([0][1-9]|[1-2][0-9]|[3][0-7])([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$"
+                        (input)="onchange()"
+                        (change)="gstinchange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter correct GST number
+                      </mat-error>
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Company Name</mat-label>
+                      <input
+                        type="text"
+                        matInput
+                        formControlName="company_name"
+                        required
+                        (input)="onchange()"
+                        (change)="companychange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter company name</mat-error
+                      >
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Company Mobile Number</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="company_mobileNumber"
+                        (input)="onchange()"
+                        pattern="^[1-9][0-9]*$"
+                        minlength="10"
+                        maxlength="10"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid mobile number
+                      </mat-error>
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Company Email Address</mat-label>
+                      <input
+                        matInput
+                        formControlName="company_email"
+                        (input)="onchange()"
+                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid email</mat-error
+                      >
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Admin Name</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="admin_name"
+                        required
+                        (input)="onchange()"
+                        pattern="^[ a-zA-Z]*$"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter admin name</mat-error
+                      >
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Admin Mobile Number</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="admin_mobile"
+                        maxlength="10"
+                        minlength="10"
+                        (input)="onchange()"
+                        pattern="^[1-9][0-9]*$"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid mobile number
+                      </mat-error>
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Company PAN</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="pan"
+                        (input)="onchange()"
+                        (change)="panchange()"
+                        pattern="[A-Z]{5}[0-9]{4}[A-Z]{1}"
+                        minlength="10"
+                        maxlength="10"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid pan number
+                      </mat-error>
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <!-- pattern="^[A-Z]{1}[0-9]{5}[A-Z]{2}[0-9]{4}[A-Z]{3}[0-9]{6}" -->
+                      <mat-label>CIN</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="cin"
+                        (input)="onchange()"
+                        (change)="cinchange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid cin number
+                      </mat-error>
+                    </mat-form-field>
+                    
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Xuriti Score</mat-label>
+                      <input
+                        matInput
+                        formControlName="xuriti_score"
+                        pattern="^[0-9]*$"
+                        (input)="onchange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter correct xuriti score
+                      </mat-error>
+                    </mat-form-field>                  
+                  </div>
+  
+                  <!-- Right side div starts from here -->
+                  <div class="flex-item-right">
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Company Status</mat-label>
+                      <mat-select
+                        formControlName="status"
+                        (selectionChange)="onchange()"
+                        disabled
+                      >
+                        <mat-option value="Inactive"> Inactive </mat-option>
+                        <mat-option value="Hold"> Hold </mat-option>
+                        <mat-option value="Approved"> Approved </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>District</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="district"
+                        (input)="onchange()"
+                        pattern="^[ a-zA-Z]*$"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter district name</mat-error
+                      >
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>State</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="state"
+                        (input)="onchange()"
+                        pattern="^[ a-zA-Z,]*$"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter state name</mat-error
+                      >
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Pincode</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        (input)="onchange()"
+                        formControlName="pinCode"
+                        pattern="^[0-9]*$"
+                        minlength="6"
+                        maxlength="6"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter correct PinCode</mat-error
+                      >
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Admin Email Address</mat-label>
+                      <input
+                        matInput
+                        formControlName="admin_email"
+                        type="text"
+                        pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+                        (input)="onchange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid email address
+                      </mat-error>
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Type of Business</mat-label>
+                      <input
+                        matInput
+                        formControlName="industry_type"
+                        (input)="onchange()"
+                        pattern="^[ a-zA-Z]*$"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter type of business
+                      </mat-error>
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <!-- pattern="[A-Z]{4}[0-9]{5}[A-Z]{1}" -->
+                      <mat-label>TAN</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        formControlName="tan"
+                        (input)="onchange()"
+                        (change)="tanchange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid tan number
+                      </mat-error>
+                    </mat-form-field>                  
+  
+                    <section hidden>
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="outline"
+                        >
+                        <mat-label >Annual Interest %</mat-label>
+                        <input
+                          matInput
+                          formControlName="interest"
+                          (input)="onchange()"
+                          type="text"
+                          minlength="0"
+                          maxlength="2"
+                          pattern="^[0-9]*$"
+                          readonly
+                        />
+                        <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                          >Please enter valid interest %
+                        </mat-error>
+                      </mat-form-field>
+                    </section>
+                    
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Annual Turnover</mat-label>
+                      <input
+                        matInput
+                        formControlName="annual_turnover"
+                        pattern="^[0-9]*$"
+                        (input)="onchange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter correct annual turnover
+                      </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Credit Limit</mat-label>
+                      <input
+                        matInput
+                        type="text"
+                        pattern="^[0-9]*$"
+                        formControlName="creditLimit"
+                        (input)="onchange()"
+                        (change)="creditlimichange()"
+                        readonly
+                      />
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                        >Please enter valid credit limit</mat-error
+                      >
+                    </mat-form-field>
+  
+                    <mat-form-field
+                      class="example-full-width"
+                      appearance="outline"
+                    >
+                      <mat-label>Address</mat-label>
+                      <textarea
+                        matInput
+                        placeholder="Address"
+                        formControlName="address"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="2"
+                        cdkAutosizeMaxRows="5"
+                        readonly
+                      >
+                      </textarea>
+                      <mat-error style="color: rgb(241, 14, 14); margin-top: 7px">
+                        Please enter company address.
+                      </mat-error>
+                    </mat-form-field>
+
+                  </div>
+                </div>
+
+                <section class="example-section" hidden>
+                  <mat-checkbox
+                    formControlName="eNachMandate"
+                    class="example-margin"
+                    (input)="onchange()"
+                    >eNACH Mandate</mat-checkbox
+                  >
+                </section>
+              </form>
+            </div>
+          </mat-card-content>
+        <!-- </mat-card> -->
+
+        <!-- <mat-card> -->
+            <mat-card-content>
+              <div class="flex-container">
+                <div class="flex-item-left">
+                  <div class="example-full-width">
+                    <b>CIBIL Document : 
+                      <a *ngFor="let doc of cibil_doc" [href]="doc" target="_blank" class="file-icon">
+                        <mat-icon style="color: red;">insert_drive_file</mat-icon></a> 
+                    </b>
+                  </div>
+
+                  <div class="example-full-width">
+                    <b>Experian Document :
+                      <a *ngFor="let doc of experian_doc" [href]="doc" target="_blank" class="file-icon">
+                        <mat-icon style="color: red;"> insert_drive_file</mat-icon>
+                      </a>
+                    </b>
+                  </div>
+
+                  <div class="example-full-width">
+                    <b>Other Document :
+                      <a *ngFor="let doc of other_doc" [href]="doc" target="_blank" class="file-icon">
+                        <mat-icon style="color: red;"> insert_drive_file</mat-icon>
+                      </a>
+                    </b>
+                  </div>
+                </div>
+
+                <div class="flex-item-right">
+                  <div class="example-full-width">
+                    <b>Personal Discussion Document :
+                      <a *ngFor="let doc of discussion_doc" [href]="doc" target="_blank" class="file-icon">
+                        <mat-icon style="color: red;"> insert_drive_file</mat-icon>
+                      </a>
+                    </b>
+                  </div>
+                  <div class="example-full-width">
+                    <b>Agreement Document : 
+                      <a *ngFor="let doc of agreement_doc" [href]="doc" target="_blank" class="file-icon">
+                        <mat-icon style="color: red;"> insert_drive_file</mat-icon>
+                      </a>
+                    </b>
+                  </div>
+
+                </div>
+              </div>             
+            </mat-card-content>
+        </mat-card>
+      </mat-card>
+    </div>
+</div>

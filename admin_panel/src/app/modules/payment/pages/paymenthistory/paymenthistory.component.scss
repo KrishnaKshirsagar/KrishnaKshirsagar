@@ -1,0 +1,184 @@
+#paymenthistory-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+  }
+
+  td.mat-cell,th.mat-header-cell{
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+  .mat-form-field {
+    margin-right: 15px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-upload {
+    background: #f79e1b;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+    padding: 5px 31px;
+    vertical-align: 2px;
+    font-size: 18px;
+    border-radius: 7px;
+  }
+  .text-right {
+    text-align: right;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .right-box {
+    margin-right: 0px;
+    max-width: 100px;
+    ::ng-deep .mat-form-field-outline-end {
+      border-right: none;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+  }
+  .left-box {
+    // margin-left:0px;
+    max-width: 100%;
+    ::ng-deep .mat-form-field-outline-start {
+      border-left: none;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+  }
+
+  ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+    color: #e0e0e0;
+  }
+}
+
+#paymenthistory-dialog {
+  mat-dialog-content {
+    width: 500px;
+  }
+
+  h1 {
+    margin: 0 0 15px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: #f79e1b;
+    color: white;
+    margin: 5px;
+  }
+
+  @media only screen and (max-width: 767px) {
+    mat-dialog-content {
+      width: auto;
+    }
+  }
+}
+
+#add-edit-staff-dialog {
+  .flex {
+    display: flex;
+  }
+
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  .example-full-width {
+    width: 100%;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  @media only screen and (max-width: 767px) {
+    .flex {
+      display: block;
+    }
+  }
+}
+
+.exel-icon {
+  border: 1px solid green;
+  color: green;
+  line-height: 22px;
+  vertical-align: middle;
+  margin-right: 15px;
+  margin-bottom: 5px;
+}
+
+// tr.example-detail-row {
+//   height: 0;
+// }
+// .example-element-detail {
+//   overflow: hidden;
+//   display: flex;
+// }
+// .example-element-row td {
+//   border-bottom-width: 0;
+// }
+

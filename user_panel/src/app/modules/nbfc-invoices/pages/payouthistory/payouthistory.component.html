@@ -1,0 +1,134 @@
+<div id="payouthistory-page">
+  <div class="margin-top margin-bottom">
+    <div class="loginform">
+      <div class="tableheader ">
+        <div class="text-left">
+          <h2 i18n="@@BA1">Payout History</h2>
+        </div>
+        <div>
+          <button mat-icon-button color="accent" matTooltip="Export Excel" matTooltipPosition="above"
+            class="exel-icon" (click)="
+            exporter.exportTable('xlsx', {
+              fileName: 'Payment History',
+              sheet: 'Payment_History',
+              Props: { Author: 'Xuriti' }
+            })
+          " aria-label="Example icon button with a menu icon">
+            <mat-icon>assignment_returned</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      <table mat-table matTableExporter [hiddenColumns]="[5]" #exporter="matTableExporter" [dataSource]="dataSource"
+      matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z0">
+
+      <!-- invoice -->
+      <ng-container matColumnDef="invoice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by invoice"
+          i18n="@@BA7">
+          Invoice Number
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA8">
+          {{
+          element && element.invoice
+          ? element.invoice
+          : ""
+          }}
+        </td>
+      </ng-container>
+
+       <!-- beneficiary_gst Column -->
+       <ng-container matColumnDef="beneficiary_gst">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by beneficiary_gst"
+          i18n="@@BA9">
+          Beneficiary Gst
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA10">
+          {{ element && element.beneficiary_gst ? element.beneficiary_gst : "" }}
+        </td>
+      </ng-container>
+
+      <!-- transaction_id -->
+      <ng-container matColumnDef="transaction_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by transaction_id"
+          i18n="@@BA7">
+          Transaction Id
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA8">
+          {{element && element.transaction_id ? element.transaction_id : ''}}
+        </td>
+      </ng-container>
+
+      <!-- UTR_id  Column -->
+      <ng-container matColumnDef="UTR_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by UTR_id"
+          i18n="@@BA9">
+          UTR Id
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA10">
+          {{ element && element.UTR_id ? element.UTR_id : "" }}
+        </td>
+      </ng-container>
+
+       <!-- amount Column -->
+       <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by amount"
+          i18n="@@BA9">
+           Amount
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA10">
+          {{
+          ( element && element.amount ? element.amount : "")
+          }}
+        </td>
+      </ng-container>
+
+       <!-- payment_status Column -->
+       <ng-container matColumnDef="payment_status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by payment_status"
+          i18n="@@BA9">
+          Payment Status
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA10">
+          {{
+          ( element && element.payment_status ? element.payment_status : "")
+          }}
+        </td>
+      </ng-container>
+
+      <!-- transaction_date Column -->
+      <ng-container matColumnDef="transaction_date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by transaction_date"
+          i18n="@@BA3">
+          Transaction Date
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA4">   
+             {{(element && element.transaction_date ? element.transaction_date : '') | date : Date_Format}}
+        </td>
+      </ng-container>
+
+      <!-- remarks Column -->
+      <ng-container matColumnDef="remarks">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by remarks"
+          i18n="@@BA9">
+          remarks
+        </th>
+        <td mat-cell *matCellDef="let element" i18n="@@BA10">
+          {{ element && element.remarks ? element.remarks : "" }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">
+            No Record Found
+          </td>
+        </tr>
+    </table>
+      <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,206 @@
+<app-layout>
+  <div id="nbfc-mapping-page">
+    <div class="main-wrapper">
+      <div class="backdiv">
+        <!-- <h2>Mapped Company</h2> -->
+        <button mat-mini-fab color="primary" onclick="history.go(-1); return false;" class="back"
+          aria-label="back button">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2>Mapped Businesses</h2>
+      </div>
+      <h3 class="ml-15">
+        NBFC Name : <b>{{ nbfc_name }}</b>
+      </h3>
+
+      <div class="header">
+        <div>
+          <button mat-icon-button (click)="
+            exporter.exportTable('xlsx', {
+              fileName: 'NBFCMapping',
+              sheet: 'NBFC_Mapping',
+              Props: { Author: 'Xuriti' }
+            })" matTooltip="Export Excel" matTooltipPosition="below" class="exel-icon"
+            aria-label="Example icon button with a menu icon">
+            <mat-icon>assignment_returned</mat-icon>
+          </button>
+
+          <button mat-flat-button class="btn-upload" (click)="openDialog()">
+            ADD
+          </button>
+
+          <label for="files" class="btn-upload">Upload from Excel</label>
+
+           <mat-form-field appearance="outline">
+            <mat-label>Retailer Company Name</mat-label>
+            <input
+              matInput
+              [formControl]="buyerSelect"
+              (input)="filterBuyerCompanyName($event)"
+              placeholder="Retailer Company Name"
+            />
+            <button
+              type="button"
+              mat-button
+              (click)="clearBuyer(buyerSelect)"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Seller Company Name</mat-label>
+            <input
+              matInput
+              [formControl]="sellerSelect"
+              (input)="filterSellerCompanyName($event)"
+              placeholder="Seller Company Name"
+            />
+            <button
+              type="button"
+              mat-button
+              (click)="clearSeller(sellerSelect)"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field> 
+          
+          <!-- <input id="files" (change)="onChange($event)" style="visibility: hidden" multiple type="file"
+            style="visibility: hidden;width: 0px;height: 0px;"> -->
+        </div>
+        
+        </div>
+        <div class="mat-elevation-z2">
+          <table mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource" matSort
+          [hiddenColumns]="[6]" (matSortChange)="announceSortChange($event)">
+            <!-- seller company_name Column -->
+            <ng-container matColumnDef="seller">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by company_name">
+                Seller Name
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <b>
+                  {{
+                  element && element.seller_id && element.seller_id.company_name
+                  ? element.seller_id.company_name
+                  : ""
+                  }}
+                </b>
+              </td>
+            </ng-container>
+
+            <!--seller gstin Column -->
+            <ng-container matColumnDef="seller_gstin">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gstin">
+                Seller GST Number
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                element && element.seller_id && element.seller_id.gstin
+                ? element.seller_id.gstin
+                : ""
+                }}
+              </td>
+            </ng-container>
+
+            <!-- buyer company_name Column -->
+            <ng-container matColumnDef="buyer">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by company_name">
+                Retailer Name
+              </th>
+              <td mat-cell *matCellDef="let element">
+                <b>
+                  {{
+                  element && element.buyer_id && element.buyer_id.company_name
+                  ? element.buyer_id.company_name
+                  : ""
+                  }}
+                </b>
+              </td>
+            </ng-container>
+
+            <!-- buyer gstin Column -->
+            <ng-container matColumnDef="buyer_gstin">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by gstin">
+                Retailer GST Number
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                element && element.buyer_id && element.buyer_id.gstin
+                ? element.buyer_id.gstin
+                : ""
+                }}
+              </td>
+            </ng-container>
+
+            <!-- creditLimit Column -->
+            <ng-container matColumnDef="creditLimit">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by creditLimit">
+                Retailer's Credit Limit
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                element && element.buyer_id && element.buyer_id.creditLimit
+                ? element.buyer_id.creditLimit
+                : 0
+                }}
+              </td>
+            </ng-container>
+
+            <!-- Payout Fee -->
+            <ng-container matColumnDef="payout_fee">
+              <th mat-header-cell *matHeaderCellDef >
+                Payout Fee
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                (element && element.payout_fee ? element.payout_fee : "")
+                }}
+              </td>
+            </ng-container>
+
+            <!-- created_at Column -->
+            <ng-container matColumnDef="buyer_van">
+              <th mat-header-cell *matHeaderCellDef >
+                Retailer's VAN
+              </th>
+              <td mat-cell *matCellDef="let element">
+                {{
+                (element && element.buyer_van ? element.buyer_van : "")
+                
+                }}
+              </td>
+            </ng-container>
+
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+              <td mat-cell *matCellDef="let element">
+                <button mat-mini-fab class="btn-view" matTooltip="Un-Map" (click)="unmapCompany(element)"
+                  aria-label="Example icon button with a delete icon">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+            <tr class="mat-row" *matNoDataRow>
+              <td class="text-center">No Record Found</td>
+            </tr>
+          </table>
+
+          <mat-paginator [pageSizeOptions]="[10, 15, 20]" showFirstLastButtons
+            aria-label="Select page of periodic elements">
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+
+</app-layout>

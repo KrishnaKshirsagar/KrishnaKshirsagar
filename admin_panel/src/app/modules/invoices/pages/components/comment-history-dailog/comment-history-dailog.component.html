@@ -1,0 +1,59 @@
+<div id="comments-history-dialog">
+
+  <div class="add-dailog">
+   <h2 mat-dialog-title> Comments History </h2>
+    <button
+      mat-icon-button
+      class="close-button"
+      [mat-dialog-close]="true"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+   <div *ngFor="let element of commented_data" style="margin-top: 10px;">
+    
+      <mat-card-title-group>
+        <mat-card-subtitle style="color: 002B5B;font-size: medium;">{{element && element.postedBy ? element.postedBy : ""}}</mat-card-subtitle>
+        <span><mat-card-subtitle> {{(element && element.timeStamp ? element.timeStamp : "") | date: date_format}}</mat-card-subtitle></span>
+        
+      </mat-card-title-group>
+      <mat-card>
+        <mat-card-content  style=" word-wrap: break-word"><label>Comment : </label>  {{ element && element.comment ? element.comment : "NA" | titlecase }}</mat-card-content>
+        <mat-card-content  style=" word-wrap: break-word"><label>Category : </label>  {{ element && element.comment_category ? element.comment_category : "NA"}}</mat-card-content>
+        
+      </mat-card>
+   </div>
+
+    <div class="comments">
+      <form [formGroup]="comment_form"
+      (ngSubmit)="add_comment()">
+        <mat-form-field appearance="outline">
+          <mat-label>Comments</mat-label>
+          <textarea matInput
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5"
+               formControlName="comment">
+          </textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Comment Category</mat-label>
+          <mat-select [(value)]="comment_category" formControlName="comment_category">
+            <mat-option value="">Select Comment Category</mat-option>
+            <mat-option value="Commitment to pay">Commitment to pay</mat-option>
+            <mat-option value="Will take some time">Will take some time</mat-option>
+            <mat-option value="Financial issue">Financial issue</mat-option>
+            <mat-option value="Dispute">Dispute</mat-option>
+            <mat-option value="Stock return">Stock return</mat-option>
+            <mat-option value="Others">Others</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+          <button mat-mini-fab type="submit"><mat-icon>send</mat-icon></button>
+    </form>
+    </div>
+
+</div>
+

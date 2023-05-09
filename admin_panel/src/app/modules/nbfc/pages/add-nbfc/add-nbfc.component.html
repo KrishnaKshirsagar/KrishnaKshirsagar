@@ -1,0 +1,267 @@
+<app-layout>
+  <div id="add-nbfc-page">
+    <div class="main-wrapper">
+      <mat-card>
+        <mat-card-content>
+          <h2>{{ title }}</h2>
+          <form [formGroup]="NBFC_form" (ngSubmit)="onSubmit()">
+            <div>
+              <h3>Basic Details</h3>
+
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Name</mat-label>
+                  <input matInput (input)="onchange()" formControlName="nbfc_name" placeholder="NBFC Name" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter a valid NBFC name
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Status</mat-label>
+                  <mat-select (selectionChange)="onchange()" formControlName="nbfc_status" required>
+                    <mat-option value="Active">Active</mat-option>
+                    <mat-option value="Pending">Pending</mat-option>
+                    <mat-option value="Inactive">Inactive</mat-option>
+                  </mat-select>
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please select NBFC's status
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" (input)="onchange()"
+                    formControlName="nbfc_email" placeholder="Email" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's email id
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Mobile Number</mat-label>
+                  <input matInput (input)="onchange()" type="text" pattern="^[1-9][0-9]*$" formControlName="nbfc_mobile"
+                    placeholder="Mobile Number" minlength="10" maxlength="10" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's mobile number
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Address</mat-label>
+                  <input matInput type="text" (input)="onchange()" formControlName="nbfc_address"
+                    placeholder="Address" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's address
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>District</mat-label>
+                  <input matInput type="text" pattern="^[a-zA-Z\s]+$" (input)="onchange()"
+                    formControlName="nbfc_district" placeholder="District" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's district
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>State</mat-label>
+                  <input matInput type="text" pattern="^[a-zA-Z\s]+$" (input)="onchange()" formControlName="nbfc_state"
+                    placeholder="State" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's state
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Pincode</mat-label>
+                  <input matInput type="text" (input)="onchange()" pattern="[1-9]{1}[0-9]{5}"
+                    formControlName="nbfc_pincode" placeholder="Pincode" maxlength="6" minlength="6" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's pincode
+                  </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Interest %</mat-label>
+                  <input matInput type="text" pattern="^100$|^\d{0,2}(\.\d{1,2})? *%?$" (input)="onchange()"
+                    formControlName="nbfc_interest" placeholder="Interest %" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's interest % (In two digits)
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Discount %</mat-label>
+                  <input matInput type="text" pattern="^100$|^\d{0,2}(\.\d{1,2})? *%?$" (input)="onchange()"
+                    formControlName="payout_discount" placeholder="Discount %" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's discount % (In two digits)
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+            </div>
+            <div>
+              <h3>Bank Account Details</h3>
+
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Bank Name</mat-label>
+                  <input matInput pattern="^[a-zA-Z\s]+$" (input)="onchange()" formControlName="nbfc_bankname"
+                    placeholder="Bank Name" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's bank name
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Branch Name</mat-label>
+                  <input matInput pattern="^[a-zA-Z\s]+$" (input)="onchange()" formControlName="nbfc_branchname"
+                    placeholder="Branch Name" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's bank branch name
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Account Holder</mat-label>
+                  <input matInput pattern="^[a-zA-Z\s]+$" (input)="onchange()" formControlName="nbfc_accountholder"
+                    placeholder="Account Holder Name" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's bank account holder name
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Account No</mat-label>
+                  <input matInput pattern="^\d{9,20}$" (input)="onchange()" formControlName="nbfc_accountnumber"
+                    placeholder="Account No" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's bank account number
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>IFSC Code</mat-label>
+                  <input matInput (input)="onchange()" pattern="^[A-Z]{4}0[A-Z0-9]{6}$" maxlength="11"
+                    formControlName="nbfc_ifsc_code" placeholder="IFSC Code" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's bank IFSC code
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <!-- Admin User Details -->
+            <div *ngIf="edit_mode == false">
+              <h3> NBFC Admin </h3>
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>First Name</mat-label>
+                  <input matInput pattern="^[a-zA-Z\s]+$" (input)="onchange()" formControlName="first_name"
+                    placeholder="First Name" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid first name
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput pattern="^[a-zA-Z\s]+$" (input)="onchange()" formControlName="last_name"
+                    placeholder="Last Name" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid last name
+                  </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" (input)="onchange()"
+                    formControlName="email" placeholder="Email" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid email id
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Mobile No</mat-label>
+                  <input matInput pattern="^\d{10}$" (input)="onchange()" formControlName="mobile_number"
+                    placeholder="Mobile No" />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid mobile number
+                  </mat-error>
+                </mat-form-field>
+                <!-- <mat-form-field appearance="outline">
+                  <mat-label>IFSC Code</mat-label>
+                  <input
+                    matInput
+                    (input)="onchange()"
+                    pattern="^[A-Z]{4}0[A-Z0-9]{6}$"
+                    maxlength="11"
+                    formControlName="nbfc_ifsc_code"
+                    placeholder="IFSC Code"
+                  />
+                  <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                    Please enter valid NBFC's bank IFSC code
+                  </mat-error>
+                </mat-form-field> -->
+              </div>
+            </div>
+            <!-- Readonly user details -->
+            <div *ngIf="edit_mode == true">
+              <h3> NBFC Admin </h3>
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>First Name</mat-label>
+                  <input matInput formControlName="first_name" placeholder="First Name" readonly />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Last Name</mat-label>
+                  <input matInput formControlName="last_name" placeholder="Last Name" readonly />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Email</mat-label>
+                  <input matInput formControlName="email" placeholder="Email" readonly />
+                </mat-form-field>
+              </div>
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Mobile No</mat-label>
+                  <input matInput formControlName="mobile_number" readonly />
+                </mat-form-field>
+              </div>
+            </div>
+            <div>
+              <h3>Escrow ID</h3>
+              <div class="formgrid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Escrow ID</mat-label>
+                  <input matInput (input)="onchange()" formControlName="nbfc_escrow"
+                    placeholder="Default: Xuriti-01" />
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div>
+
+              <!-- <h3>Documents</h3> -->
+              <div class="input-wrapper text-center">
+                <!-- <input type="file"  (change)="onFileChange($event)" formControlName="nbfc_documents" multiple placeholder="Select file" />                 -->
+                <button mat-button class="btn-dark" type="submit">
+                  SUBMIT
+                </button>
+                <button mat-button class="btn-dark" type="button" (click)="cancel()">
+                  CANCEL
+                </button>
+              </div>
+            </div>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</app-layout>

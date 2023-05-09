@@ -1,0 +1,68 @@
+#credit-note-settlement{
+    .mat-header-cell {
+      color: rgb(0 0 0);
+    }
+  
+    th.mat-header-cell {
+      border: 1px solid #ffffff2e;
+    }
+  
+    span{
+      padding: 10px;
+    }
+  
+    table{
+        width: 100%;
+        text-align: left;
+    }
+    
+      .mat-header-cell {
+        font-size: 14px;    
+        background: black;
+        color: white;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+
+      }
+      .mat-cell {
+        padding: 10px;
+      }
+    .mat-form-field{width: 100%;}
+    min-width: 600px;
+    h1 {
+      margin: 0 0 0px;
+    }
+    .text-center {
+      text-align: center;
+    }
+    .flex{gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+   button{width: fit-content;
+    background: black;
+    color: white;}
+    label{display: block;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 18px 0px;
+      span{font-weight: normal;}
+    
+    }
+  
+    }
+  
+    .button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    @media only screen and (max-width: 767px) {
+      .flex {
+        display: block;
+      }
+    }
+  
+  }

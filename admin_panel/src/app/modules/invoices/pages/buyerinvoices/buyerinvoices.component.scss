@@ -1,0 +1,274 @@
+#buyerinvoices-page {
+  .highlight {
+    background: #ffd89f;
+    
+    background-image: url(../../../../../assets/images/tri.png), linear-gradient(90deg, #ffd89f 0%, #ffffff 50%, white 100%);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left;
+  }
+
+  .tab-group {
+    border: 1px solid #e8e8e8;
+    font-weight: bold !important;
+    // background-color: rgb(245, 232, 207);
+  }
+
+  ::ng-deep .mat-ink-bar {
+    color: #000000;
+    font-weight: bold !important;
+    background-color: #f5aa09 !important;
+  }
+
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+  }
+
+  .right-box {
+    margin-right: 0px;
+    max-width: 100px;
+    ::ng-deep .mat-form-field-outline-end {
+      border-right: none;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+  }
+  .left-box {
+    // margin-left:0px;
+    max-width: 100%;
+    ::ng-deep .mat-form-field-outline-start {
+      border-left: none;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+  }
+  
+  .mat-header-cell {
+    font-size: 14px;
+    background: black;
+    color: white;
+  }
+  .mat-cell {
+    padding: 5px;
+  }
+  .mat-form-field {
+    margin-right: 10px;
+    font-size: 13px;
+    max-width: 200px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .actn {
+    align-items: center;
+    .mat-list-item {
+      vertical-align: inherit;
+    }
+    .mat-icon-button {
+      color: #009900;
+      display: contents;
+    }
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    vertical-align: super;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  .boxes {
+    display: flex;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+
+  .right-box {
+    margin-right: 0px;
+    max-width: 100px;
+    ::ng-deep .mat-form-field-outline-end {
+      border-right: none;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+  }
+  .left-box {
+    // margin-left:0px;
+    max-width: 100%;
+    ::ng-deep .mat-form-field-outline-start {
+      border-left: none;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+  }
+
+  ::ng-deep.mat-form-field-appearance-outline .mat-form-field-outline-thick {
+    color: #e0e0e0;
+  }
+}
+
+#buyerinvoices-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}
+
+#credit-note-settlement {
+  .mat-header-cell {
+    color: rgb(0 0 0);
+  }
+
+  th.mat-header-cell {
+    border: 1px solid #ffffff2e;
+  }
+
+  span {
+    padding: 10px;
+  }
+
+  table {
+    width: 100%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  .mat-form-field {
+    width: 100%;
+  }
+  min-width: 600px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .flex {
+    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    button {
+      width: fit-content;
+      background: black;
+      color: white;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 18px 0px;
+      span {
+        font-weight: normal;
+      }
+    }
+  }
+
+  .button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  @media only screen and (max-width: 767px) {
+    .flex {
+      display: block;
+    }
+  }
+}
+
+#add-invoice {
+  .mat-header-cell {
+    color: rgb(0 0 0);
+  }
+
+  .mat-form-field {
+    width: 100%;
+
+    font-size: 13px;
+    margin-bottom: -20px;
+  }
+  min-width: 600px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+.flex{gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+ button{width: fit-content;
+  background: black;
+  color: white;}
+  label{display: block;
+    font-weight: bold;
+    font-size: 15px;
+    margin: 18px 0px;
+    span{font-weight: normal;}
+  
+  }
+
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@media only screen and (max-width: 767px) {
+  .flex {
+    display: block;
+  }
+}
+
+}
+
+.exel-icon {
+  border: 1px solid green;
+  color: green;
+  line-height: 22px;
+  vertical-align: middle;
+  margin-right: 15px;
+  margin-bottom: 5px;
+}

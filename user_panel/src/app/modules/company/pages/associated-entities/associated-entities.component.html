@@ -1,0 +1,387 @@
+<div id="associated-entities-page">
+  <div class="margin-top margin-bottom">
+    <div class="loginform">
+      <div class="tableheader">
+        <h2 i18n="@@BA1">
+          Associated {{ userType == "seller" ? "Buyers" : "Sellers" }}
+        </h2>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Business Name</mat-label>
+          <input
+            type="text"
+            placeholder="Business Name"
+            matInput
+            [formControl]="companySelect"
+            (keyup)="companyfilter($event)"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="company_name_clear(companySelect)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon style="font-size: 15px">close</mat-icon>
+          </button>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="autosuggetion">
+          <mat-label>GST Number</mat-label>
+          <input
+            matInput
+            (keyup)="getGstNo($event)"
+            placeholder="GST Number"
+            [formControl]="gstControl"
+          />
+          <button
+            type="button"
+            mat-button
+            (click)="gst_clear(gstControl)"
+            matSuffix
+            mat-icon-button
+            aria-label="Clear"
+          >
+            <mat-icon style="font-size: 15px">close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
+      <div class="expitem">
+        <!-- <button mat-icon-button color="accent" matTooltip="Export Excel" matTooltipPosition="above"
+              class="exel-icon" (click)="
+                exporter.exportTable('xlsx', {
+                  fileName: '',
+                  sheet: 'sheet_name',
+                  Props: { Author: 'Xuriti' }
+                })
+              " aria-label="Example icon button with a menu icon">
+              <mat-icon>assignment_returned</mat-icon>
+            </button> -->
+
+        <!-- <mat-radio-group aria-label="Select an option">
+              <mat-radio-button value="1" (click)="openInvoicePage('seller')" checked color="primary">Seller View</mat-radio-button>
+              <mat-radio-button value="2" (click)="openInvoicePage('buyer')" color="primary">Buyer View</mat-radio-button>
+            </mat-radio-group> -->
+      </div>
+
+      <!-- Section 2 for Buyer view -->
+      <section *ngIf="userType == 'buyer'">
+        <table
+          mat-table
+          matTableExporter
+          #exporter="matTableExporter"
+          [dataSource]="dataSource2"
+          matSort
+          (matSortChange)="announceSortChange($event)"
+          class="mat-elevation-z0"
+        >
+          <!-- company_name Column -->
+          <ng-container matColumnDef="company_name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by company_name"
+              i18n="@@BA7"
+            >
+              Business Name
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{ element && element.company_name ? element.company_name : "" }}
+            </td>
+          </ng-container>
+
+          <!-- gstin Column -->
+          <ng-container matColumnDef="gstin">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by gstin"
+              i18n="@@BA7"
+            >
+              Business GST Number
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{ element && element.gstin ? element.gstin : "" }}
+            </td>
+          </ng-container>
+
+          <!-- company_email Column -->
+          <ng-container matColumnDef="company_email">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by company_email"
+              i18n="@@BA7"
+            >
+              Business Email Id
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                element && element.company_email ? element.company_email : ""
+              }}
+            </td>
+          </ng-container>
+
+          <!-- company_mobile Column -->
+          <ng-container matColumnDef="company_mobile">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by company_mobile"
+              i18n="@@BA7"
+            >
+              Business Mobile Number
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                element && element.company_mobile ? element.company_mobile : ""
+              }}
+            </td>
+          </ng-container>
+
+          <!-- creditLimit Column -->
+          <ng-container matColumnDef="creditLimit">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by creditLimit"
+              i18n="@@BA7"
+            >
+              Credit Limit
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                (element && element.creditLimit ? element.creditLimit : 0)
+                  | currency: currency_Format
+              }}
+            </td>
+          </ng-container>
+
+          <!-- avail_credit Column -->
+          <ng-container matColumnDef="avail_credit">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by avail_credit"
+              i18n="@@BA7"
+            >
+              Available Credit
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                (element && element.avail_credit ? element.avail_credit : 0)
+                  | currency: currency_Format
+              }}
+            </td>
+          </ng-container>
+
+          <!-- createdAt Column -->
+          <ng-container matColumnDef="createdAt">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by createdAt"
+              i18n="@@BA7"
+            >
+              Registered At
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                (element && element.createdAt ? element.createdAt : "")
+                  | date: Date_Format
+              }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="text-center">No Business Found</td>
+          </tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[10, 20, 50]"
+          showFirstLastButtons
+          aria-label="Select page of periodic elements"
+        >
+        </mat-paginator>
+      </section>
+
+      <!-- Section 1 for Seller view -->
+      <section *ngIf="userType == 'seller'">
+        <!-- <h3 i18n="@@BA1">Associted {{ userType == 'seller' ? 'Buyers' : 'Sellers' }} </h3> -->
+        <table
+          mat-table
+          matTableExporter
+          #exporter="matTableExporter"
+          [dataSource]="dataSource1"
+          matSort
+          (matSortChange)="announceSortChange($event)"
+          class="mat-elevation-z0"
+        >
+          <!-- nbfc_name Column -->
+          <ng-container matColumnDef="nbfc_name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by nbfc_name"
+              i18n="@@BA7"
+            >
+              NBFC Name
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{ element && element.nbfc_name ? element.nbfc_name : "" }}
+            </td>
+          </ng-container>
+
+          <!-- company_name Column -->
+          <ng-container matColumnDef="company_name">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by company_name"
+              i18n="@@BA7"
+            >
+              Business Name
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{ element && element.company_name ? element.company_name : "" }}
+            </td>
+          </ng-container>
+
+          <!-- gstin Column -->
+          <ng-container matColumnDef="gstin">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by gstin"
+              i18n="@@BA7"
+            >
+              Business GST Number
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{ element && element.gstin ? element.gstin : "" }}
+            </td>
+          </ng-container>
+
+          <!-- company_email Column -->
+          <ng-container matColumnDef="company_email">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by company_email"
+              i18n="@@BA7"
+            >
+              Business Email Id
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                element && element.company_email ? element.company_email : ""
+              }}
+            </td>
+          </ng-container>
+
+          <!-- company_mobile Column -->
+          <ng-container matColumnDef="company_mobile">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by company_mobile"
+              i18n="@@BA7"
+            >
+              Business Mobile Number
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                element && element.company_mobile ? element.company_mobile : ""
+              }}
+            </td>
+          </ng-container>
+
+          <!-- creditLimit Column -->
+          <ng-container matColumnDef="creditLimit">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by creditLimit"
+              i18n="@@BA7"
+            >
+              Credit Limit
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                (element && element.creditLimit ? element.creditLimit : 0)
+                  | currency: currency_Format
+              }}
+            </td>
+          </ng-container>
+
+          <!-- avail_credit Column -->
+          <ng-container matColumnDef="avail_credit">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by avail_credit"
+              i18n="@@BA7"
+            >
+              Available Credit
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                (element && element.avail_credit ? element.avail_credit : 0)
+                  | currency: currency_Format
+              }}
+            </td>
+          </ng-container>
+
+          <!-- createdAt Column -->
+          <ng-container matColumnDef="createdAt">
+            <th
+              mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              sortActionDescription="Sort by createdAt"
+              i18n="@@BA7"
+            >
+              Registered At
+            </th>
+            <td mat-cell *matCellDef="let element" i18n="@@BA8">
+              {{
+                (element && element.createdAt ? element.createdAt : "")
+                  | date: Date_Format
+              }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="text-center">No Business Found</td>
+          </tr>
+        </table>
+        <mat-paginator
+          [pageSizeOptions]="[10, 20, 50]"
+          showFirstLastButtons
+          aria-label="Select page of periodic elements"
+        >
+        </mat-paginator>
+      </section>
+    </div>
+  </div>
+</div>

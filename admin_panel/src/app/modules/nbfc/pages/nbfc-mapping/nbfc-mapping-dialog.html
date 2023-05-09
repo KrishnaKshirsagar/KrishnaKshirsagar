@@ -1,0 +1,84 @@
+<div id="nbfc-mapping-dialog">
+  <mat-dialog-content class="mat-typography">
+    <h1 class="text-center">NBFC-Company Mapping</h1>
+    <form
+      [formGroup]="nbfc_companyMap_form"
+      (ngSubmit)="onMapCompanies()"
+      class="example-form"
+    >
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Buyer Name</mat-label>
+        <input
+          type="text"
+          placeholder="Select Buyer Company"
+          aria-label="Number"
+          matInput
+          (input)="getBuyerCompanies($event)"
+          [matAutocomplete]="auto"
+        />
+        <mat-autocomplete
+          autoActiveFirstOption
+          [displayWith]="displayFn"
+          (optionSelected)="onChange($event.option.value)"
+          #auto="matAutocomplete"
+        >
+          <mat-option *ngFor="let option of company_Name" [value]="option">
+            {{option.company_name}}({{ option.gstin }})
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- seller autosuggetion start -->
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Seller Name</mat-label>
+        <input
+          type="text"
+          placeholder="Select Seller Company"
+          aria-label="Number"
+          matInput
+          (input)="getSellerCompanies($event)"
+          [matAutocomplete]="auto1"
+        />
+
+        <mat-autocomplete
+          autoActiveFirstOption
+          [displayWith]="displayFn1"
+          (optionSelected)="onChange1($event.option.value)"
+          #auto1="matAutocomplete"
+        >
+          <mat-option
+            *ngFor="let option1 of seller_company_Name"
+            [value]="option1"
+          >
+            {{option1.company_name}}({{ option1.gstin }})
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <!-- seller autosuggetion end -->
+
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Payout Fees %</mat-label>
+        <input
+          matInput
+          type="text"
+          pattern="^100$|^\d{0,2}(\.\d{1,2})?%?$"
+          formControlName="payout_fees"
+          placeholder="Enter Payout Fees %"
+        />
+        <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+          Please enter valid NBFC's payout fees %
+        </mat-error>
+      </mat-form-field>
+
+      <div class="input-wrapper text-center">
+        <button type="submit" mat-button color="primary" cdkFocusInitial>
+          MAP
+        </button>
+        <button mat-button color="warn" [mat-dialog-close]="true">
+          CANCEL
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

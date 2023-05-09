@@ -1,0 +1,216 @@
+<app-layout>
+    <div id="payouthistory-page">
+        <div class="margin-top margin-bottom">
+          <div class="loginform">
+            <div class="tableheader ">
+              <div class="text-left">
+                <h2 i18n="@@BA1">Receivables Ageing</h2>
+              </div>
+              <div>
+                <button mat-icon-button color="accent" matTooltip="Export Excel" matTooltipPosition="above"
+                  class="exel-icon" (click)="
+                  exporter.exportTable('xlsx', {
+                    fileName: 'Receivables_By_Aging',
+                    sheet: 'Receivables_By_Aging',
+                    Props: { Author: 'Xuriti' }
+                  })
+                " aria-label="Example icon button with a menu icon">
+                  <mat-icon>assignment_returned</mat-icon>
+                </button>
+              </div>
+
+              <mat-form-field appearance="outline" class="autosuggetion left-box">
+                <mat-label>NBFC Name</mat-label>
+                <input type="text" placeholder="NBFC Name" matInput [formControl]="nbfcSelect"
+                  [matAutocomplete]="auto" (input)="nbfcAutoSuggestion($event)" />
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayNbfc"
+                  (optionSelected)="nbfcId($event.option.value)">
+                  <mat-option *ngFor="let nbfc of nbfc_name" [value]="nbfc">
+                    {{ nbfc.nbfc_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <button type="button" mat-button (click)="nbfc_clear(nbfcSelect)" matSuffix mat-icon-button
+                  aria-label="Clear">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="autosuggetion left-box">
+                <mat-label>Anchor</mat-label>
+                <input
+                  type="text"
+                  placeholder="Anchor"
+                  matInput
+                  [formControl]="anchorSelect"
+                  [matAutocomplete]="auto_1"
+                  (input)="companySuggetion($event)"
+                />
+                <mat-autocomplete
+                  #auto_1="matAutocomplete"
+                  [displayWith]="displayFn"
+                  (optionSelected)="getAnchorId($event.option.value)"
+                >
+                  <mat-option *ngFor="let company of company_Name" [value]="company">
+                    {{ company.company_name }}
+                  </mat-option>
+                </mat-autocomplete>
+                <button
+                  type="button"
+                  mat-button
+                  (click)="anchor_clear(anchorSelect)"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>As on</mat-label>
+                <input
+                  matInput
+                  [matDatepicker]="datepicker"
+                  [max]="maxDate"
+                  [(ngModel)]="as_no_date"
+                  readonly
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="datepicker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #datepicker>
+                  <mat-datepicker-actions>
+                    <button mat-button matDatepickerCancel (click)="date_cancle('as_on_date')">Cancel</button>
+                    <button
+                      mat-raised-button
+                      color="primary"
+                      (click)="as_On_Date()"
+                      matDatepickerApply
+                    >
+                      Apply
+                    </button>
+                  </mat-datepicker-actions>
+                </mat-datepicker>
+              </mat-form-field>             
+            </div>            
+    
+            <table mat-table matTableExporter #exporter="matTableExporter" [dataSource]="dataSource"
+              matSort (matSortChange)="announceSortChange($event)" class="mat-elevation-z0">
+    
+              <!-- Dealer Name -->
+              <ng-container matColumnDef="dealer_name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by dealer_name"
+                  i18n="@@BA7">
+                  Retailer Name
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA8">
+                 <b>
+                  {{element && element.name ? element.name : ""}}
+                 </b>
+                </td>
+              </ng-container>
+    
+              <!-- overdue_90_to_120 Column -->
+              <ng-container matColumnDef="overdue_90_to_120">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by overdue_90_to_120"
+                  i18n="@@BA3">
+                  Overdue Slab(90-120)
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA4">  
+                  {{(element && element.outstanding_amount && element.outstanding_amount[7] ? element.outstanding_amount[7] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+    
+              <!-- overdue_60_to_90 Column -->
+              <ng-container matColumnDef="overdue_60_to_90">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by overdue_60_to_90"
+                  i18n="@@BA9">
+                  Overdue Slab(60-90)
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{(element && element.outstanding_amount && element.outstanding_amount[6] ? element.outstanding_amount[6] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+
+              <!-- overdue_30_to_60 Column -->
+              <ng-container matColumnDef="overdue_30_to_60">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by overdue_30_to_60"
+                  i18n="@@BA9">
+                  Overdue Slab(30-60)
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{(element && element.outstanding_amount && element.outstanding_amount[5] ? element.outstanding_amount[5] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+    
+              <!-- overdue_0_to_30 Column -->
+              <ng-container matColumnDef="overdue_0_to_30">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by overdue_0_to_30"
+                  i18n="@@BA9">
+                  Overdue Slab(0-30)
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{(element && element.outstanding_amount && element.outstanding_amount[4] ? element.outstanding_amount[4] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+
+              <!-- 0 to 30 Column -->
+              <ng-container matColumnDef="0_to_30">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by 0_to_30"
+                  i18n="@@BA9">
+                  0 - 30
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{(element && element.outstanding_amount && element.outstanding_amount[0] ? element.outstanding_amount[0] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+              
+              <!-- 30 to 60 Column -->
+              <ng-container matColumnDef="30_to_60">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by 30_to_60"
+                  i18n="@@BA9">
+                  30 - 60
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{(element && element.outstanding_amount && element.outstanding_amount[1] ? element.outstanding_amount[1] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+
+              <!-- 60 to 90 Column -->
+              <ng-container matColumnDef="60_to_90">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by 60_to_90"
+                  i18n="@@BA9">
+                  60 - 90
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{(element && element.outstanding_amount && element.outstanding_amount[2] ? element.outstanding_amount[2] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+             
+              <!-- 90 to 120 Column -->
+              <ng-container matColumnDef="90_to_120">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by 90_to_120"
+                  i18n="@@BA9">
+                  90 - 120
+                </th>
+                <td mat-cell *matCellDef="let element" i18n="@@BA10">
+                  {{(element && element.outstanding_amount && element.outstanding_amount[3] ? element.outstanding_amount[3] : "") | currency: currency_format }}
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr class="mat-row" *matNoDataRow>
+                  <td class="text-center">
+                    No Record Found
+                  </td>
+                </tr>
+            </table>
+            <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons
+              aria-label="Select page of periodic elements">
+            </mat-paginator>
+          </div>
+        </div>
+    </div>
+</app-layout>

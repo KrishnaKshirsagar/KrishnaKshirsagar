@@ -1,0 +1,17 @@
+#error-page {
+  height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .title {
+    margin-top: -64px;
+    max-width: 600px;
+    h1 {
+      line-height: 64px;
+      text-align: center;
+      font-size: 6rem;
+      margin-bottom: 32px;
+    }
+  }
+}

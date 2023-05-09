@@ -1,0 +1,28 @@
+<div id="buyerinvoices-dialog">
+  <h1 class="text-center">Delete Invoice</h1>
+  <form
+    [formGroup]="delete_form"
+    (ngSubmit)="delcomment()"
+    class="example-form"
+  >
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Leave a comment</mat-label>
+      <textarea
+        matInput
+        formControlName="comment"
+        placeholder="Leave a comment..."
+        required
+      ></textarea>
+      <mat-error>Please enter a comment</mat-error>
+    </mat-form-field>
+
+    <div class="input-wrapper text-center">
+      <button mat-button color="primary" cdkFocusInitial type="submit">
+        SUBMIT
+      </button>
+      <button mat-button color="warn" type="button" (click)="cancel()">
+        CANCEL
+      </button>
+    </div>
+  </form>
+</div>

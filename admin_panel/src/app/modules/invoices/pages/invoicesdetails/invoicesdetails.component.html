@@ -1,0 +1,365 @@
+<app-layout>
+  <div id="invoicesdetails-page">
+    <div class="main-wrapper">
+      <mat-card>
+        <mat-card-title><h2>Invoice Details</h2> </mat-card-title>
+
+        <mat-card-content>
+          <div class="details">
+            <form
+              [formGroup]="invoice_form"
+              (ngSubmit)="onSubmit()"
+              class="example-form"
+            >
+              <div class="flex-container">
+                <div class="flex-item-left">
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Invoice Number</mat-label>
+                    <input
+                      matInput
+                      formControlName="invoice_number"
+                      (input)="onchange()"
+                      required
+                    />
+                    <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >Please enter invoice number</mat-error
+                    >
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Invoice Date</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="datepicker"
+                      [max]="maxDate"
+                      formControlName="invoice_date"
+                      (dateChange)="onDateChange()"
+                      readonly
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="datepicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #datepicker>
+                      <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Cancel</button>
+                        <button
+                          mat-raised-button
+                          color="primary"
+                          matDatepickerApply
+                        >
+                          Apply
+                        </button>
+                      </mat-datepicker-actions>
+                    </mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Outstanding Amount</mat-label>
+                    <input
+                      matInput
+                      formControlName="outstanding_amount"
+                      (input)="onchange()"
+                      pattern="^[0-9]+\.?[0-9]*$"
+                    />
+                    <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >Please enter valid amount</mat-error
+                    >
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Extra Credit Allowed</mat-label>
+                    <mat-select
+                      formControlName="extra_credit_flag"
+                      (selectionChange)="onchange()"
+                      required
+                    >
+                      <mat-option value="true">Yes</mat-option>
+                      <mat-option value="false">No</mat-option>
+                    </mat-select>
+                    <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >Please select a value</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                
+                <div class="flex-item-right">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Invoice Due Date</mat-label>
+                    <input
+                      matInput
+                      [matDatepicker]="datepicker1"
+                      [min]="minDate"
+                      formControlName="invoice_due_date"
+                      readonly
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="datepicker1"
+                      disabled
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #datepicker1>
+                      <mat-datepicker-actions>
+                        <button mat-button matDatepickerCancel>Cancel</button>
+                        <button
+                          mat-raised-button
+                          color="primary"
+                          matDatepickerApply
+                        >
+                          Apply
+                        </button>
+                      </mat-datepicker-actions>
+                    </mat-datepicker>
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Invoice Amount</mat-label>
+                    <input
+                      matInput
+                      formControlName="invoice_amount"
+                      (input)="onchange()"
+                      required
+                      pattern="[0-9]+\.?[0-9]*$"
+                    />
+                    <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >Please enter valid amount</mat-error
+                    >
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Invoice Status</mat-label>
+                    <mat-select
+                      formControlName="invoice_status"
+                      (selectionChange)="onchange()"
+                      required
+                    >
+                      <mat-option value="Pending">Pending</mat-option>
+                      <mat-option value="Confirmed">Confirmed</mat-option>
+                      <mat-option value="Rejected">Rejected</mat-option>
+                      <mat-option value="Draft">Draft</mat-option>
+                      <!-- <mat-option value="Paid">Paid</mat-option> -->
+                      <mat-option value="Duplicate">Duplicate</mat-option>
+                      <mat-option value="Seller Absent"
+                        >Seller Absent</mat-option
+                      >
+                      <mat-option value="Buyer Absent">Buyer Absent</mat-option>
+                    </mat-select>
+                    <mat-error style="color: rgb(241, 14, 14); margin-top: 7px"
+                      >Please select invoice status</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <h2>Seller Details:</h2>
+
+              <div class="flex-container bsbox">
+                <div class="flex-item-left">
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>GST Number</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="seller_gstin"
+                      readonly
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Mobile Number</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="seller_mobile"
+                      readonly
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div class="flex-item-right">
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Name</mat-label>
+                    <input
+                      matInput
+                      formControlName="seller_companyName"
+                      readonly
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Email Address</mat-label>
+                    <input
+                      matInput
+                      formControlName="seller_email"
+                      type="text"
+                      readonly
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Status</mat-label>
+                    <input matInput formControlName="seller_status" readonly />
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <h2>Buyer Details:</h2>
+              <div class="flex-container bsbox">
+                <div class="flex-item-left">
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>GST Number</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="buyer_gstin"
+                      readonly
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Mobile Number</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="buyer_mobile"
+                      readonly
+                    />
+                  </mat-form-field>
+                </div>
+
+                <div class="flex-item-right">
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Name</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="buyer_companyName"
+                      readonly
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Email Address</mat-label>
+                    <input
+                      matInput
+                      type="text"
+                      formControlName="buyer_email"
+                      readonly
+                    />
+                  </mat-form-field>
+
+                  <mat-form-field
+                    class="example-full-width"
+                    appearance="outline"
+                  >
+                    <mat-label>Status</mat-label>
+                    <input matInput formControlName="buyer_status" readonly />
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="btndiv">
+                <h2>Credit Plan:</h2>
+                <button
+                  mat-flat-button
+                  class="btn-dark"
+                  type="button"
+                  (click)="opencreditswitchDialog()"
+                >
+                  SWITCH
+                </button>
+              </div>
+
+              <div class="gridcontent">
+                <div class="input-wrapper">
+                  <mat-label>Credit Plan Name: </mat-label>
+                  <span> {{ credit_plan_name }} </span>
+                </div>
+
+                <div class="input-wrapper">
+                  <mat-label>Credit Free Period(In Days):</mat-label>
+                  <span> {{ credit_period }} </span>
+                </div>
+                <div class="input-wrapper">
+                  <mat-label> Number of Payment Intervals:</mat-label>
+
+                  <span> {{ payment_interval }} </span>
+                </div>
+              </div>
+
+              <div class="comments" >
+                <mat-form-field appearance="outline">
+                  <mat-label>Comments</mat-label>
+                  <textarea matInput formControlName="comment" (input)="onchange()"></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="input-wrapper text-center">
+                <button
+                  mat-flat-button
+                  type="submit"
+                  class="btn-dark"
+                  [disabled]="
+                    invoiceDetail.invoice_status == 'Confirmed' ||
+                    invoiceDetail.invoice_status == 'Paid' ||
+                    invoiceDetail.invoice_status == 'Rejected'
+                  "
+                >
+                  SUBMIT
+                </button>
+                <button
+                  mat-flat-button
+                  type="button"
+                  class="btn-dark"
+                  (click)="cancelClicked()"
+                >
+                  CANCEL
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</app-layout>

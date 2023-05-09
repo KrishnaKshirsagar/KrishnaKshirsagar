@@ -1,0 +1,16 @@
+<div id="dialogconfirm-page">
+  <div>
+    <h1 mat-dialog-title>Delete Confirmation</h1>
+
+    <div mat-dialog-content>
+      <p><strong>Are you sure you want to delete ? </strong></p>
+    </div>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button color="warn" cdkFocusInitial (click)="confirm()">
+        CONFIRM</button
+      >&nbsp;
+      <button mat-button color="primary" (click)="cancel()">CANCEL</button>
+    </div>
+  </div>
+</div>

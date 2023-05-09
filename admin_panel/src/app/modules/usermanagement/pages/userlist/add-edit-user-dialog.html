@@ -1,0 +1,116 @@
+<div id="add-edit-user-dialog">
+  <mat-dialog-content class="mat-typography">
+    <!-- <h1 class="text-center">Add / Edit Users</h1> -->
+    <div *ngIf="editUserflag">
+      <h1 class="text-center">Edit User</h1>
+    </div>
+    <div *ngIf="editUserflag">
+      <form
+        class="example-form"
+        [formGroup]="editUser_form"
+        (ngSubmit)="editUser()"
+      >
+        <div class="flex">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="First Name"
+              formControlName="firstName"
+              pattern="[a-zA-Z]+"
+              (input)="onchange()"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please enter first name
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Last Name"
+              formControlName="lastName"
+              pattern="[a-zA-Z]+"
+              (input)="onchange()"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please enter last name
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="flex">
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Email Address</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Email Address"
+              formControlName="email"
+              pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$"
+              (input)="onchange()"
+              required
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please provide a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" appearance="outline">
+            <mat-label>Mobile Number</mat-label>
+            <input
+              matInput
+              type="text"
+              placeholder="Mobile Number"
+              formControlName="mobileNumber"
+              (input)="onchange()"
+              maxlength="10"
+              minlength="10"
+              pattern="^[1-9][0-9]*$"
+            />
+            <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Please enter valid mobile number
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field
+          class="example-half-width"
+          appearance="outline"
+          *ngIf="user_verified_flag"
+        >
+          <mat-label>Select User Status</mat-label>
+          <mat-select
+            formControlName="status"
+            (selectionChange)="onchange()"
+            required
+          >
+            <mat-option value="Pending">Pending</mat-option>
+            <mat-option value="Active">Active</mat-option>
+            <mat-option value="Inactive">Inactive</mat-option>
+          </mat-select>
+          <mat-error style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+            Please select user status
+          </mat-error>
+        </mat-form-field>
+
+        <div class="button">
+          <div>
+            <button mat-button color="primary" cdkFocusInitial type="submit">
+              SUBMIT
+            </button>
+          </div>
+          <div>
+            <button mat-button color="warn" type="button" (click)="cancel()">
+              CANCEL
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

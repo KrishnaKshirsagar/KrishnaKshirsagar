@@ -1,0 +1,798 @@
+<app-layout>
+
+    <div id="Business-Document">
+        <div class="header">
+            <div class="page-header">
+                <div class="left-header">
+                  <button mat-mini-fab (click)="goback()"><mat-icon>arrow_back</mat-icon></button>
+                <h1>Business Documents</h1></div>
+               <div class="download-btn"> <button mat-raised-button color="black" (click)="download_documents()" >DOWNLOAD</button></div>
+              </div>
+            <div class="company-details">
+                <h3>
+                    <b>Retailer Name:</b> {{companyDetails && companyDetails.company_name?companyDetails.company_name:""}}<br>
+                    <b>GST Number:</b> {{companyDetails && companyDetails.gstin?companyDetails.gstin:""}}<br>
+                    <b>Mobile Number:</b> {{companyDetails && companyDetails.company_mobile?companyDetails.company_mobile:""}}
+                </h3>
+            </div>
+            <div class="div-indicator">
+                <mat-card class="mat-elevation-z0">
+                <section>
+                    <mat-icon style="color: green;">check_circle</mat-icon>
+                    <label> : Approved | </label>
+                    <mat-icon style="color: #ffa500;">watch_later</mat-icon>
+                    <label> : Processing | </label>
+                    <mat-icon style="color: red;">cancel</mat-icon>
+                    <label> : Rejected | </label>
+                </section>
+                </mat-card>
+              </div>
+        </div>
+        <form [formGroup]="form">
+            <div class="main-wrapper">
+                <mat-accordion class="CustEx">
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Face Recognition
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.faceMatch.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                            <mat-icon *ngIf="BuzDetails?.faceMatch.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                            <mat-icon *ngIf="BuzDetails?.faceMatch.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                                <mat-form-field appearance="outline">
+                                    <textarea value="{{BuzDetails?.faceMatch?.comment}}" matInput readonly></textarea>
+                                </mat-form-field>
+                                <mat-card *ngIf="BuzDetails?.faceMatch.status=='In-Progress'">
+                                    <div class="operation">
+                                        <div>
+                                            <button  mat-mini-fab
+                                                [ngClass]="{'green' : faceFlagDone, 'black': !faceFlagDone}"
+                                                (click)="doneFlagFace()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                            <button mat-mini-fab
+                                                [ngClass]="{'black' : !faceFlagCancel, 'red': faceFlagCancel}"
+                                                (click)="cancelFlagFace()"><mat-icon>close</mat-icon></button><br><br>
+                                            <mat-form-field class="e" appearance="outline">
+                                                <mat-label
+                                                    [ngClass]="{'requiredColor':faceFlagDone, 'notRequiredColor':!faceFlagDone}"
+                                                    [ngClass]="{'requiredColor':faceFlagCancel , 'notRequiredColor':!faceFlagCancel}">Comments</mat-label>
+                                                <mat-select formControlName="face_match" #faceMatchValue>
+                                                    <mat-option *ngFor="let c of faceCommentsList"
+                                                        [value]="c">{{c}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                            <ng-container *ngIf="faceMatchValue.value=='Other'">
+                                                <mat-form-field appearance="outline">
+                                                      <textarea  formControlName="face_match" matInput> </textarea>
+                                                  </mat-form-field>
+                                              </ng-container>
+                                        </div>
+                                       
+                                    </div>
+                                </mat-card>
+                        </div>
+                        <div class="flex-box" *ngFor="let doc of BuzDetails?.faceMatch?.files; let i=index">
+                            <div *ngIf="BuzDetails?.faceMatch?.files.length > 0">
+                                <h3>Image Captured</h3>
+                                <mat-card class="example-card" *ngIf="BuzDetails?.faceMatch?.files?.length>0">
+                                    <mat-card-header>
+                                      <p>Passport Photo</p>
+                                    </mat-card-header>
+                                    <img
+                                      *ngIf="BuzDetails?.faceMatch?.files[i].includes('jpeg?') || BuzDetails?.faceMatch?.files[i].includes('jpg?')|| BuzDetails?.faceMatch?.files[i].includes('png?')"
+                                      mat-card-image [src]="BuzDetails?.faceMatch?.files[i]" width="230" height="120" alt=""
+                                      (click)="openDialog(BuzDetails?.faceMatch?.files[i])">
+                
+                                    <mat-icon
+                                    *ngIf="!(BuzDetails?.faceMatch?.files[i].includes('jpeg?') || BuzDetails?.faceMatch?.files[i].includes('jpg?')|| BuzDetails?.faceMatch?.files[i].includes('png?'))"
+                                      class="file-icon" (click)="openDialog(BuzDetails?.faceMatch?.files[i])"  > insert_drive_file
+                                    </mat-icon>
+                
+                                    <mat-card-content>
+                                      <p>
+                                        Matching : {{BuzDetails?.faceMatch?.matchPercentage}}<br>
+                                      </p>
+                                    </mat-card-content>
+                                  </mat-card>
+                            </div>
+                        </div>
+
+                       
+                    </div>
+
+                </mat-expansion-panel>
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Business Proof
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.business.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                            <mat-icon *ngIf="BuzDetails?.business.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                            <mat-icon *ngIf="BuzDetails?.business.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.business?.documentType || BuzDetails?.business?.documentNumber || BuzDetails?.business?.comment">
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.business?.documentType">
+                                    <mat-label>Document Type</mat-label>
+                                    <input matInput value="{{BuzDetails?.business?.documentType}}" readonly>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.business?.documentNumber">
+                                    <mat-label>Document Number</mat-label>
+                                    <input matInput value="{{BuzDetails?.business?.documentNumber}}" readonly>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.business?.documentType">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.business?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.business.status=='In-Progress'">
+                                <div class="operation">
+                                    <div>
+
+                                        <button  mat-mini-fab
+                                            [ngClass]="{'green' : businessFlagDone, 'black': !businessFlagDone}"
+                                            (click)="doneFlagBusiness()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;
+                                        <button mat-mini-fab
+                                            [ngClass]="{'black' : !businessFlagCancel, 'red': businessFlagCancel}"
+                                            (click)="cancelFlagBusiness()"><mat-icon>close</mat-icon></button><br><br>
+
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label
+                                                [ngClass]="{'requiredColor':businessFlagDone, 'notRequiredColor':!businessFlagDone}"
+                                                [ngClass]="{'requiredColor':businessFlagCancel , 'notRequiredColor':!businessFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="business_proof" #businessValue>
+                                                <mat-option *ngFor="let c of businessCommentsList"
+                                                    [value]="c">{{c}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="businessValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="business_proof" matInput  ></textarea>                                                      
+                                            </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                    
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" >
+                            <div *ngFor="let ph of BuzDetails?.business?.files;let i =index">
+                                <mat-card class="example-card" *ngIf="BuzDetails?.business?.files?.length>0">
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.business?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.business?.files[i]?.document_type== 'png' || BuzDetails?.business?.files[i]?.document_type =='jpeg' || BuzDetails?.business?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.business?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.business?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.business?.files[i]?.document_type == 'png' || BuzDetails?.business?.files[i]?.document_type =='jpeg' || BuzDetails?.business?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.business?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.business?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.business?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel>
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Ownership Proof
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.ownership.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.ownership.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.ownership.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.ownership?.documentType || BuzDetails?.ownership?.documentNumber || BuzDetails?.ownership?.comment">
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.ownership?.documentType">
+                                    <mat-label>Document Type</mat-label>
+                                    <input matInput value="{{BuzDetails?.ownership?.documentType}}" readonly>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.ownership?.documentNumber">
+                                    <mat-label>Document Number</mat-label>
+                                    <input matInput value="{{BuzDetails?.ownership?.documentNumber}}" readonly>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.ownership?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.ownership?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.ownership.status=='In-Progress'">
+                                <div class="operation">
+                                    <div >
+                                        <button  mat-mini-fab
+                                            [ngClass]="{'green' : ownershipFlagDone, 'black': !ownershipFlagDone}"
+                                            (click)="doneFlagOwnership()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                        <button mat-mini-fab
+                                            [ngClass]="{'black' : !ownershipFlagCancel, 'red': ownershipFlagCancel }"
+                                            (click)="cancelFlagOwnership()"><mat-icon>close</mat-icon></button><br><br>
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label
+                                                [ngClass]="{'requiredColor':ownershipFlagDone, 'notRequiredColor':!ownershipFlagDone}"
+                                                [ngClass]="{'requiredColor':ownershipFlagCancel , 'notRequiredColor':!ownershipFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="ownership_proof" #ownershipValue>
+                                                <mat-option *ngFor="let c of ownershipCommentsList" [value]="c">{{c}}</mat-option>
+                                               
+                                            </mat-select>
+                                           
+                                        </mat-form-field>
+                                        <ng-container *ngIf="ownershipValue.value=='Other'">
+                                          <mat-form-field appearance="outline">
+                                            <textarea  formControlName="ownership_proof" matInput> </textarea>
+                                            </mat-form-field>
+                                        </ng-container>
+                                        
+                                    </div>
+                                   
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" >
+                            <div *ngFor="let ph of BuzDetails?.ownership?.files;let i =index">
+                                <mat-card class="example-card" *ngIf="BuzDetails?.ownership?.files?.length>0">
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.ownership?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.ownership?.files[i]?.document_type== 'png' || BuzDetails?.ownership?.files[i]?.document_type =='jpeg' || BuzDetails?.ownership?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.ownership?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.ownership?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.ownership?.files[i]?.document_type == 'png' || BuzDetails?.ownership?.files[i]?.document_type =='jpeg' || BuzDetails?.ownership?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.ownership?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.ownership?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.ownership?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Vintage Proof
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.vintage.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.vintage.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.vintage.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.vintage?.documentType || BuzDetails?.vintage?.documentNumber || BuzDetails?.vintage?.comment">
+                               
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.vintage?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.vintage?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.vintage.status=='In-Progress'">
+                                <div class="operation">
+                                    <div >
+                                        <button mat-mini-fab
+                                            [ngClass]="{'green' : vintageFlagDone, 'black': !vintageFlagDone}"
+                                            (click)="doneFlagVintage()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                        <button mat-mini-fab
+                                            [ngClass]="{'black' : !vintageFlagCancel, 'red': vintageFlagCancel}"
+                                            (click)="cancelFlagVintage()"><mat-icon>close</mat-icon></button><br><br>
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label
+                                                [ngClass]="{'requiredColor':vintageFlagDone, 'notRequiredColor':!vintageFlagDone}"
+                                                [ngClass]="{'requiredColor':vintageFlagCancel , 'notRequiredColor':!vintageFlagCancel} ">Comments</mat-label>
+                                            <mat-select formControlName="vintage_proof" #vintageValue>
+                                                <mat-option *ngFor="let c of vintageCommentsList" [value]="c">{{c}}</mat-option>
+                                               
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="vintageValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="vintage_proof" matInput> </textarea>
+                                              </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                 
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" *ngIf="BuzDetails?.vintage?.files?.length>0">
+                            
+                                <mat-card class="example-card" *ngFor="let ph of BuzDetails?.vintage?.files;let i =index" >
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.vintage?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.vintage?.files[i]?.document_type== 'png' || BuzDetails?.vintage?.files[i]?.document_type =='jpeg' || BuzDetails?.vintage?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.vintage?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.vintage?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.vintage?.files[i]?.document_type == 'png' || BuzDetails?.vintage?.files[i]?.document_type =='jpeg' || BuzDetails?.vintage?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.vintage?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.vintage?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.vintage?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Firm/Partnership Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.partnership.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.partnership.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.partnership.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.partnership?.documentType || BuzDetails?.partnership?.documentNumber || BuzDetails?.partnership?.comment">
+                               
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.partnership?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.partnership?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.partnership.status=='In-Progress'">
+                                <div class="operation">
+                                    <div
+                                        *ngIf="BuzDetails?.partnership.status=='In-Progress'">
+                                        <button mat-mini-fab
+                                            [ngClass]="{'green' : FirmFlagDone, 'black': !FirmFlagDone}"
+                                            (click)="doneFlagPatnership()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                        <button mat-mini-fab
+                                            [ngClass]="{'black' : !FirmFlagCancel, 'red': FirmFlagCancel}"
+                                            (click)="cancelFlagPatnership()"><mat-icon>close</mat-icon></button><br><br>
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label
+                                                [ngClass]="{'requiredColor':FirmFlagDone, 'notRequiredColor':!FirmFlagDone}"
+                                                [ngClass]="{'requiredColor':FirmFlagCancel , 'notRequiredColor':!FirmFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="firm_details" #FirmValue>
+                                                <mat-option *ngFor="let c of firmCommentsList" [value]="c">{{c}}</mat-option>
+                                                
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="FirmValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="firm_details" matInput> </textarea>
+                                              </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                  
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" >
+                            <div *ngFor="let ph of BuzDetails?.partnership?.files;let i =index">
+                                <mat-card class="example-card" *ngIf="BuzDetails?.partnership?.files?.length>0">
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.partnership?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.partnership?.files[i]?.document_type== 'png' || BuzDetails?.partnership?.files[i]?.document_type =='jpeg' || BuzDetails?.partnership?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.partnership?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.partnership?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.partnership?.files[i]?.document_type == 'png' || BuzDetails?.partnership?.files[i]?.document_type =='jpeg' || BuzDetails?.partnership?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.partnership?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.partnership?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.partnership?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                 <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Banking Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.bankStatement.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.bankStatement.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.bankStatement.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.bankStatement?.documentType || BuzDetails?.bankStatement?.documentNumber || BuzDetails?.bankStatement?.comment">
+                               
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.bankStatement?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.bankStatement?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.bankStatement.status=='In-Progress'">
+                                <div class="operation">
+                                    <div
+                                        *ngIf="BuzDetails?.bankStatement.status=='In-Progress'">
+                                        <button  mat-mini-fab
+                                            [ngClass]="{'green' : bankingFlagDone, 'black': !bankingFlagDone}"
+                                            (click)="doneFlagBanking()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                        <button mat-mini-fab
+                                            [ngClass]="{'black' : !bankingFlagCancel, 'red': bankingFlagCancel}"
+                                            (click)="cancelFlagBanking()"><mat-icon>close</mat-icon></button><br><br>
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label
+                                                [ngClass]="{'requiredColor':bankingFlagDone, 'notRequiredColor':!bankingFlagDone}"
+                                                [ngClass]="{'requiredColor':bankingFlagCancel , 'notRequiredColor':!bankingFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="banking_details" #bankingValue>
+                                                <mat-option *ngFor="let c of bankingCommentsList"
+                                                    [value]="c">{{c}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="bankingValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="banking_details" matInput> </textarea>
+                                              </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                   
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" >
+                            <div *ngFor="let ph of BuzDetails?.bankStatement?.files;let i =index">
+                                <mat-card class="example-card" *ngIf="BuzDetails?.bankStatement?.files?.length>0">
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.bankStatement?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.bankStatement?.files[i]?.document_type== 'png' || BuzDetails?.bankStatement?.files[i]?.document_type =='jpeg' || BuzDetails?.bankStatement?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.bankStatement?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.bankStatement?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.bankStatement?.files[i]?.document_type == 'png' || BuzDetails?.bankStatement?.files[i]?.document_type =='jpeg' || BuzDetails?.bankStatement?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.bankStatement?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.bankStatement?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.bankStatement?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Financial Details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.financial.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.financial.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.financial.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.financial?.documentType || BuzDetails?.financial?.documentNumber || BuzDetails?.financial?.comment">
+                               
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.financial?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.financial?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.financial.status=='In-Progress'">
+                                <div class="operation">
+                                    <div *ngIf="BuzDetails?.financial.status=='In-Progress'">
+                                        <button mat-mini-fab
+                                            [ngClass]="{'green' : financialFlagDone, 'black': !financialFlagDone}"
+                                            (click)="doneFlagFinancial()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                        <button mat-mini-fab
+                                            [ngClass]="{'black' : !financialFlagCancel, 'red': financialFlagCancel}"
+                                            (click)="cancelFlagFinancial()"><mat-icon>close</mat-icon></button><br><br>
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label
+                                                [ngClass]="{'requiredColor':financialFlagDone, 'notRequiredColor':!financialFlagDone}"
+                                                [ngClass]="{'requiredColor':financialFlagCancel , 'notRequiredColor':!financialFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="financial_details" #financialValue>
+                                                <mat-option *ngFor="let c of financialCommentList"
+                                                    [value]="c">{{c}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="financialValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="financial_details" matInput> </textarea>
+                                              </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                   
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" >
+                            <div *ngFor="let ph of BuzDetails?.financial?.files;let i =index">
+                                <mat-card class="example-card" *ngIf="BuzDetails?.financial?.files?.length>0">
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.financial?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.financial?.files[i]?.document_type== 'png' || BuzDetails?.financial?.files[i]?.document_type =='jpeg' || BuzDetails?.financial?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.financial?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.financial?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.financial?.files[i]?.document_type == 'png' || BuzDetails?.financial?.files[i]?.document_type =='jpeg' || BuzDetails?.financial?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.financial?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.financial?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.financial?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                 <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>GST Returns Document(Upto 24 Months)
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.gst.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.gst.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.gst.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.gst?.documentType || BuzDetails?.gst?.documentNumber || BuzDetails?.gst?.comment">
+                               
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.gst?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.gst?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.gst.status=='In-Progress'">
+                                <div class="operation">
+                                    <div *ngIf="BuzDetails?.gst.status=='In-Progress'">
+                                        <button  mat-mini-fab [ngClass]="{'green' : gstFlagDone, 'black': !gstFlagDone}"
+                                            (click)="doneFlagGST()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                        <button mat-mini-fab [ngClass]="{'black' : !gstFlagCancel, 'red': gstFlagCancel}"
+                                            (click)="cancelFlagGST()"><mat-icon>close</mat-icon></button><br><br>
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label [ngClass]="{'requiredColor':gstFlagDone, 'notRequiredColor':!gstFlagDone}"
+                                                [ngClass]="{'requiredColor':gstFlagCancel , 'notRequiredColor':!gstFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="gst_details" #gstValue>
+                                                <mat-option *ngFor="let c of gstCommentsList" [value]="c">{{c}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="gstValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="gst_details" matInput> </textarea>
+                                              </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                  
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" >
+                            <div *ngFor="let ph of BuzDetails?.gst?.files;let i =index">
+                                <mat-card class="example-card" *ngIf="BuzDetails?.gst?.files?.length>0">
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.gst?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.gst?.files[i]?.document_type== 'png' || BuzDetails?.gst?.files[i]?.document_type =='jpeg' || BuzDetails?.gst?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.gst?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.gst?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.gst?.files[i]?.document_type == 'png' || BuzDetails?.gst?.files[i]?.document_type =='jpeg' || BuzDetails?.gst?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.gst?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.gst?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.gst?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Store Images
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.storeImages.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.storeImages.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.storeImages.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.storeImages?.documentType || BuzDetails?.storeImages?.documentNumber || BuzDetails?.storeImages?.comment">
+                               
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.storeImages?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.storeImages?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.storeImages.status=='In-Progress'">
+                                <div class="operation">
+                                    <div *ngIf="BuzDetails?.storeImages.status=='In-Progress'">
+                                        <button  mat-mini-fab
+                                            [ngClass]="{'green' : imagesFlagDone, 'black': !imagesFlagDone}"
+                                            (click)="doneFlagImage()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;&nbsp;
+                                        <button mat-mini-fab [ngClass]="{'black' : !imagesFlagCancel, 'red': imagesFlagCancel}"
+                                            (click)="cancelFlagImage()"><mat-icon>close</mat-icon></button><br><br>
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label [ngClass]="{'requiredColor':imagesFlagDone, 'notRequiredColor':!imagesFlagDone}"
+                                                [ngClass]="{'requiredColor':imagesFlagCancel , 'notRequiredColor':!imagesFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="images" #imagesValue>
+                                                <mat-option *ngFor="let c of imagesCommentsList" [value]="c">{{c}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="imagesValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="images" matInput> </textarea>
+                                              </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                    
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" >
+                            <div *ngFor="let ph of BuzDetails?.storeImages?.files;let i =index">
+                                <mat-card class="example-card" *ngIf="BuzDetails?.storeImages?.files?.length>0">
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.storeImages?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.storeImages?.files[i]?.document_type== 'png' || BuzDetails?.storeImages?.files[i]?.document_type =='jpeg' || BuzDetails?.storeImages?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.storeImages?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.storeImages?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.storeImages?.files[i]?.document_type == 'png' || BuzDetails?.storeImages?.files[i]?.document_type =='jpeg' || BuzDetails?.storeImages?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.storeImages?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.storeImages?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.storeImages?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                <mat-expansion-panel class="mat-elevation-z0">
+                    <mat-expansion-panel-header (click)="selectImage(0)">
+                        <mat-panel-title>Customer Cheque Proof
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <mat-icon *ngIf="BuzDetails?.chequeImages.status=='Approved'" style="color: green;">check_circle</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.chequeImages.status=='Rejected'" style="color: red;">cancel</mat-icon>
+                                <mat-icon *ngIf="BuzDetails?.chequeImages.status=='In-Progress'" style="color: #ffa500;">watch_later</mat-icon>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <div class="panelbody">
+                        <div class="cards-wrapper">
+                            <mat-card *ngIf="BuzDetails?.chequeImages?.documentType || BuzDetails?.chequeImages?.documentNumber || BuzDetails?.chequeImages?.comment">
+                               
+                                <mat-form-field appearance="outline" *ngIf="BuzDetails?.chequeImages?.comment">
+                                    <mat-label>Comment</mat-label>
+                                    <textarea matInput value="{{BuzDetails?.chequeImages?.comment}}" readonly></textarea>
+                                </mat-form-field>
+                            </mat-card>
+                            <mat-card *ngIf="BuzDetails?.chequeImages.status=='In-Progress'">
+                                <div class="operation">
+                                    <div *ngIf="BuzDetails?.chequeImages.status=='In-Progress'">
+
+                                        <button  mat-mini-fab
+                                            [ngClass]="{'green' : chequeFlagDone, 'black': !chequeFlagDone}"
+                                            (click)="doneFlagCheque()"><mat-icon>done</mat-icon></button>&nbsp;&nbsp;
+                                        <button mat-mini-fab
+                                            [ngClass]="{'black' : !chequeFlagCancel, 'red': chequeFlagCancel}"
+                                            (click)="cancelFlagCheque()"><mat-icon>close</mat-icon></button><br><br>
+
+                                        <mat-form-field class="e" appearance="outline">
+                                            <mat-label
+                                                [ngClass]="{'requiredColor':chequeFlagDone, 'notRequiredColor':!chequeFlagDone}"
+                                                [ngClass]="{'requiredColor':chequeFlagCancel , 'notRequiredColor':!chequeFlagCancel}">Comments</mat-label>
+                                            <mat-select formControlName="cheque" #chequeValue>
+                                                <mat-option *ngFor="let c of chequeCommentsList"
+                                                    [value]="c">{{c}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <ng-container *ngIf="chequeValue.value=='Other'">
+                                            <mat-form-field appearance="outline">
+                                                <textarea  formControlName="cheque" matInput> </textarea>
+                                              </mat-form-field>
+                                          </ng-container>
+                                    </div>
+                                   
+                                </div>
+                            </mat-card>
+                        </div>
+                        <div class="flex-box" *ngIf="BuzDetails?.chequeImages?.files?.length>0">
+                            
+                                <mat-card class="example-card" *ngFor="let ph of BuzDetails?.chequeImages?.files;let i =index" >
+                                    <mat-card-header>
+                                        <p>{{BuzDetails?.chequeImages?.files[i]?.document_name}}</p>
+                                    </mat-card-header>
+                                    <img *ngIf="(BuzDetails?.chequeImages?.files[i]?.document_type== 'png' || BuzDetails?.chequeImages?.files[i]?.document_type =='jpeg' || BuzDetails?.chequeImages?.files[i]?.document_type =='jpg')"
+                                        mat-card-image [src]="BuzDetails?.chequeImages?.files[i]?.url" width="230" height="120" alt=""
+                                        (click)="openDialog(BuzDetails?.chequeImages?.files[i]?.url)">
+                    
+                                    <mat-icon
+                                        *ngIf="!(BuzDetails?.chequeImages?.files[i]?.document_type == 'png' || BuzDetails?.chequeImages?.files[i]?.document_type =='jpeg' || BuzDetails?.chequeImages?.files[i]?.document_type =='jpg')"
+                                        class="file-icon" (click)="openDialog(BuzDetails?.chequeImages?.files[i]?.url)"> insert_drive_file
+                                    </mat-icon>
+                    
+                                    <mat-card-content>
+                                        <p>
+                                            Uploaded By : {{BuzDetails?.chequeImages?.files[i]?.createdBy}}<br>
+                                            Uploaded At : {{BuzDetails?.chequeImages?.files[i]?.createdAt | date:date_format }}
+                                        </p>
+                                    </mat-card-content>
+                                </mat-card>
+                            
+                        </div>
+                    </div>
+
+                </mat-expansion-panel> 
+                </mat-accordion>
+                <div class="btn-view">
+                    <button type="submit" mat-flat-button class="btn-dark" (click)="previous()">PREVIOUS STEP</button>
+                    <button type="submit" mat-flat-button class="sub-dark" (click)="onSubmit()">SUBMIT</button>
+                  </div>
+                
+            </div>
+        </form>
+
+    </div>
+</app-layout>

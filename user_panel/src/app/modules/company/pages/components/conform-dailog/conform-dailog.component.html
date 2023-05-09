@@ -1,0 +1,43 @@
+<!-- <div id="dialogconfirm-page">
+    <h1 mat-dialog-title>Delete Confirmation</h1>
+  
+    <div mat-dialog-content>
+      <p><strong></strong>This will be deleted. Do you confirm?</p>
+    </div>
+  
+    <div mat-dialog-actions>
+      <button mat-button cdkFocusInitial (click)="confirm()">Confirm</button>&nbsp;
+      <button mat-button (click)="cancel()">Cancel</button>
+    </div>
+  
+</div>  -->
+<!-- <div class="dialog-header">
+    <mat-icon color="warn">error</mat-icon>
+    <h2 mat-dialog-title>
+      {{ codeTitle }} <span *ngIf="data.code">({{ data.code }})</span>
+    </h2>
+  </div>
+  
+  <mat-dialog-content *ngIf="data.message" class="mat-typography">
+    <p>{{ data.message }}</p>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions> -->
+
+<div id="dialogconfirm-page">
+  <div>
+    <h1 mat-dialog-title>Delete Confirmation</h1>
+
+    <div mat-dialog-content>
+      <p><strong>Are you sure you want to delete ? </strong></p>
+    </div>
+
+    <div mat-dialog-actions align="end">
+      <button mat-button color="warn" cdkFocusInitial (click)="confirm()">
+        Confirm</button
+      >&nbsp;
+      <button mat-button color="primary" (click)="cancel()">Cancel</button>
+    </div>
+  </div>
+</div>

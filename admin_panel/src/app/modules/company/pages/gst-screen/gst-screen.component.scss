@@ -1,0 +1,343 @@
+#credit-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  width: 100%;
+  height: 100%;
+  margin: 15px;
+
+  background-size: white;
+  background-position: left center;
+  min-height: 100vh;
+  .fetchButtonContainer{
+    display: flex;
+    justify-content: end;
+    margin:auto 45px 40px auto;
+    button {
+      background-color: green;
+      color: #ffffff;
+      width: 80px;
+    }
+  }
+ 
+  
+  .file-input {
+    display: none;
+    flex-direction: row;
+  }
+
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  .backdiv {
+    display: grid;
+    grid-template-columns: 0.1fr 1.9fr;
+    grid-template-rows: 1fr;
+    grid-gap: 0px 0px;
+    gap: 0px 0px;
+    margin-bottom: 0px;
+
+    button {
+      align-self: center;
+      box-shadow: none;
+      height: 33px;
+      width: 33px;
+      line-height: 17px;
+      background: black;
+    }
+    h2 {
+      margin: 0 0 0px;
+      align-self: center;
+    }
+    ::ng-deep {
+      .back .mat-button-wrapper {
+        padding: 0px 0;
+        line-height: 17px;
+      }
+    }
+  }
+
+  .container {
+    width: 90%;
+    max-width: 100%;
+    padding: 0px 25px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  .row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .upload-button-placeholder {
+    font-size: 14px;
+    margin-top: 5%;
+    margin-right: 5px;
+  }
+  .upload-component {
+    display: flex;
+    margin-left: 20%;
+
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .col-100 {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 0 12px;
+  }
+  .marlabel .input-wrapper {
+    margin-top: 22px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    padding-top: 12px;
+  }
+  .bottom-logo {
+    max-height: 24px;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .bottom-text {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .logo {
+    max-height: 65px;
+  }
+  .image-responsive {
+    max-width: 100%;
+    height: auto;
+  }
+  .logotext {
+    font: normal normal normal 16px/26px Lato;
+  }
+  .margin-top {
+    margin-top: 1rem;
+  }
+  .bg-white {
+    background: white;
+  }
+  .margin-bottom {
+    margin-bottom: 1rem;
+  }
+  .btn-primary {
+    background: #f79e1b 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    color: white;
+    padding: 6px;
+  }
+  .btn-add {
+    background: #ffffff 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    color: black;
+    padding: 6px;
+    border: 1px solid black;
+  }
+  .btn-remove {
+    box-shadow: none;
+    background: #e40000;
+    color: white;
+  }
+  .btn-primary-outline {
+    width: 100%;
+    height: 25px;
+    padding: 4px 4px;
+    line-height: 20px;
+    margin-top: 3px;
+    border: 1px solid #f79e1b;
+    color: #f79e1b;
+  }
+  .btn-secondary {
+    background: #f6f2e9 0% 0% no-repeat padding-box;
+    border-radius: 6px;
+    width: 100%;
+    padding: 6px;
+  }
+  .btn-secondary img {
+    vertical-align: middle;
+    margin: 0px 5px 4px 5px;
+    width: 23px;
+  }
+  .input-wrapper {
+    margin-bottom: 8px;
+    margin-top: 8px;
+  }
+
+  ::ng-deep {
+    .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+      color: #000000;
+    }
+    .mat-form-field {
+      font-size: 12px;
+    }
+    .mat-form-field.mat-form-field-invalid .mat-form-field-label {
+      color: #c4c4c4;
+    }
+    .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid
+      .mat-form-field-outline-thick {
+      color: #c4c4c4;
+    }
+
+    .mat-form-field.mat-form-field-invalid .mat-form-field-label.mat-accent,
+    .mat-form-field.mat-form-field-invalid
+      .mat-form-field-label
+      .mat-form-field-required-marker {
+      color: #c4c4c4;
+    }
+    .mat-horizontal-stepper-header {
+      height: 44px;
+      padding: 0 22px;
+    }
+    .mat-horizontal-content-container {
+      padding: 0 5px 24px 5px;
+    }
+    .mat-form-field-wrapper {
+      padding-bottom: 0.5em;
+    }
+    .mat-form-field-infix {
+      border-top: 0.6em solid transparent;
+    }
+
+    .mat-form-field-appearance-outline .mat-form-field-infix {
+      padding: 0.6em 0 1em 0;
+    }
+    .mat-step-header .mat-step-icon {
+      background-color: #cccccc;
+    }
+    .mat-step-header .mat-step-icon-state-done {
+      background-color: #cccccc;
+    }
+    .mat-step-header .mat-step-icon-state-edit {
+      background-color: #cccccc;
+    }
+    .mat-step-header .mat-step-icon-selected {
+      background-color: #000000;
+    }
+    .mat-step-header .mat-step-label.mat-step-label-active {
+      color: #000000;
+    }
+  }
+
+  .text-right {
+    text-align: right;
+  }
+  .loginform {
+    padding: 0px 25px;
+
+    .forgot-password a {
+      color: black;
+    }
+    h2 {
+      text-align: left;
+      font: normal normal bold 36px/26px Lato;
+      letter-spacing: 0.36px;
+      color: #000000;
+    }
+    p {
+      text-align: left;
+      font: normal 16px/26px Lato;
+      letter-spacing: 0.16px;
+      color: #000000;
+    }
+  }
+  .no-shadow {
+    box-shadow: none;
+    border: 1px solid #f1f1f1;
+    margin-bottom: 15px;
+  }
+  .flex-div {
+    display: flex;
+    flex-direction: row;
+    .btn-primary {
+      margin: 5px;
+    }
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+  }
+
+  .flex-item-left {
+    padding-right: 5px;
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    padding-left: 5px;
+    flex: 50%;
+  }
+
+  .divcontainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .divline {
+    flex: 1;
+  }
+
+  .divtext {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .gstdetailes,
+  .gst_record {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+    grid-template-rows: 1fr;
+    grid-gap: 10px;
+    gap: 10px;
+    margin: 15px;
+  }
+
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 800px) {
+    .flex-container {
+      flex-direction: column;
+    }
+    .margin-bottom {
+      margin-bottom: 1rem;
+    }
+    .margin-top {
+      margin-top: 1rem;
+    }
+    .loginform {
+      padding: 0px 30px;
+    }
+    .flex-div {
+      display: block;
+      text-align: center;
+    }
+    .flex-div p {
+      text-align: center;
+    }
+    .loginform h2,
+    .loginform p {
+      text-align: center;
+    }
+  }
+}

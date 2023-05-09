@@ -1,0 +1,91 @@
+#invoicesummery-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+  }
+  
+  .right-box {
+    margin-right: 0px;
+    max-width: 100px;
+    ::ng-deep .mat-form-field-outline-end {
+      border-right: none;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+  }
+
+  .left-box {
+    margin-left:-15px;
+    max-width: 100%;
+    ::ng-deep .mat-form-field-outline-start {
+      border-left: none;
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+    }
+  }
+
+  td.mat-cell{
+    padding: 10px;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+    background: black;
+    color: white;
+    padding-left: 15px;
+  }
+  .mat-form-field {
+    margin-right: 15px;
+    font-size: 12px;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    padding: 4px 15px;
+    vertical-align: 2px;
+    margin: 5px;
+  }
+  .exel-icon {
+    border: 1px solid green;
+    color: green;
+    line-height: 22px;
+    vertical-align: middle;
+    margin-right: 15px;
+    margin-bottom: 5px;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+
+
+  @media (max-width: 767px) {
+    .transheader{
+      display: block;
+    
+    
+      .mat-form-field {
+        width: 100%; max-width: none;}
+    }
+  }
+}

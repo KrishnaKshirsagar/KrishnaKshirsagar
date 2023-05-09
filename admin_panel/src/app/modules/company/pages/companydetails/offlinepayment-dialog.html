@@ -1,0 +1,142 @@
+<div id="offlinepayment-dialog">
+  <h1 class="text-center" >Offline Payment</h1>
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="offlinepayment_form" class="example-form" (ngSubmit)="onSubmit()" >
+      <div class="gridLayout">
+        <div class="Left">
+          <div class="labeldiv">
+            <mat-label>Buyer Name: </mat-label>
+            <span> {{ company_name }} </span>
+          </div>      
+        
+        </div>
+        <div class="Right">
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Seller Name</mat-label>
+              <input type="text"
+                         placeholder="Please Select Seller"
+                         aria-label="Number"
+                         matInput
+                         [formControl]="myControl"
+                         [matAutocomplete]="auto">
+                  <mat-autocomplete [displayWith]="displayFn" (optionSelected)="onChange($event.option.value)" #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of sellerlist" [value]="option">
+                      {{option.company_name}}
+                    </mat-option>
+                  </mat-autocomplete>
+                  <button type="button" mat-button (click)="clear(myControl)" matSuffix mat-icon-button aria-label="Clear" >
+                    <mat-icon>close</mat-icon>
+                  </button>
+            </mat-form-field>
+          </div>
+         
+
+        </div>
+      </div>
+      <div class="gridLayout">
+        <div class="Left">
+        
+          <div class="labeldiv">
+            <mat-label>Outstanding Amount: </mat-label>
+            <span> {{total_outstanding_amount ? total_outstanding_amount : 0 }} </span>
+          </div>
+        
+        </div>
+        <div class="Right">
+          <div class="labeldiv">
+            <mat-label>Total Discount Applicable: </mat-label>
+            <span> {{ total_discount ? total_discount : 0 }} </span>
+          </div>
+        </div>
+      </div>
+     
+     
+
+      <div class="gridLayout">
+        <div class="Left">
+        
+          <div class="labeldiv">
+            <mat-label>Total Interest Applicable: </mat-label>
+            <span> {{ total_interest ? total_interest : 0 }} </span>
+          </div>
+        
+        </div>
+        <div class="Right">
+          <div class="labeldiv">
+            <mat-label>Total Payable Amount: </mat-label>
+            <span> {{ total_amount }} </span>
+          </div>
+        </div>
+      </div>
+
+    <div class="gridLayout">
+      <div class="Left">
+        <mat-form-field appearance="outline">
+          <mat-label>Amount Paid </mat-label>
+          <input matInput type="text"  pattern="^[0-9]*$" formControlName="paid_amount" (input)="partpayemetAmount($event)" placeholder="Enter Amount Paid">
+          <!-- <mat-error>Please enter valid paid amount</mat-error> -->
+          
+        </mat-form-field>
+        <span
+          *ngIf="error_flag"
+          style="color: rgb(241, 14, 14); font-size: 10px; float:right; margin-top: -20px;
+          margin-right: 62px;"
+          i18n="@@ABA3"
+          pattern="^[0-9]{0,10}+[0-9]\.?\d*$"
+          >
+            Please enter a valid amount
+        </span>
+
+      <div class="labeldiv">
+        <mat-label>Amount Paid (In words): </mat-label>
+        <span> {{ amount_inWords }} </span>
+      </div>
+
+      </div>
+      <div class="Right">
+        <mat-form-field appearance="outline">
+          <mat-label>  Transaction Id</mat-label>
+          <input matInput formControlName="transactionid" placeholder="Enter Transaction Id">
+          <mat-error>Please enter valid transaction id</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Mode of Payment Select</mat-label>
+          <mat-select formControlName="payment_mode">
+            <mat-option value="dd">Demand Draft</mat-option>
+            <mat-option value="cheque">Cheque</mat-option>
+            <mat-option value="cash">Cash</mat-option>
+            <mat-option value="online">Online Transfer</mat-option>
+            <mat-option value="other">Other</mat-option>
+          </mat-select>
+          <mat-error>Please select mode of payment</mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  <div>
+    <mat-form-field appearance="outline">
+      <mat-label>Comments</mat-label>
+      <textarea
+        matInput
+        formControlName="comment"
+        placeholder="Leave a comment"
+      ></textarea>
+      <mat-error>Please enter comment</mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <div class="labeldiv">
+      <mat-label> Upload Receipt </mat-label>
+      <input  id="pay_slip" type="file" accept=".pdf, image/png, image/jpeg" formControlName="payement_receipt" (change)="onFileChange($event)" placeholder="Upload Receipt">
+    </div>
+      <div class="input-wrapper text-center">
+        <button type="submit" mat-flat-button class="btn-dark">SUBMIT</button>
+        <button type="button" (click)="closeDialogue()" style="margin: 5px;" mat-flat-button class="btn-dark">CANCEL</button>
+      </div>
+  </div>
+    </form>
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,209 @@
+#uploadinvoices-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+  }
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+  .mat-form-field {
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 100%;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+  .multifile {
+    margin-top: 15px;
+    label {
+      margin-right: 10px;
+    }
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .details {
+    background: #fffdfb;
+    h2 {
+      font-size: 17px;
+      span {
+        font-weight: 400;
+        color: #7a6f6f;
+        font-size: 17px;
+      }
+    }
+    .mat-checkbox {
+      margin: 0px 10px;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex-item-left {
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    flex: 50%;
+  }
+
+  ::ng-deep {
+    .multifile {
+      button {
+        margin-left: 5px;
+      }
+
+      mat-card {
+        margin-top: 15px;
+      }
+    }
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 767px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+}
+
+#companydetailsapprove-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}
+
+#companydetailsedit-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+    padding: 0px 5px;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex-item-left {
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    flex: 50%;
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 767px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+}
+
+#uploadinvoicesdelete-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}

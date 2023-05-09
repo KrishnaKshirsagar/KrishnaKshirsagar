@@ -1,0 +1,887 @@
+<!-- @format -->
+
+<app-layout>
+  <div id="misreports-page">
+    <div class="main-wrapper">
+      <h2>MIS Reports</h2>
+      <mat-radio-group
+        class="custradio"
+        [(ngModel)]="showreport"
+        (change)="radiobuttonChange()"
+        aria-label="Select an option"
+      >
+        <mat-radio-button class="cust" value="irr"
+          >Invoices Related Reports</mat-radio-button
+        >
+        <mat-radio-button class="cust" value="crr"
+          >Companies Related Reports</mat-radio-button
+        >
+        <mat-radio-button class="cust" value="urr"
+          >Users Related Reports</mat-radio-button
+        >
+        <mat-radio-button class="cust" value="nbfc"
+          >NBFC Related Reports</mat-radio-button
+        >
+        <mat-radio-button class="cust" value="collection"
+          >Collection Related Reports</mat-radio-button
+        >
+        <mat-radio-button class="cust" value="kyc"
+          >KYC Related Reports</mat-radio-button
+        >
+        <mat-radio-button class="cust" value="whatsapp"
+          >Whatsapp Reports</mat-radio-button
+        >
+      </mat-radio-group>
+
+      <div *ngIf="showreport === 'irr'">
+        <div class="report">
+          <div>
+            <h3>Select Report:</h3>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Select MIS Report</mat-label>
+            <mat-select
+              [(value)]="invoice_mis_select"
+              (selectionChange)="selectChange($event.value)"
+            >
+              <mat-option value="" selected>Select MIS Report</mat-option>
+              <mat-option value="consolidatedinvoices"
+                >Consolidated Invoices Report</mat-option
+              >
+
+              <mat-option value="invoicesuploaded"
+                >Invoices Uploaded</mat-option
+              >
+              <mat-option value="invoicesapproved"
+                >Invoices Approved</mat-option
+              >
+              <mat-option value="invoicespending">Invoices Pending</mat-option>
+              <mat-option value="invoicesrejected"
+                >Invoices Rejected
+              </mat-option>
+              <mat-option value="invoicespaid">Invoices Paid</mat-option>
+              <mat-option value="interest"
+                >Interest Charged on Invoice</mat-option
+              >
+              <mat-option value="discount"
+                >Discount allowed on Invoice</mat-option
+              >
+              <mat-option value="invoice_summary">Invoice Summary</mat-option>
+              <mat-option value="automated_upload_invoices_failed"
+                >Automated Upload Invoices Failed</mat-option
+              >
+              <mat-option value="invoices_payment_failed"
+                >Invoice Payment Failed</mat-option
+              >
+              <mat-option value="invoicesoverdue">Invoices Overdue</mat-option>
+              <mat-option value="invoicespartiallypaid"
+                >Invoices Partially Paid</mat-option
+              >
+              <mat-option value="invoicesbyduedate"
+                >Invoices with Due Date
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div
+          *ngIf="invoice_mis_select !== 'consolidatedinvoices'"
+          class="report datefilter"
+        >
+          <div>
+            <h3>Date Filter:</h3>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Select Date Filter</mat-label>
+              <mat-select [(ngModel)]="showdaterange">
+                <!-- <mat-option value="Today">Today</mat-option> -->
+                <mat-option value="" selected>Select Date Filter</mat-option>
+                <mat-option
+                  value="Yesterday"
+                  *ngIf="
+                    invoice_mis_select != 'interest' &&
+                    invoice_mis_select != 'discount' &&
+                    invoice_mis_select != 'invoice_summary'
+                  "
+                  >Yesterday</mat-option
+                >
+                <mat-option
+                  value="10days"
+                  *ngIf="
+                    invoice_mis_select != 'interest' &&
+                    invoice_mis_select != 'discount' &&
+                    invoice_mis_select != 'invoice_summary'
+                  "
+                  >Last 10 days</mat-option
+                >
+                <mat-option value="DateRange"> Date Range</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              class="daterange"
+              *ngIf="showdaterange === 'DateRange'"
+            >
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input
+                [rangePicker]="rangePicker"
+                [formGroup]="dateRange"
+                [max]="maxDate"
+              >
+                <input
+                  matStartDate
+                  placeholder="Start date"
+                  formControlName="start"
+                  readonly
+                />
+                <input
+                  matEndDate
+                  placeholder="End date"
+                  formControlName="end"
+                  readonly
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="rangePicker"
+              ></mat-datepicker-toggle>
+              <mat-date-range-picker #rangePicker>
+                <mat-date-range-picker-actions>
+                  <button mat-button matDateRangePickerCancel>Cancel</button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    matDateRangePickerApply
+                    (click)="dateRangeVal()"
+                  >
+                    Apply
+                  </button>
+                </mat-date-range-picker-actions>
+              </mat-date-range-picker>
+            </mat-form-field>
+          </div>
+          <div
+            *ngIf="invoice_mis_select !== 'consolidatedinvoices'"
+            class="usertype"
+          >
+            <h3>User Type:</h3>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Select User Type</mat-label>
+              <mat-select [(value)]="selection">
+                <mat-option value="" selected>Select User Type</mat-option>
+                <mat-option value="buyer">Buyer</mat-option>
+                <mat-option value="seller">Seller</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <h3>Company Name:</h3>
+            <mat-form-field appearance="outline" class="autosuggetion left-box">
+              <mat-label>Select Company</mat-label>
+              <input
+                type="text"
+                placeholder="Select Company"
+                matInput
+                [matAutocomplete]="auto"
+                (input)="companySuggetion($event)"
+                [formControl]="companyNumberControl"
+              />
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayFn"
+                (optionSelected)="getPosts($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let company of company_Name"
+                  [value]="company"
+                >
+                  {{ company.company_name }}
+                </mat-option>
+              </mat-autocomplete>
+
+              <button
+                type="button"
+                mat-button
+                (click)="clear(companyNumberControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="action">
+          <button
+            mat-flat-button
+            class="btn-export"
+            type="submit"
+            (click)="invoices_misReport()"
+          >
+            Download Excel
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showreport === 'crr'">
+        <div class="report">
+          <div>
+            <h3>Select Report:</h3>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Select MIS Report</mat-label>
+            <mat-select
+              [(value)]="Company_mis_select"
+              (selectionChange)="selectChange($event.value)"
+            >
+              <mat-option value="" selected>Select MIS Report</mat-option>
+              <mat-option value="companiesmapping"
+                >Companies Mapping</mat-option
+              >
+              <mat-option value="companiesphonebook"
+                >Companies Phonebook</mat-option
+              >
+              <mat-option value="companiesonboarded"
+                >Companies Onboarded</mat-option
+              >
+              <mat-option value="companiesapproved"
+                >Companies Approved by Xuriti Admin
+              </mat-option>
+              <mat-option value="companiespending"
+                >Company pending approval from Xuriti admin</mat-option
+              >
+              <mat-option value="companiesupdated"
+                >Companies Updated by Xuriti Admin</mat-option
+              >
+              <mat-option value="companies_with_no_invoices_upload"
+                >Companies with No Invoices Uploaded
+              </mat-option>
+              <mat-option value="companies_not_done_payment"
+                >Companies Not Done Payment</mat-option
+              >
+              <!-- no need date -->
+              <mat-option value="companies_overdue"
+                >Companies with more than 5 Overdue Invoices</mat-option
+              >
+              <mat-option value="companies_uses_credit_limit"
+                >Companies nearing 80% usage of credit limit
+              </mat-option>
+              <mat-option value="companies_with_no_invoices"
+                >Companies with No Invoices as Seller or Buyer</mat-option
+              >
+              <!-- <mat-option value="buyer_pending_registration"
+                >No of Buyers Pending for Registration After Invoice is Uploaded
+                by Seller</mat-option
+              > -->
+              <mat-option value="list_of_comapaines"
+                >Companies with Credit Limit And Invoices</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="report">
+          <div
+            *ngIf="
+              Company_mis_select !== 'companies_uses_credit_limit' &&
+              Company_mis_select !== 'buyer_pending_registration' &&
+              Company_mis_select !== 'companies_overdue' &&
+              Company_mis_select !== 'list_of_comapaines'
+            "
+          >
+            <h3>Date Filter:</h3>
+          </div>
+
+          <div
+            *ngIf="
+              Company_mis_select !== 'companies_uses_credit_limit' &&
+              Company_mis_select !== 'buyer_pending_registration' &&
+              Company_mis_select !== 'companies_overdue' &&
+              Company_mis_select !== 'list_of_comapaines'
+            "
+          >
+            <mat-form-field appearance="outline">
+              <mat-label>Select Date Filter</mat-label>
+              <mat-select [(ngModel)]="showdaterange">
+                <!-- <mat-option value="Today">Today</mat-option> -->
+                <mat-option value="" selected>Select Date Filter</mat-option>
+                <mat-option value="Yesterday">Yesterday</mat-option>
+                <mat-option value="10days">Last 10 days</mat-option>
+                <mat-option value="DateRange">Date Range</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              class="daterange"
+              *ngIf="showdaterange === 'DateRange'"
+            >
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input
+                [rangePicker]="rangePicker"
+                [formGroup]="dateRange"
+                [max]="maxDate"
+              >
+                <input
+                  matStartDate
+                  placeholder="Start date"
+                  formControlName="start"
+                  readonly
+                />
+                <input
+                  matEndDate
+                  placeholder="End date"
+                  formControlName="end"
+                  readonly
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="rangePicker"
+              ></mat-datepicker-toggle>
+              <mat-date-range-picker #rangePicker>
+                <mat-date-range-picker-actions>
+                  <button mat-button matDateRangePickerCancel>Cancel</button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    matDateRangePickerApply
+                    (click)="dateRangeVal()"
+                  >
+                    Apply
+                  </button>
+                </mat-date-range-picker-actions>
+              </mat-date-range-picker>
+            </mat-form-field>
+          </div>
+
+          <div
+            *ngIf="
+              Company_mis_select !== 'companiesphonebook' &&
+              Company_mis_select !== 'companiesmapping'
+            "
+          >
+            <mat-form-field appearance="outline" class="autosuggetion left-box">
+              <mat-label>Select Company</mat-label>
+              <input
+                type="text"
+                placeholder="Select Company"
+                matInput
+                [matAutocomplete]="auto"
+                (input)="companySuggetion($event)"
+                [formControl]="companyNumberControl"
+              />
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayFn"
+                (optionSelected)="getPosts($event.option.value)"
+              >
+                <mat-option
+                  *ngFor="let company of company_Name"
+                  [value]="company"
+                >
+                  {{ company.company_name }}
+                </mat-option>
+              </mat-autocomplete>
+
+              <button
+                type="button"
+                mat-button
+                (click)="clear(companyNumberControl)"
+                matSuffix
+                mat-icon-button
+                aria-label="Clear"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="action">
+          <button
+            mat-flat-button
+            class="btn-export"
+            type="submit"
+            (click)="companies_misReport()"
+          >
+            Download Excel
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showreport === 'urr'">
+        <div class="report">
+          <div>
+            <h3>Select Report:</h3>
+          </div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Select MIS Report</mat-label>
+            <mat-select
+              [(value)]="User_mis_select"
+              (selectionChange)="selectChange($event.value)"
+            >
+              <mat-option value="" selected>Select MIS Report</mat-option>
+              <mat-option value="users_virtual_account"
+                >Virtual Accounts of Dealers</mat-option
+              >
+              <mat-option value="users_registered">Users Registered</mat-option>
+              <mat-option value="users_successful_logins"
+                >Users Successful Logins</mat-option
+              >
+              <mat-option value="users_unsuccessful_logins"
+                >Users Unsuccessful Logins</mat-option
+              >
+              <mat-option value="users_with_unverified_emails"
+                >Users with Unverified Emails</mat-option
+              >
+              <mat-option value="users_with_no_companies">
+                Users with No Companies</mat-option
+              >
+              <mat-option value="users_with_last_not_login_15days">
+                Users who have not logged in last 15 days</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div
+          class="report"
+          *ngIf="
+            User_mis_select != 'users_with_last_not_login_15days' &&
+            User_mis_select !== 'users_virtual_account'
+          "
+        >
+          <div>
+            <h3>Date Filter:</h3>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Select Date Filter</mat-label>
+              <mat-select [(ngModel)]="showdaterange">
+                <!-- <mat-option value="Today">Today</mat-option> -->
+                <mat-option value="" selected>Select Date Filter</mat-option>
+                <mat-option value="Yesterday">Yesterday</mat-option>
+                <mat-option value="10days">Last 10 days</mat-option>
+                <mat-option value="DateRange"> Date Range</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              class="daterange"
+              *ngIf="showdaterange === 'DateRange'"
+            >
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input
+                [rangePicker]="rangePicker"
+                [formGroup]="dateRange"
+                [max]="maxDate"
+              >
+                <input
+                  matStartDate
+                  placeholder="Start date"
+                  formControlName="start"
+                  readonly
+                />
+                <input
+                  matEndDate
+                  placeholder="End date"
+                  formControlName="end"
+                  readonly
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="rangePicker"
+              ></mat-datepicker-toggle>
+              <mat-date-range-picker #rangePicker>
+                <mat-date-range-picker-actions>
+                  <button mat-button matDateRangePickerCancel>Cancel</button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    matDateRangePickerApply
+                    (click)="dateRangeVal()"
+                  >
+                    Apply
+                  </button>
+                </mat-date-range-picker-actions>
+              </mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="action">
+          <button
+            mat-flat-button
+            class="btn-export"
+            type="submit"
+            (click)="users_misRrport()"
+          >
+            Download Excel
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showreport === 'nbfc'">
+        <div class="report">
+          <div>
+            <h3>Select Report:</h3>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Select MIS Report</mat-label>
+            <mat-select
+              [(value)]="nbfc_mis_select"
+              (selectionChange)="selectChange($event.value)"
+            >
+              <mat-option value="" selected>Select MIS Report</mat-option>
+              <mat-option value="nbfc_onboarding"
+                >List of NBFC Onboarded</mat-option
+              >
+              <mat-option value="nbfc_mis_mapping"
+                >Companies Mapped to NBFC</mat-option
+              >
+              <mat-option value="mis_payment"
+                >Reconciliation Summary</mat-option
+              >
+              <!-- <mat-option value="nbfc_paid_seller"
+                >Invoices Paid to Seller by NBFC
+              </mat-option> -->
+              <mat-option value="disbursments_statements"
+                >Disbursement Statements
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="report">
+          <div>
+            <h3>Date Filter:</h3>
+          </div>
+
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Select Date Filter</mat-label>
+              <mat-select [(ngModel)]="showdaterange">
+                <!-- <mat-option value="Today">Today</mat-option> -->
+                <mat-option value="" selected>Select Date Filter</mat-option>
+                <mat-option value="Yesterday">Yesterday</mat-option>
+                <mat-option value="10days">Last 10 days</mat-option>
+                <mat-option value="DateRange"> Date Range</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              class="daterange"
+              *ngIf="showdaterange === 'DateRange'"
+            >
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input
+                [rangePicker]="rangePicker"
+                [formGroup]="dateRange"
+                [max]="maxDate"
+              >
+                <input
+                  matStartDate
+                  placeholder="Start date"
+                  formControlName="start"
+                  readonly
+                />
+                <input
+                  matEndDate
+                  placeholder="End date"
+                  formControlName="end"
+                  readonly
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="rangePicker"
+              ></mat-datepicker-toggle>
+              <mat-date-range-picker #rangePicker>
+                <mat-date-range-picker-actions>
+                  <button mat-button matDateRangePickerCancel>Cancel</button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    matDateRangePickerApply
+                    (click)="dateRangeVal()"
+                  >
+                    Apply
+                  </button>
+                </mat-date-range-picker-actions>
+              </mat-date-range-picker>
+            </mat-form-field>
+          </div>
+
+          <h3 *ngIf="nbfc_mis_select == 'disbursments_statements'">
+            NBFC Name:
+          </h3>
+          <mat-form-field
+            appearance="outline"
+            class="autosuggetion left-box"
+            *ngIf="nbfc_mis_select == 'disbursments_statements'"
+          >
+            <mat-label>Select Company</mat-label>
+            <input
+              type="text"
+              placeholder="Select Company"
+              matInput
+              [matAutocomplete]="auto"
+              (input)="nbfcSuggetion($event)"
+              [formControl]="companyNumberControl"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              [displayWith]="displayFn"
+              (optionSelected)="getPosts($event.option.value)"
+            >
+              <mat-option
+                *ngFor="let company of company_Name"
+                [value]="company"
+              >
+                {{ company.nbfc_name }}
+              </mat-option>
+            </mat-autocomplete>
+
+            <button
+              type="button"
+              mat-button
+              (click)="clear(companyNumberControl)"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="action">
+          <button
+            mat-flat-button
+            class="btn-export"
+            type="submit"
+            (click)="nbfc_misRrport()"
+          >
+            Download Excel
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showreport === 'collection'">
+        <div class="report">
+          <div>
+            <h3>Collection Status:</h3>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Select Collection Status</mat-label>
+            <mat-select
+              [(value)]="collection_mis_select"
+              (selectionChange)="selectChange($event.value)"
+            >
+              <mat-option value="" selected
+                >Select Collection Status</mat-option
+              >
+              <mat-option value="Collection">Collection </mat-option>
+              <mat-option value="In-Progress">In-Progress</mat-option>
+              <mat-option value="Collected">Collected</mat-option>
+              <mat-option value="Escalated">Escalated </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="action">
+          <button
+            mat-flat-button
+            class="btn-export"
+            type="submit"
+            (click)="collection_misReport()"
+          >
+            Download Excel
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="showreport === 'kyc'">
+        <div class="report">
+          <div>
+            <h3>Select Report:</h3>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Select MIS Report</mat-label>
+            <mat-select
+              [(value)]="kyc_mis_select"
+              (selectionChange)="selectChange($event.value)"
+            >
+              <mat-option value="" selected>Select MIS Report</mat-option>
+              <mat-option value="all_company_kyc"
+                >All Company KYC Report</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="report">
+          <div>
+            <h3>Date Filter:</h3>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Select Date Filter</mat-label>
+              <mat-select [(ngModel)]="showdaterange">
+                <mat-option value="" selected>Select Date Filter</mat-option>
+                <mat-option value="DateRange"> Date Range</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              class="daterange"
+              *ngIf="showdaterange === 'DateRange'"
+            >
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input
+                [rangePicker]="rangePicker"
+                [formGroup]="dateRange"
+                [max]="maxDate"
+              >
+                <input
+                  matStartDate
+                  placeholder="Start date"
+                  formControlName="start"
+                  readonly
+                />
+                <input
+                  matEndDate
+                  placeholder="End date"
+                  formControlName="end"
+                  readonly
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="rangePicker"
+              ></mat-datepicker-toggle>
+              <mat-date-range-picker #rangePicker>
+                <mat-date-range-picker-actions>
+                  <button mat-button matDateRangePickerCancel>Cancel</button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    matDateRangePickerApply
+                    (click)="dateRangeVal()"
+                  >
+                    Apply
+                  </button>
+                </mat-date-range-picker-actions>
+              </mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="action">
+          <button
+            mat-flat-button
+            class="btn-export"
+            type="submit"
+            (click)="kyc_misReport()"
+          >
+            Download Excel
+          </button>
+        </div>
+      </div>
+      <div *ngIf="showreport === 'whatsapp'">
+        <div class="report">
+          <div>
+            <h3>Select Report:</h3>
+          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Select WA Report</mat-label>
+            <mat-select
+              [(value)]="whatsapp_select"
+              (selectionChange)="selectChange($event)"
+            >
+              <mat-option value="" selected>Select WA Report</mat-option>
+              <mat-option value="payment_overdue"
+                >Payments Overdue</mat-option
+              >
+              <mat-option value="pre_discount_notice"
+                >Discount Revision
+              </mat-option>
+              <mat-option value="invoice_upload_message"
+                >Invoices Uploaded
+              </mat-option>
+              <mat-option value="credit_approved"
+                >Credit Approved
+              </mat-option>
+              <mat-option value="welcome_to_xuriti"
+                >Welcome Template
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="report">
+          <div>
+            <h3>Date Filter:</h3>
+          </div>
+          <div>
+            <mat-form-field appearance="outline">
+              <mat-label>Select Date Filter</mat-label>
+              <mat-select [(ngModel)]="showdaterange">
+                <!-- <mat-option value="Today">Today</mat-option> -->
+                <mat-option value="" selected>Select Date Filter</mat-option>
+                <mat-option value="Yesterday">Yesterday</mat-option>
+                <mat-option value="10days">Last 10 days</mat-option>
+                <mat-option value="DateRange">Date Range</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field
+              appearance="outline"
+              class="daterange"
+              *ngIf="showdaterange === 'DateRange'"
+            >
+              <mat-label>Enter a date range</mat-label>
+              <mat-date-range-input
+                [rangePicker]="rangePicker"
+                [formGroup]="dateRange"
+                [max]="maxDate"
+              >
+                <input
+                  matStartDate
+                  placeholder="Start date"
+                  formControlName="start"
+                  readonly
+                />
+                <input
+                  matEndDate
+                  placeholder="End date"
+                  formControlName="end"
+                  readonly
+                />
+              </mat-date-range-input>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="rangePicker"
+              ></mat-datepicker-toggle>
+              <mat-date-range-picker #rangePicker>
+                <mat-date-range-picker-actions>
+                  <button mat-button matDateRangePickerCancel>Cancel</button>
+                  <button
+                    mat-raised-button
+                    color="primary"
+                    matDateRangePickerApply
+                    (click)="dateRangeVal()"
+                  >
+                    Apply
+                  </button>
+                </mat-date-range-picker-actions>
+              </mat-date-range-picker>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="action">
+          <button
+            mat-flat-button
+            class="btn-export"
+            type="submit"
+            (click)="whatsapp_reports()"
+          >
+            Download Excel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-layout>

@@ -1,0 +1,383 @@
+<app-layout>
+  <div id="creditplans-page">
+    <div class="main-wrapper backdiv">
+      <button
+        mat-mini-fab
+        color="primary"
+        (click)="onClickBack()"
+        class="back"
+        aria-label="back button"
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h2>Credit Plan</h2>
+    </div>
+
+    <form
+      [formGroup]="creditPlan_form"
+      (ngSubmit)="onSubmit()"
+      class="example-form"
+      *ngIf="!editModeFlag"
+    >
+      <div class="main-wrapper">
+        <div class="plansdiv">
+          <mat-card class="example-card">
+            <mat-card-content>
+              <div class="gridcontent gridcontent1">
+                <div class="input-wrapper">
+                  <mat-label>Credit Plan Name:</mat-label>
+                  <mat-form-field appearance="outline">
+                    <input
+                      matInput
+                      type="text"
+                      pattern="^[a-zA-Z0-9\s]+$"
+                      (change)="onChange()"
+                      formControlName="plan_name"
+                      placeholder="Credit Plan Name"
+                    />
+                    <mat-error style="color: #f10e0e"
+                      >Please enter valid credit plan name</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+
+                <div class="input-wrapper">
+                  <mat-label>Credit Free Period(In Days):</mat-label>
+                  <mat-form-field appearance="outline">
+                    <input
+                      matInput
+                      type="text"
+                      pattern="[0-9]{1,3}"
+                      (change)="onChange()"
+                      formControlName="credit_period"
+                      placeholder="Credit Free Period(In Days)"
+                    />
+                    <mat-error style="color: rgb(241, 14, 14)"
+                      >Please enter valid credit free period</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+                <div class="input-wrapper">
+                  <mat-label> Number of Payment Intervals:</mat-label>
+
+                  <mat-form-field appearance="outline">
+                    <mat-select
+                      formControlName="payment_interval"
+                      (selectionChange)="onKey($event.value)"
+                      placeholder="Select Payment Intervals"
+                    >
+                      <mat-option value="1"> 1 </mat-option>
+                      <mat-option value="2"> 2 </mat-option>
+                      <mat-option value="3"> 3 </mat-option>
+                      <mat-option value="4"> 4 </mat-option>
+                      <mat-option value="5"> 5 </mat-option>
+                      <mat-option value="6"> 6 </mat-option>
+                      <mat-option value="7"> 7 </mat-option>
+                      <mat-option value="8"> 8 </mat-option>
+                      <mat-option value="9"> 9 </mat-option>
+                      <mat-option value="10"> 10 </mat-option>
+                      <mat-option value="11"> 11 </mat-option>
+                      <mat-option value="12"> 12 </mat-option>
+                      <mat-option value="13"> 13 </mat-option>
+                      <mat-option value="14"> 14 </mat-option>
+                      <mat-option value="15"> 15 </mat-option>
+                    </mat-select>
+                    <mat-error style="color: rgb(241, 14, 14)"
+                      >Please select payment interval</mat-error
+                    >
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <table class="mat-table mat-elevation-z2">
+          <thead>
+            <tr class="mat-header-row">
+              <th class="mat-header-cell">Discount Interval(In days)</th>
+              <th class="mat-header-cell">Discount %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let row of dynamicRows; let i = index"
+              class="mat-row ng-star-inserted"
+            >
+              <td class="mat-cell">
+                <div class="gridcontent">
+                  <div class="input-wrapper dis-wrapper">
+                    <mat-label class="disnt">From:</mat-label>
+                    <mat-form-field class="dis" appearance="outline">
+                      <input
+                        type="text"
+                        (change)="onChange()"
+                        matInput
+                        pattern="[0-9]{1,2}"
+                        [(ngModel)]="row.from"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Discount Interval from"
+                        readonly
+                      />
+                      <mat-error>Please enter valid days</mat-error>
+                    </mat-form-field>
+                    <mat-label class="disnt">Days</mat-label>
+                  </div>
+                  <div class="input-wrapper dis-wrapper">
+                    <mat-label class="disnt">To:</mat-label>
+                    <mat-form-field class="dis" appearance="outline">
+                      <input
+                        type="text"
+                        (change)="onChange()"
+                        matInput
+                        pattern="[0-9]{1,3}"
+                        [(ngModel)]="row.to"
+                        [ngModelOptions]="{ standalone: true }"
+                        (focusout)="addFromDay($event)"
+                        placeholder="Discount Interval to"
+                      />
+                      <mat-error>Please enter valid days</mat-error>
+                    </mat-form-field>
+                    <mat-label class="disnt">Days</mat-label>
+                  </div>
+                </div>
+              </td>
+              <td class="mat-cell">
+                <div class="gridcontent">
+                  <div class="input-wrapper">
+                    <mat-form-field class="dis" appearance="outline">
+                      <input
+                        type="text"
+                        (change)="onChange()"
+                        matInput
+                        pattern="^100$|^\d{0,2}(\.\d{1,2})? *%?$"
+                        [(ngModel)]="row.discount"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Discount %"
+                      />
+                      <mat-error>Please enter valid discount %</mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-center" *ngIf="!editModeFlag">
+        <button mat-flat-button type="submit" class="btn-export">SAVE</button>
+      </div>
+    </form>
+
+    <!-- ============== Plan Details start =============================== -->
+    <div class="example-form" *ngIf="editModeFlag">
+      <div class="main-wrapper">
+        <div class="plansdiv">
+          <mat-card class="example-card">
+            <mat-card-content>
+              <div class="gridcontent gridcontent1">
+                <div class="input-wrapper">
+                  <mat-label>Credit Plan Name:</mat-label>
+                  <span> {{ plan_name ? plan_name : "" }} </span>
+                </div>
+                <div class="input-wrapper">
+                  <mat-label>Credit Free Period(In Days):</mat-label>
+                  <span>{{
+                    credit_free_period ? credit_free_period : ""
+                  }}</span>
+                </div>
+                <div class="input-wrapper">
+                  <mat-label> Number of Payment Intervals:</mat-label>
+                  <span> {{ payment_interval ? payment_interval : "0" }} </span>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+
+        <table class="mat-table mat-elevation-z2">
+          <thead>
+            <tr class="mat-header-row">
+              <th class="mat-header-cell">Discount Interval(In days)</th>
+              <th class="mat-header-cell">Discount %</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let row of dynamicRows; let i = index"
+              class="mat-row ng-star-inserted"
+            >
+              <td class="mat-cell">
+                <div class="gridcontent">
+                  <div class="input-wrapper dis-wrapper">
+                    <mat-label class="disnt">From:</mat-label>
+                    <mat-form-field class="dis" appearance="outline">
+                      <input
+                        type="text"
+                        (change)="onChange()"
+                        matInput
+                        pattern="[0-9]{1,2}"
+                        [(ngModel)]="row.from"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Discount Interval from"
+                        readonly
+                      />
+                      <mat-error>Please enter valid days</mat-error>
+                    </mat-form-field>
+                    <mat-label class="disnt">Days</mat-label>
+                  </div>
+                  <div class="input-wrapper dis-wrapper">
+                    <mat-label class="disnt">To:</mat-label>
+                    <mat-form-field class="dis" appearance="outline">
+                      <input
+                        type="text"
+                        (change)="onChange()"
+                        matInput
+                        pattern="[0-9]{1,2}"
+                        [(ngModel)]="row.to"
+                        [ngModelOptions]="{ standalone: true }"
+                        (focusout)="addFromDay($event)"
+                        placeholder="Discount Interval to"
+                        readonly
+                      />
+                      <mat-error>Please enter valid days</mat-error>
+                    </mat-form-field>
+                    <mat-label class="disnt">Days</mat-label>
+                  </div>
+                </div>
+              </td>
+              <td class="mat-cell">
+                <div class="gridcontent">
+                  <div class="input-wrapper">
+                    <mat-form-field class="dis" appearance="outline">
+                      <input
+                        type="text"
+                        (change)="onChange()"
+                        matInput
+                        pattern="[0-9]{1,2}"
+                        [(ngModel)]="row.discount"
+                        [ngModelOptions]="{ standalone: true }"
+                        placeholder="Discount %"
+                        readonly
+                      />
+                    </mat-form-field>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <!-- ================= Plan Details end ======================== -->
+
+    <div class="main-wrapper" *ngIf="editModeFlag == true">
+      <div class="flexhead">
+        <h2>Mapped Buyers</h2>
+
+        <div class=upload-btn-wrapper>
+          <button
+            mat-flat-button
+            style="margin: 5px"
+            (click)="openMapCompaniesDialogue()"
+            class="btn-export"
+          >
+          ADD
+          </button>
+        </div>
+
+        <div class="upload-btn-wrapper">
+          <button
+            type="file"
+            mat-flat-button
+            matTooltip="Excel Upload"
+            class="btn-export"
+          >
+            UPLOAD 
+          </button>
+          <input 
+            id="excel_file"
+            type="file"
+            accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" 
+            (change)="onFileChange($event)"
+            placeholder="Upload Excel"
+          >
+        </div>
+      <div>
+        <p>NOTE: You can download bulk retailer mapping excel format from here
+          <a matTooltip="Download Excel Format" [matTooltipPosition]="'above'" style="color: black; position: relative;" href="https://s3.ap-south-1.amazonaws.com/xuriti.public.document/credit.xlsx">
+          <mat-icon style="position: absolute; left: 5px;">download</mat-icon>
+        </a></p>
+          
+    </div>
+  </div>
+
+    <table
+      mat-table
+      [dataSource]="dataSource"
+      matSort
+      (matSortChange)="announceSortChange($event)"
+      class="mat-elevation-z2"
+    >
+      <!-- Company Name Column -->
+      <ng-container matColumnDef="companyName">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by companyName"
+        >
+          Business Name
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{
+            element && element.buyer_id && element.buyer_id.company_name
+              ? element.buyer_id.company_name
+              : ""
+          }}
+        </td>
+      </ng-container>
+
+      <!-- Company GST Column -->
+      <ng-container matColumnDef="gstin">
+        <th
+          mat-header-cell
+          mat-sort-header
+          sortActionDescription="Sort by gstin"
+          *matHeaderCellDef
+        >
+          GST Number
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{
+            element && element.buyer_id && element.buyer_id.gstin
+              ? element.buyer_id.gstin
+              : ""
+          }}
+        </td>
+      </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+        <td mat-cell *matCellDef="let element">
+          <button
+            mat-mini-fab
+            class="btn-delete"
+            matTooltip="Delete Plan"
+            (click)="openDialog(element.buyer_id)"
+            aria-label="Example icon button with a delete icon"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns1"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="text-center">No Mapped Retailer Found</td>
+      </tr>
+    </table>
+    </div>
+  </div>
+</app-layout>

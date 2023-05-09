@@ -1,0 +1,136 @@
+// src/theme.scss
+// ? Color palette
+$colorA: #163354;
+$colorB: #1bbbbc;
+$colorC: #dfb340;
+
+$dark-text-color: #000000de;
+$grey-text-color: #0000008a;
+$light-text-color: #ffffff;
+
+$md-primary: (
+  50: #e3e7ea,
+  100: #b9c2cc,
+  200: #8b99aa,
+  300: #5c7087,
+  400: #39526e,
+  500: #163354,
+  600: #132e4d,
+  700: #102743,
+  800: #0c203a,
+  900: #061429,
+  A100: #6499ff,
+  A200: #3178ff,
+  A400: #0057fd,
+  A700: #004ee4,
+  contrast: (
+    50: $dark-text-color,
+    100: $dark-text-color,
+    200: $dark-text-color,
+    300: $light-text-color,
+    400: $light-text-color,
+    500: $light-text-color,
+    600: $light-text-color,
+    700: $light-text-color,
+    800: $light-text-color,
+    900: $light-text-color,
+    A100: $dark-text-color,
+    A200: $light-text-color,
+    A400: $light-text-color,
+    A700: $light-text-color,
+  ),
+);
+
+$md-accent: (
+  50: #e4f7f7,
+  100: #bbebeb,
+  200: #8dddde,
+  300: #5fcfd0,
+  400: #3dc5c6,
+  500: #1bbbbc,
+  600: #18b5b6,
+  700: #14acad,
+  800: #10a4a5,
+  900: #089697,
+  A100: #c3ffff,
+  A200: #90feff,
+  A400: #5dfeff,
+  A700: #44feff,
+  contrast: (
+    50: $dark-text-color,
+    100: $dark-text-color,
+    200: $dark-text-color,
+    300: $dark-text-color,
+    400: $dark-text-color,
+    500: $dark-text-color,
+    600: $dark-text-color,
+    700: $light-text-color,
+    800: $light-text-color,
+    900: $light-text-color,
+    A100: $dark-text-color,
+    A200: $dark-text-color,
+    A400: $dark-text-color,
+    A700: $dark-text-color,
+  ),
+);
+
+$md-warn: (
+  50: #fbf6e8,
+  100: #f5e8c6,
+  200: #efd9a0,
+  300: #e9ca79,
+  400: #e4be5d,
+  500: #dfb340,
+  600: #dbac3a,
+  700: #d7a332,
+  800: #d29a2a,
+  900: #ca8b1c,
+  A100: $light-text-color,
+  A200: #ffebcd,
+  A400: #ffd79a,
+  A700: #ffcd80,
+  contrast: (
+    50: $dark-text-color,
+    100: $dark-text-color,
+    200: $dark-text-color,
+    300: $dark-text-color,
+    400: $dark-text-color,
+    500: $dark-text-color,
+    600: $dark-text-color,
+    700: $dark-text-color,
+    800: $dark-text-color,
+    900: $dark-text-color,
+    A100: $dark-text-color,
+    A200: $dark-text-color,
+    A400: $dark-text-color,
+    A700: $dark-text-color,
+  ),
+);
+
+// ? 1. Default theme
+$theming-material-components-primary: mat-palette($md-primary);
+$theming-material-components-accent: mat-palette($md-accent, A200, A100, A400);
+$theming-material-components-warn: mat-palette($md-warn);
+
+$theming-material-components-theme: mat-light-theme(
+  $theming-material-components-primary,
+  $theming-material-components-accent,
+  $theming-material-components-warn
+);
+
+// ? 2. Define an alternate dark theme.
+$dark-primary: mat-palette($md-primary);
+$dark-accent: mat-palette($md-accent, A200, A100, A400);
+$dark-warn: mat-palette($md-warn);
+$dark-theme: mat-dark-theme(
+  (
+    color: (
+      primary: $dark-primary,
+      accent: $dark-accent,
+      warn: $dark-warn,
+    ),
+  )
+);
+
+// ? 3. Define a custom heading typography config
+$typography: mat-typography-config();

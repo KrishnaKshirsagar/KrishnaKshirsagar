@@ -1,0 +1,39 @@
+<app-layout>
+  <div id="uploadinvoices-page">
+    <div class="main-wrapper">
+      <mat-card>
+        <mat-card-title
+          ><h2>Upload Invoices - Company Name ABC Pvt. Ltd.</h2></mat-card-title
+        >
+
+        <mat-card-content>
+          <div class="details multifile">
+            <label for="singleFile">Upload invoices</label>
+            <input
+              id="singleFile"
+              type="file"
+              multiple
+              accept=".pdf"
+              [fileUploadInputFor]="fileUploadQueue"
+            />
+
+            <mat-file-upload-queue
+              #fileUploadQueue
+              [fileAlias]="'file'"
+              [httpUrl]="
+                'http://localhost:8180/jax-rs-jersey-application-sample'
+              "
+            >
+              <mat-file-upload
+                [file]="file"
+                [id]="i"
+                multiple
+                *ngFor="let file of fileUploadQueue.files; let i = index"
+              ></mat-file-upload>
+            </mat-file-upload-queue>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</app-layout>

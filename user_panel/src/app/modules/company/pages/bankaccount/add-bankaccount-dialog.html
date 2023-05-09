@@ -1,0 +1,127 @@
+<div id="add-bankaccount-dialog">
+  <div class="flex-container">
+    <div class="flex-item-left bg-white">
+      <div class="margin-top margin-bottom">
+        <div class="add-bank">
+          <h2 i18n="@@ABA1">Add New Bank</h2>
+          <button
+            mat-icon-button
+            class="close-button"
+            [mat-dialog-close]="true"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <form [formGroup]="bankAcc_form" (ngSubmit)="onSubmit()">
+          <div>
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA2">Bank Name</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="bank_name"
+                  pattern="^[a-zA-Z\s]+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA3">
+                  Please enter bank name
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA4">Account No</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  pattern="^\d{9,20}$"
+                  minlength="9"
+                  maxlength="20"
+                  formControlName="account_no"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA5">
+                  Please enter a valid account number
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA4">Account Type</mat-label>
+                <mat-select formControlName="account_type" required>
+                  <mat-option value="Current">Current</mat-option>
+                  <mat-option value="Saving">Saving</mat-option>
+                </mat-select>
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA5">
+                  Please select the account type
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA6">Account Holder Name</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="acc_holder"
+                  pattern="^[a-zA-Z\s]+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA7">
+                  Please enter account holder's name
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div class="input-wrapper">
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA8">Branch</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="branch_name"
+                  pattern="^[a-zA-Z\s]+$"
+                  required
+                />
+
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA9">
+                  Please enter valid branch address
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="full-width-input" appearance="outline">
+                <mat-label i18n="@@ABA10">IFSC Code</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  pattern="^[A-Z]{4}0[A-Z0-9]{6}$"
+                  formControlName="ifsc_code"
+                  maxlength="11"
+                  required
+                />
+                <mat-error style="color: rgb(241, 14, 14)" i18n="@@ABA11">
+                  Please enter a valid IFSC code
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div>
+            <button
+              mat-button
+              type="submit"
+              color="primary"
+              class="btn-primary"
+              i18n="@@ABA12"
+            >
+              SAVE
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

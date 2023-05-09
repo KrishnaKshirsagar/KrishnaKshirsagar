@@ -1,0 +1,195 @@
+<div id="invoice-waiver-dialog">
+  <h2 mat-dialog-title>Invoice Waiver</h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="mar">
+      <div class="details">
+        <h4>Retailer Name : <span>{{data && data.retailerdata && data.retailerdata.retailer_name ?
+          data.retailerdata.retailer_name  : ''}}</span></h4>
+            <mat-form-field class="example-full-width" appearance="outline">
+              <mat-label>Anchor</mat-label>
+              <input type="text"
+                     placeholder="Please select anchor"
+                     aria-label="Number"
+                     matInput
+                     [formControl]="myControl"
+                     [matAutocomplete]="auto">
+              <mat-autocomplete [displayWith]="displayFn" (optionSelected)="onChange($event.option.value)" #auto="matAutocomplete">
+                <mat-option *ngFor="let option of sellerlist" [value]="option">
+                  {{option.company_name}}
+                </mat-option>
+              </mat-autocomplete>
+              <button type="button" mat-button (click)="clear(myControl)" matSuffix mat-icon-button aria-label="Clear" >
+                <mat-icon>close</mat-icon>
+              </button>                  
+            </mat-form-field>
+      </div>
+      <div class="details">
+        <h4>Outstanding Amount : <span>
+          {{ ( collection_summary_data && collection_summary_data.total_outstanding ? collection_summary_data.total_outstanding : 0 ) | currency: currency_format}}</span></h4>
+            
+        <h4>Total Interest Applicable : <span>{{ ( collection_summary_data && collection_summary_data.total_interest ? collection_summary_data.total_interest : 0 ) | currency: currency_format}}</span></h4>
+      </div>
+        <div class="details">
+        <h4>Total Payable Amount : <span>{{ ( collection_summary_data && collection_summary_data.total_payable ? collection_summary_data.total_payable : 0 ) | currency: currency_format }}</span></h4>
+        
+      </div> 
+      <!-- <div class="details">
+        <h4>GST Amount : <span>{{ (data && data.overdue_invoice_details && data.overdue_invoice_details.invoice &&
+          data.overdue_invoice_details.invoice.bill_details && data.overdue_invoice_details.invoice.bill_details.gst_summary 
+          && data.overdue_invoice_details.invoice.bill_details.gst_summary.total_tax ?
+          data.overdue_invoice_details.invoice.bill_details.gst_summary.total_tax : 0) | currency: currency_format}}</span></h4>
+      </div> -->
+      <div class="w-100 pays" *ngIf="!editflag">
+        <mat-radio-group class="example-radio-group">
+          <mat-radio-button class="example-radio-button" 
+          color="primary"
+          [value]="payableAmount"
+          (click)="onSelectCompleteAmount(true)"
+          [checked]="fullAmountPayflag"
+          >
+            <h3>
+              Payable Amount :
+              <span>{{ ( collection_summary_data && collection_summary_data.total_payable ? collection_summary_data.total_payable : 0 ) | currency: currency_format }}</span>
+            </h3>
+          </mat-radio-button>
+
+          <mat-radio-button 
+          class="example-radio-button"  
+          (click)="onSelectCompleteAmount(false)" 
+          value="" 
+          color="primary"
+          >
+            <h3> Part Payment:</h3>
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+
+      <div class="details" *ngIf="!editflag">
+        <div class="colform">
+          <mat-form-field 
+          appearance="outline" 
+          (focusout)="onEnterPartPay($event)" 
+          *ngIf="!fullAmountPayflag"
+           style="font-size: 13px; ">
+           <mat-label>Part pay amount</mat-label>
+            <input matInput [(ngModel)]="partPay" type="number" (input)="checkInputValue($event)" pattern="^[0-9.]*$" [readonly]="editflag"  placeholder="Part pay Amount"/>
+          </mat-form-field>
+            <mat-error *ngIf="partpayerrorflag" style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+              Part pay amount should not be greater than total payable amount.
+            </mat-error>
+        </div>
+      </div>
+
+      <div class="details"  *ngIf="!fullAmountPayflag">
+        <!-- <h4>Outstanding Amount : <span>
+          {{ ( collection_summary_data && collection_summary_data.total_outstanding ? collection_summary_data.total_outstanding : 0 ) | currency: currency_format}}</span></h4> -->
+            
+        <h4>Total Interest Applicable : <span>{{ ( part_pay.interest ? part_pay.interest : 0 ) | currency: currency_format}}</span></h4>
+      </div>
+
+      <div class="details" *ngIf="!editflag">
+        <div class="colform">
+          <mat-form-field appearance="outline">
+            <mat-label>Waiver Amount</mat-label>
+            <input matInput [(ngModel)]="waiver_Amount" type="number" (focusout)="waiver_amount()" placeholder="Waiver Amount"
+               pattern="^[0-9.]*$" [readonly]="editflag" (input)="checkInputValue($event)" />
+          </mat-form-field>
+          <mat-error *ngIf="intrest_check_error_flag" style="color: rgb(241, 14, 14)" i18n="@@LOG5">
+            Waiver amount should not be greater than interest amount.
+          </mat-error>
+        </div>
+      </div>
+    </div>
+
+    <div class="whistory" style="margin-top: 10px;">
+      <h2>Waiver History</h2>
+      <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2">
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by date">
+            Date
+          </th>
+          <td mat-cell *matCellDef="let element">{{(element && element.date ? element.date : '') | date: 'dd.MMM.yyyy hh:mm a'}}</td>
+        </ng-container>
+
+        <!--  seller Column -->
+        <ng-container matColumnDef="seller">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by seller" *matHeaderCellDef>
+            Anchor Name
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element && element.seller ?
+            element.seller : '' }}</td>
+        </ng-container>
+
+        <!-- Invoice Amount Column -->
+        <ng-container matColumnDef="iamount">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by iamount" *matHeaderCellDef>
+            Outstanding Amount
+          </th>
+          <td mat-cell *matCellDef="let element">{{ (element && element.outstanding_amount  ?
+            element.outstanding_amount : '') | currency: currency_format}}</td>
+        </ng-container>
+
+        <!-- cleared_amount -->
+        <ng-container matColumnDef="cleared_amount">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by cleared_amount" *matHeaderCellDef>
+             Amount Cleared
+          </th>
+          <td mat-cell *matCellDef="let element">{{ (element && element.amount_settled ? element.amount_settled : 0) | currency: currency_format}}</td>
+        </ng-container>
+
+        <!-- order_amount -->
+        <ng-container matColumnDef="order_amount">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by order_amount" *matHeaderCellDef>
+            Order Amount
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ 
+              (element 
+              && element.order_amount 
+              ? element.order_amount : 0) | currency: currency_format
+            }}</td>
+        </ng-container>
+        
+        <!-- interest -->
+        <ng-container matColumnDef="interest">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by interest" *matHeaderCellDef>
+            Interest Amount
+          </th>
+          <td mat-cell *matCellDef="let element">{{ (element && element.interest ? element.interest : 0) | currency: currency_format}}</td>
+        </ng-container>
+
+        <!-- Waiver Column -->
+        <ng-container matColumnDef="waiver">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by waiver" *matHeaderCellDef>
+            Waiver
+          </th>
+          <td mat-cell *matCellDef="let element">{{ (element && element.waver_amount ? element.waver_amount : 0) | currency: currency_format}}</td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by status" *matHeaderCellDef>
+            Status
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element && element.status ? element.status : ''}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">No Record Found</td>
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>CANCEL</button>
+    <button mat-button  cdkFocusInitial (click)="sharePaymentlink()" [disabled]="input_check_flag" *ngIf="!editflag">
+      Share Payment Link
+    </button>
+  </mat-dialog-actions>
+</div>

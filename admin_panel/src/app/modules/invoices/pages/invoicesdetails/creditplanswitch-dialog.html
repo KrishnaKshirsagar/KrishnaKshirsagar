@@ -1,0 +1,40 @@
+<div id="creditplanswitch-dialog">
+  <mat-dialog-content class="mat-typography">
+    <h1 class="text-center">Switch Credit Plan</h1>
+
+    <form class="example-form">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Select Credit Plan</mat-label>
+        <mat-select
+          [(value)]="selection"
+          (selectionChange)="getPosts($event.value)"
+          required
+        >
+          <mat-option value="" selected>Select Credit Plan</mat-option>
+          <mat-option [value]="item" *ngFor="let item of credit_plan_list">
+            {{item.plan_name}}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="!editDetailFlag"
+          style="color: rgb(241, 14, 14); margin-top: 7px"
+          >Please select a Credit Plan</mat-error
+        >
+      </mat-form-field>
+      <div class="input-wrapper text-center">
+        <button
+          mat-button
+          color="primary"
+          cdkFocusInitial
+          (click)="onSubmit()"
+          [disabled]="!editDetailFlag"
+        >
+          SUBMIT
+        </button>
+        <button mat-button color="warn" type="button" (click)="cancel()">
+          CANCEL
+        </button>
+      </div>
+    </form>
+  </mat-dialog-content>
+</div>

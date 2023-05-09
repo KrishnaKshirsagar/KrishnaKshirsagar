@@ -1,0 +1,75 @@
+#creditplan-mapping-error-page {
+  table {
+    width: 100%;
+    border-collapse: separate !important;
+    margin-top: 11px;
+  }
+  th.mat-header-cell {
+    border: 1px solid #ffffff2e;
+    color: white;
+  }
+  th.mat-header-cell:last-of-type,
+  td.mat-cell:last-of-type,
+  td.mat-footer-cell:last-of-type,
+  th.mat-header-cell {
+    padding: 5px;
+
+  }
+
+  th.mat-header-cell:first-of-type,
+  td.mat-cell:first-of-type,
+  td.mat-footer-cell:first-of-type {
+    padding: 5px;
+  }
+  td.mat-cell {
+    font-weight: 500;
+    border-bottom: 1px solid #00000029;
+    padding: 5px;
+  }
+
+  .main-table{
+    max-height:auto;
+    overflow-y:scroll;
+    overflow-x:hidden;
+  }
+  
+  .mat-cell,
+  .mat-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 10px;
+    line-break: unset;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  
+  .mat-row,
+  .mat-header-row {
+    display: table-row;
+    
+  }
+
+  tr.mat-header-row{background: black;}
+
+
+  .add-dailog {
+    display: flex;
+    justify-content: space-between;
+     h2{margin: 0 0 0px;}
+    .mat-icon-button {
+      padding: 0;
+      min-width: 0;
+      width: 25px;
+      height: 25px;
+      flex-shrink: 0;
+      line-height: 25px;
+      border-radius: 50%;
+    }
+
+    .mat-icon {
+      font-size: 15px;
+    }
+  }   
+}

@@ -1,0 +1,317 @@
+<app-layout>
+  <div id="manage-collection-page">
+    <div class="main-wrapper">
+      <div class="head">
+        <button mat-mini-fab class="back back-btn" onclick="history.go(-1)">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2> Manage Collection</h2>
+        <h4 *ngIf="login_user_role !== 'xuritiCollectionAgent'"> Collection Agent : </h4>
+        <mat-form-field appearance="outline" class="dropdown" *ngIf="!editflag">
+          <mat-label>Collection Agent *</mat-label>
+          <mat-select [(value)]="selection" (selectionChange)="getClStaff($event.value)" [disabled]="editflag">
+            <mat-option value="" selected>{{ advisor_name }}</mat-option>
+            <mat-option *ngFor="let advisor of collection_advisor_data" [value]="advisor">{{advisor.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span *ngIf="editflag" style="padding: 6px;"> <span *ngIf="login_user_role !== 'xuritiCollectionAgent'"> {{
+            advisor_name }} </span> </span>
+        <button mat-flat-button (click)="openWaiverDialog()" *ngIf="waiver_flag" class="waiver-btn">Give Waiver</button>
+      </div>
+      <div class="mar">
+        <div class="details">
+          <h4>Retailer Name : <span> {{ retailerdata && retailerdata.retailer_name ? retailerdata.retailer_name : '' }}
+            </span> </h4>
+          <h4>Retailer GST : <span> {{ retailerdata && retailerdata.retailer_gstin ? retailerdata.retailer_gstin :
+              ''}}</span> </h4>
+        </div>
+  
+        <div class="details">
+          <h4>Admin Name : <span>{{ retailerdata && retailerdata.admin_name ? retailerdata.admin_name : "" }}</span>
+          </h4>
+          <h4>Admin Mobile : <span>{{ retailerdata && retailerdata.admin_mobile ? retailerdata.admin_mobile : ""
+              }}</span> </h4>
+          <h4 *ngIf="editflag">Collection Status : <span>{{ this.collection_status }}</span></h4>
+          <div class="details" *ngIf="!editflag">
+            <h4>Collection Status :</h4>
+            <mat-form-field appearance="outline" style="margin-top: 15px;">
+              <mat-label>Collection Status *</mat-label>
+              <mat-select [(value)]="collection_status" (selectionChange)="collectionStatus($event.value)">
+                <mat-option value="Collection">Collection</mat-option>
+                <mat-option value="In-Progress">In-Progress</mat-option>
+                <mat-option value="Collected">Collected</mat-option>
+                <mat-option value="Escalated">Escalated</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <table mat-table [dataSource]="dataSourceInv" matSort (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2">
+        <!-- invoice_number Column -->
+        <ng-container matColumnDef="invoice_number">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by invoice_number">
+            Invoice Number
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element && element.invoice_number ? element.invoice_number : ""}}
+          </td>
+        </ng-container>
+
+        <!-- seller_name Column -->
+        <ng-container matColumnDef="seller_name">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by seller_name" *matHeaderCellDef>
+            Anchor Name
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <b>
+              {{ element && element.seller_name ? element.seller_name : ""}}
+            </b>
+          </td>
+        </ng-container>
+
+        <!-- seller_gst Column -->
+        <ng-container matColumnDef="seller_gst">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by seller_gst" *matHeaderCellDef>
+            Anchor GST
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <b>
+              {{ element && element.seller_gstin ? element.seller_gstin : "" }}
+            </b>
+          </td>
+        </ng-container>
+
+        <!-- invoice_date Column -->
+        <ng-container matColumnDef="invoice_date">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by invoice_date" *matHeaderCellDef>
+            Invoice Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ (element && element.invoice_date ? element.invoice_date : "") | date : Date_Format }}
+          </td>
+        </ng-container>
+
+        <!-- gst_amount Column -->
+        <ng-container matColumnDef="gst_amount">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by gst_amount" *matHeaderCellDef>
+            GST Amount
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.gst_amount ? element.gst_amount : "") | currency : currency_format }}
+          </td>
+        </ng-container>
+
+        <!-- invoice_amount Column -->
+        <ng-container matColumnDef="invoice_amount">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by invoice_amount" *matHeaderCellDef>
+            Invoice Amount
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.invoice_amount ? element.invoice_amount : 0) }}
+          </td>
+        </ng-container>
+
+        <!-- due_date Column -->
+        <ng-container matColumnDef="due_date">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by due_date" *matHeaderCellDef>
+            Invoice Due Date
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.invoice_due_date ? element.invoice_due_date : "") | date : Date_Format }}
+          </td>
+        </ng-container>
+
+        <!-- outstanding_amount Column -->
+        <ng-container matColumnDef="outstanding_amount">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by outstanding_amount" *matHeaderCellDef>
+            Outstanding Amount
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.total_outstanding_amount ? element.total_outstanding_amount : 0) | currency : currency_format }}
+          </td>
+        </ng-container>
+
+        <!-- interest_applied Column -->
+        <ng-container matColumnDef="interest_applied">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by interest_applied" *matHeaderCellDef>
+            Interest Applied
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.interest ? element.interest : 0) | currency : currency_format}}
+          </td>
+        </ng-container>
+
+        <!-- payable_amount Column -->
+        <ng-container matColumnDef="payable_amount">
+          <th mat-header-cell mat-sort-header sortActionDescription="Sort by payable_amount" *matHeaderCellDef>
+            Payable Amount
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ ( element && element.payable_amount ? element.payable_amount : 0) }}
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+          <td mat-cell *matCellDef="let row" style="text-align: center">
+            <div style="display: flex;">
+
+
+              <button type="button" mat-mini-fab class="btn-view" matTooltip="Comments History"
+                (click)="openCommentsDialog(row)" aria-label="Example icon button with a delete icon">
+                <mat-icon>comment</mat-icon>
+              </button>
+
+              <button type="button" mat-mini-fab class="btn-view" matTooltip="Audit-Trail" (click)="autidtrail(row)"
+                aria-label="Audit-Trail">
+                <mat-icon>search</mat-icon>
+
+              </button>
+            </div>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns2"></tr>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="text-center">No Overdue Invoice Found</td>
+        </tr>
+      </table>
+
+      <mat-paginator #paginator2="matPaginator" [pageSizeOptions]="[10, 25, 50]" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+      </mat-paginator>
+
+
+      <div class="history">
+        <mat-accordion class="example-headers-align">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                Payment History
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <!-- <p class="mar" *ngFor="let comment of comment_List">
+            {{ comment.comment}}
+          </p> -->
+
+            <table style="margin-top:10px;" mat-table [dataSource]="dataSource" matSort
+              (matSortChange)="announceSortChange($event)" class="mat-elevation-z2">
+              <!-- Transaction Id Column -->
+              <ng-container matColumnDef="transactionID">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by transactionID">
+                  Transaction Id
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{element && element.order_id ? element.order_id : ''}}
+                </td>
+              </ng-container>
+
+              <!--  Invoice Number Column -->
+              <ng-container matColumnDef="invoice_number">
+                <th mat-header-cell mat-sort-header sortActionDescription="Sort by invoice_number" *matHeaderCellDef>
+                  Invoice Number
+                </th>
+                <td mat-cell *matCellDef="let element">{{ element && element.invoice_number ? element.invoice_number :
+                  ''}}
+                </td>
+              </ng-container>
+
+              <!-- Seller Name Column -->
+              <ng-container matColumnDef="seller_name">
+                <th mat-header-cell mat-sort-header sortActionDescription="Sort by seller_name" *matHeaderCellDef>
+                  Anchor Name
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <b>
+                    {{ element && element.seller_name ? element.seller_name : ''}}
+                  </b>
+                </td>
+              </ng-container>
+
+              <!-- Payment Date Column -->
+              <ng-container matColumnDef="createdAt">
+                <th mat-header-cell mat-sort-header sortActionDescription="Sort by createdAt" *matHeaderCellDef>
+                  Payment Date
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ (element && element.payment_date ? element.payment_date : '') | date : Date_Format }}
+                </td>
+              </ng-container>
+
+              <!-- Paid Amount -->
+              <ng-container matColumnDef="amount">
+                <th mat-header-cell mat-sort-header sortActionDescription="Sort by amount" *matHeaderCellDef>
+                  Paid Amount
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  {{ (element && element.order_amount ? element.order_amount : 0) | currency : currency_format}}
+                </td>
+              </ng-container>
+
+              <!--  Payment Status Column -->
+              <ng-container matColumnDef="pstatus">
+                <th mat-header-cell mat-sort-header sortActionDescription="Sort by pstatus" *matHeaderCellDef>
+                  Payment Status
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <b>
+                    {{element && element.order_status ? element.order_status : ""}}
+                  </b>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              <tr class="mat-row" *matNoDataRow>
+                <td class="text-center">
+                  No Record Found
+                </td>
+              </tr>
+            </table>
+            <mat-paginator #paginator="matPaginator" [pageSizeOptions]="[5, 10, 15]" showFirstLastButtons
+              aria-label="Select page of periodic elements">
+            </mat-paginator>
+
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+
+      <div class="comments" *ngIf="!editflag">
+        <form [formGroup]="comment_form" (ngSubmit)="updateOverDueInvoice()">
+          
+          <div style="display: flex; justify-content: space-between; column-gap: 20px;">
+            <mat-form-field appearance="outline">
+              <mat-label>Comments</mat-label>
+              <textarea matInput  
+              cdkTextareaAutosize
+              cdkAutosizeMinRows="1"
+              cdkAutosizeMaxRows="5" formControlName="comment">
+              </textarea>
+            </mat-form-field>
+  
+            <mat-form-field appearance="outline">
+              <mat-label>Comment Category</mat-label>
+              <mat-select [(value)]="comment_category" formControlName="comment_category">
+                <mat-option value="">Select Comment Category</mat-option>
+                <mat-option value="Commitment to pay">Commitment to pay</mat-option>
+                <mat-option value="Will take some time">Will take some time</mat-option>
+                <mat-option value="Financial issue">Financial issue</mat-option>
+                <mat-option value="Dispute">Dispute</mat-option>
+                <mat-option value="Stock return">Stock return</mat-option>
+                <mat-option value="Others">Others</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="text-center">
+            <button mat-flat-button type="submit">SAVE</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</app-layout>

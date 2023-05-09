@@ -1,0 +1,320 @@
+#companydetails-page {
+  .main-wrapper {
+    padding: 15px;
+  }
+  table {
+    width: 100%;
+  }
+
+  .backdiv {
+    display: flex;
+    grid-gap:10px;
+    
+    .back-btn {
+       box-shadow: none;
+       background: black;
+       color: #ffffff;
+    }
+    
+    h2 {
+     margin-top: 5px;
+    }
+  }
+
+  .mat-header-cell {
+    font-size: 14px;
+
+    background: black;
+    color: white;
+  }
+  .input-wrapper {
+    button {
+      margin: 5px;
+    }
+  }
+  .mat-form-field {
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 100%;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .actioncol {
+    text-align: center;
+  }
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+  .btn-export {
+    background: #f79e1b;
+    color: white;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-view {
+    background: black;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-approve {
+    background: green;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .btn-delete {
+    background: red;
+    color: white;
+    margin-left: 5px;
+    margin-right: 5px;
+    box-shadow: none;
+  }
+  .details {
+    background: #fffdfb;
+    h2 {
+      font-size: 17px;
+      span {
+        font-weight: 400;
+        color: #7a6f6f;
+        font-size: 17px;
+      }
+    }
+    .mat-checkbox {
+      margin: 0px 10px;
+    }
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex-item-left {
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    flex: 50%;
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 767px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+}
+
+#companydetailsapprove-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}
+
+@media (max-width: 767px) {
+  #companydetailsedit-dialog {
+    min-width: initial !important;
+  }
+  #companydetailsapprove-dialog {
+    min-width: initial !important;
+  }
+  #companydetailsdelete-dialog {
+    min-width: initial !important;
+  }
+
+  #offlinepayment-dialog {
+    min-width: initial !important;
+  }
+
+  .btn-approve {
+    width: 100%;
+    margin-bottom: 6px;
+  }
+}
+
+#companydetailsedit-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+  .example-section {
+    .thead {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 5px;
+    }
+    .tbody {
+      width: 100%;
+      text-align: center;
+    }
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+    padding: 0px 5px;
+  }
+  .example-section table {
+    width: 100%;
+  }
+  .button {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .btn-dark {
+    margin-top: 15px;
+    background: black;
+    color: white;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .flex-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .flex-item-left {
+    flex: 50%;
+  }
+
+  .flex-item-right {
+    flex: 50%;
+  }
+
+  /* Responsive layout - makes a one column-layout instead of two-column layout */
+  @media (max-width: 767px) {
+    .flex-container {
+      flex-direction: column;
+    }
+  }
+}
+
+#companydetailsdelete-dialog {
+  min-width: 500px;
+  h1 {
+    margin: 0 0 0px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  .example-full-width {
+    width: 100%;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}
+
+#offlinepayment-dialog {
+  @media (max-width: 767px) {
+    .gridLayout {
+      display: block !important;
+    }
+  }
+
+  .gridLayout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 10px;
+    grid-template-areas: "Left Right";
+  }
+
+  .Left {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0px 0px;
+
+    grid-area: Left;
+  }
+  .Right {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    gap: 0px 0px;
+    grid-template-areas: ".";
+
+    grid-area: Right;
+  }
+
+  .labeldiv {
+    margin-bottom: 15px;
+    margin-top: 0px;
+    align-self: center;
+    mat-label {
+      font-weight: 600;
+    }
+  }
+
+  .flex {
+    display: flex;
+  }
+  .mat-form-field {
+    width: 100%;
+
+    font-size: 11px;
+  }
+  mat-dialog-content {
+    max-width: 500px;
+    width: 100%;
+  }
+
+  h1 {
+    margin: 0 0 15px;
+  }
+  .text-center {
+    text-align: center;
+  }
+
+  .btn-dark {
+    background: black;
+    color: white;
+  }
+}

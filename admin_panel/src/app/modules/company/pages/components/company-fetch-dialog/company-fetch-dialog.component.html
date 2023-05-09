@@ -1,0 +1,81 @@
+<div id="companyDialog">
+
+    <div class="dialogHeader">
+        <h2><b>Calculate Credit Limit</b></h2>
+        <button mat-mini-fab [mat-dialog-close]="true"><mat-icon>close</mat-icon></button>
+    </div>
+
+    <div class="dialogBody">
+        <mat-form-field appearance="outline">
+            <mat-label>Total 6 Months Sale(Credit)</mat-label>
+            <input matInput type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Total 6 Months Puchase(Debit)</mat-label>
+            <input matInput type="text" />
+        </mat-form-field>
+        <hr>
+        <div>
+            <span>
+                <h4><b>Net Earning / Month</b></h4>
+            </span>
+            <mat-form-field appearance="outline">
+                <mat-label>Last 6 Months</mat-label>
+                <input matInput type="text" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Last 3 Months, 5 Days Interval</mat-label>
+                <input matInput type="text" />
+            </mat-form-field>
+        </div>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Total Turnover</mat-label>
+            <mat-select>
+                <mat-option >Total 6 Months Sale</mat-option>
+                <mat-option value="0 - 40 LAKH">0 - 40 LAKH</mat-option>
+                <mat-option value="40 LAKH - 1 Crore">40 LAKH - 1 Crore</mat-option>
+                <mat-option value="1 Crore - 3 Crore">1 Crore - 3 Crore</mat-option>
+                <mat-option value="3 Crore - 5 Crore">3 Crore - 5 Crore</mat-option>
+                <mat-option value="5+ Crore">5 Crore +</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <hr style=" margin:40px auto 40px auto;">
+        <mat-form-field appearance="outline">
+            <mat-label>Xuriti Score</mat-label>
+            <input matInput type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Total OEM Business Amount</mat-label>
+            <input matInput type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>OEM Transaction Data(In Months)</mat-label>
+            <input matInput type="text" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>OEM Program Period (In Months)</mat-label>
+            <input matInput type="text" />
+        </mat-form-field>
+        <hr>
+        <div><h3><b>CRIF / CIBIL</b></h3> 
+            <mat-form-field appearance="outline">
+                <mat-label>Score</mat-label>
+                <input matInput type="text" />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Comments</mat-label>
+                <textarea matInput formControlName="comment"
+                pattern="^[ a-zA-Z]*$"></textarea>
+                <mat-error style="color: rgb(241, 14, 14); margin-top: 7px">
+                  Please enter valid comments.
+                </mat-error>
+              </mat-form-field>
+            <div class="btn-class">
+                <button mat-raised-button  class="btn-approve" >Check CIBIL</button>
+            </div>
+           
+        </div>
+    </div>
+
+</div>

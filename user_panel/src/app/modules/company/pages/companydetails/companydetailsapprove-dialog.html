@@ -1,0 +1,25 @@
+<div id="companydetailsapprove-dialog">
+  <h1 class="text-center" *ngIf="data.approvalFlag">Approve Company</h1>
+  <h1 class="text-center" *ngIf="!data.approvalFlag">Hold Company</h1>
+
+  <!-- <h2 class="text-center">ABC Pvt. Ltd</h2> -->
+
+  <form
+    class="example-form"
+    [formGroup]="companyApproval_form"
+    (ngSubmit)="onSubmit()"
+  >
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Leave a comment</mat-label>
+      <textarea
+        matInput
+        formControlName="comment"
+        placeholder="Leave a comment"
+      ></textarea>
+    </mat-form-field>
+
+    <div class="input-wrapper text-center">
+      <button mat-flat-button type="submit" class="btn-dark">SUBMIT</button>
+    </div>
+  </form>
+</div>

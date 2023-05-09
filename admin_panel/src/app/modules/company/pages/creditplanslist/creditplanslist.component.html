@@ -1,0 +1,172 @@
+<app-layout>
+  <div id="creditplanslist-page">
+    <div class="main-wrapper">
+      <div class="flexhead">
+        <button mat-mini-fab (click)="onClickBack()" class="back back-btn">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2>List of Credit Plans</h2>
+        <button
+          *ngIf="(user_role == 'xuritiAdmin') || (user_role == 'xuritiStaff')"
+          mat-flat-button
+          (click)="manageCreditPlan('')"
+          class="btn-export addplan-btn"
+        >
+          ADD PLAN
+        </button>
+      </div>
+      <div>
+        <h3>
+          Business Name : <b> {{ company_name }} </b>
+        </h3>
+      </div>
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        matSort
+        (matSortChange)="announceSortChange($event)"
+        class="mat-elevation-z2"
+      >
+        <!-- Company default_plan Column -->
+        <ng-container matColumnDef="default_plan">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            Default
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-radio-group aria-label="Select an option">
+              <mat-radio-button
+                color="primary"
+                id="element._id"
+                name="def_account"
+                value="element._id"
+                [checked]="element.default_plan"
+                (click)="
+                  defaultplan($event, element.seller_id._id, element._id)
+                "
+              ></mat-radio-button>
+            </mat-radio-group>
+          </td>
+        </ng-container>
+
+        <!-- Company Name Column -->
+        <ng-container matColumnDef="plan_name">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by plan_name"
+          >
+            Credit Plan Name
+          </th>
+          <td mat-cell *matCellDef="let element">{{ element.plan_name }}</td>
+        </ng-container>
+
+        <!-- Company Address Column -->
+        <ng-container matColumnDef="credit_period">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by credit_period"
+            *matHeaderCellDef
+          >
+            Credit Free Period
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.credit_period }}
+          </td>
+        </ng-container>
+
+        <!-- Company Address Column -->
+        <ng-container matColumnDef="payment_interval">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by payment_interval"
+            *matHeaderCellDef
+          >
+            Payment Intervals
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.payment_interval }}
+          </td>
+        </ng-container>
+
+        <!-- created date Column -->
+        <ng-container matColumnDef="createdAt">
+          <th
+            mat-header-cell
+            mat-sort-header
+            sortActionDescription="Sort by createdAt"
+            *matHeaderCellDef
+          >
+            Created At
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.createdAt ? element.createdAt : "")
+                | date: dateformat
+            }}
+          </td>
+        </ng-container>
+
+        <!-- created by Column -->
+        <ng-container matColumnDef="createdBy">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+          >
+            Created By
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{
+              (element && element.createdBy && element.createdBy.first_name ? element.createdBy.first_name : "")+ " "+
+              (element && element.createdBy && element.createdBy.last_name ? element.createdBy.last_name : "")
+            }}
+          </td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef class="actioncol">Action</th>
+          <td mat-cell *matCellDef="let element">
+
+            <button
+              mat-mini-fab
+              class="btn-approve"
+              matTooltip="Edit Plan"
+              aria-label="Example icon button with a delete icon"
+              [disabled]="element.plan_type == 'xuriti_plan'"
+              (click)="manageCreditPlan(element)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              mat-mini-fab
+              class="btn-delete"
+              matTooltip="Delete Plan"
+              [disabled]="element.plan_type == 'xuriti_plan'"
+              (click)="openDialog(element)"
+              aria-label="Example icon button with a delete icon"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <mat-paginator
+        [pageSizeOptions]="[5, 10, 50]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</app-layout>
